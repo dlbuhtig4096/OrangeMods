@@ -35,10 +35,11 @@ public class Plugin : BasePlugin
     {
         float fDmg = 0, fBaseAtk = 0, fBaseDmg = 0;
 		
-        int nCurrentWeapon = 0, nLastHitStatus = 1;        
+        int tSOBType, nCurrentWeapon = 0, nLastHitStatus = 1;        
         int n_EFFECT = pData.n_EFFECT;
         
 		__instance.damageType = VisualDamage.DamageType.Normal;
+        tSOBType = tSOB.GetSOBType();
 
         if (tSOB.GetCurrentWeapon() == 1) {
 			nCurrentWeapon = 1;
@@ -106,7 +107,7 @@ __label_4:
 				goto __label_4;
 			}
 
-			if (tSOB.GetSOBType() == 1 && StageUpdate.bIsHost)
+			if (tSOBType == 1 && StageUpdate.bIsHost)
 			{
 				OrangeCharacter orangeCharacter = tSOB as OrangeCharacter;
 				if ((orangeCharacter.bNeedUpdateAlways || MonoBehaviourSingleton<OrangeBattleServerManager>.Instance.CheckPlayerPause(orangeCharacter.sNetSerialID)) && orangeCharacter != null && !orangeCharacter.IsDead() && !orangeCharacter.IsInvincible) {
@@ -144,7 +145,8 @@ __label_hit:
             __result = 5;
             goto __label_set;
         }
-        if ((tSOB.IsInvincible && __instance.tHurtPassParam.LVMax < 9999)) {
+        // Hack: "__instance.tHurtPassParam.LVMax < 9999" -> "tSOBType == 1"
+        if (tSOB.IsUnBreak() || ((tSOBType == 1) && tSOB.IsInvincible)) {
             nLastHitStatus = nLastHitStatus | 32;
             __result = 0;
             goto __label_set;
@@ -215,9 +217,8 @@ __label_misc:
                     fCri += (float)__instance.refPSShoter.GetAddStatus(6, __instance.nWeaponCheck) - (float)tSOB.GetReduceCriDmgPercent(nCurrentWeapon);
                     __instance.nLastCriPercent = (int)fCri;
 
-                    fDmg += fDmg * ((float)__instance.nLastCriPercent) * 0.0001f;
-                    fDmg = fDmg * __instance.fCriDmgFactor * 0.01f;
-
+                    fDmg += fDmg * (fCri * 0.0001f);
+                    fDmg *= __instance.fCriDmgFactor * 0.01f;
                 }
             }
 
@@ -263,7 +264,6 @@ __label_set:
 		__instance.nBaseDmg = (fMax > fBaseDmg) ? (int)fBaseDmg : 0x7fffffff;
         __instance.nLastHitStatus = nLastHitStatus;
         return false;
-
     }
 
 }
