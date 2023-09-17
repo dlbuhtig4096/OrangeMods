@@ -174,7 +174,7 @@ __label_dmg_12:
             case 30:
                 fDmg = (float)(tSOB.MaxHp);
                 __instance.fLastDmgFactor = fDmg;
-                fDmg = fDmg * f_EFFECT_X * 0.01f;
+                fDmg *= f_EFFECT_X * 0.01f;
                 fBaseDmg = (fBaseAtk = fDmg);
                 goto __label_misc;
             }
@@ -185,8 +185,8 @@ __label_dmg_12:
             ;
             __instance.fLastDmgFactor = fLastDmgFactor;
 
-            fBaseAtk = (float)__instance.nAtk - (float)tSOB.GetDEF(nCurrentWeapon) * fLastDmgFactor * 0.01f;
-            fBaseDmg = fBaseAtk * (f_EFFECT_X + (float)__instance.BulletLevel * f_EFFECT_Y) * 0.01f;
+            fBaseAtk = ((float)__instance.nAtk - (float)tSOB.GetDEF(nCurrentWeapon)) * (fLastDmgFactor * 0.01f);
+            fBaseDmg = fBaseAtk * ((f_EFFECT_X + (float)__instance.BulletLevel * f_EFFECT_Y) * 0.01f);
             fDmg = fBaseDmg;
 
             if (n_EFFECT == 1 && f_EFFECT_Z != 0f && __instance.bCanUseInEventBullet) { BulletBase_CalclDmgOnly_notify((int)f_EFFECT_Z); }
@@ -200,9 +200,9 @@ __label_misc:
             // Critical
             {
                 int nCri = __instance.nCri;
-                if ((float)nCri - (float)tSOB.GetReduceCriPercent(nCurrentWeapon) * __instance.fCriFactor >= (float)OrangeBattleUtility.Random(0, 1000000)) {
+                if (((float)nCri - (float)tSOB.GetReduceCriPercent(nCurrentWeapon)) * __instance.fCriFactor >= (float)OrangeBattleUtility.Random(0, 1000000)) {
                     float fCri;
-
+                
                     nLastHitStatus |= 2;
                     __instance.damageType = VisualDamage.DamageType.Cri;
 
@@ -217,6 +217,7 @@ __label_misc:
 
                     fDmg += fDmg * ((float)__instance.nLastCriPercent) * 0.0001f;
                     fDmg = fDmg * __instance.fCriDmgFactor * 0.01f;
+
                 }
             }
 
@@ -226,7 +227,7 @@ __label_misc:
                 nLastHitStatus |= 8;
                 __instance.damageType = VisualDamage.DamageType.Reduce;
                 __instance.fLastBlockFactor = fBlc;
-                fDmg -= fDmg * fBlc;
+                fDmg -= fDmg * (fBlc * 0.0001f);
                 if (fDmg < 0) { fDmg = 0; }
             }
 
@@ -250,6 +251,7 @@ __label_misc:
                 fBaseDmg *= fLastBuffFactor;
                 fDmg *= fLastBuffFactor;
             }
+            Log.LogWarning($"Dmg={fDmg}");
         }
 
 __label_set:
