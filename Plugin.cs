@@ -254,12 +254,13 @@ __label_misc:
         }
 
 __label_set:
+        float fMax = 2147483647f;
         if (fBaseAtk < 0f) { fBaseAtk = 0; }
         if (fBaseDmg < 0f) { fBaseDmg = 0; }
         if (fDmg < 0f) { fDmg = 0; }
-        __instance.nDmg = Mathf.RoundToInt(fDmg);
-		__instance.nBaseAtk = Mathf.RoundToInt(fBaseAtk);
-		__instance.nBaseDmg = Mathf.RoundToInt(fBaseDmg);
+        __instance.nDmg = (fMax > fDmg) ? (int)fDmg : 0x7fffffff;
+		__instance.nBaseAtk = (fMax > fBaseAtk) ? (int)fBaseAtk : 0x7fffffff;
+		__instance.nBaseDmg = (fMax > fBaseDmg) ? (int)fBaseDmg : 0x7fffffff;
         __instance.nLastHitStatus = nLastHitStatus;
         return false;
 
