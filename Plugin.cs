@@ -251,7 +251,6 @@ __label_misc:
                 fBaseDmg *= fLastBuffFactor;
                 fDmg *= fLastBuffFactor;
             }
-            Log.LogWarning($"Dmg={fDmg}");
         }
 
 __label_set:
