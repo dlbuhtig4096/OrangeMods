@@ -51,25 +51,25 @@ public class Plugin : BasePlugin
 			if (tSOB.IsUnBreakX() && pData.n_TARGET != 2 && pData.n_TARGET != 3) {
                 nLastHitStatus = nLastHitStatus | 128;
                 __result = 5;
-                goto __label_set;
+                goto __label_ret;
 			}
 
 __label_4_ex:
             nLastHitStatus = 0;
 __label_4:
 		    __result = 4;
-            goto __label_set;
+            goto __label_ret;
 
 		case 26:
 			goto __label_4_ex;
             
-        // Instant kills
+        // Healing
 		case 2:
             fDmg = ((float)__instance.nAtk * pData.f_EFFECT_X + pData.f_EFFECT_Y + (float)tSOB.MaxHp * pData.f_EFFECT_Z) * 0.01f;
-			nLastHitStatus = 4;
-			fDmg = fDmg * (float)(100 + __instance.refPBMShoter.sBuffStatus.nHealEnhance) * 0.01f;
+			fDmg += fDmg * ((float)__instance.refPBMShoter.sBuffStatus.nHealEnhance * 0.01f);
+            nLastHitStatus = 4;
 			__result = 3;
-            break;
+            goto __label_set;
 
         // Status
 		case 3:
@@ -79,7 +79,7 @@ __label_4:
 		case 16:
 			nLastHitStatus = 16;
 			__result = 1;
-            break;
+            goto __label_set;
 
         // ???
 		case 10:
@@ -97,7 +97,7 @@ __label_4:
 			if (tSOB.IsUnBreakX() && pData.n_TARGET != 2 && pData.n_TARGET != 3) {
                 nLastHitStatus = nLastHitStatus | 128;
                 __result = 5;
-                goto __label_set;
+                goto __label_ret;
 			}
 			goto __label_4;
 
@@ -262,6 +262,8 @@ __label_set:
         __instance.nDmg = (fMax > fDmg) ? (int)fDmg : 0x7fffffff;
 		__instance.nBaseAtk = (fMax > fBaseAtk) ? (int)fBaseAtk : 0x7fffffff;
 		__instance.nBaseDmg = (fMax > fBaseDmg) ? (int)fBaseDmg : 0x7fffffff;
+
+__label_ret:
         __instance.nLastHitStatus = nLastHitStatus;
         return false;
     }
