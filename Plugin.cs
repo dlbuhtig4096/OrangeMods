@@ -2,36 +2,75 @@
 using BepInEx.Unity.IL2CPP;
 using BepInEx.Logging;
 using HarmonyLib;
+using Il2CppInterop.Runtime;
+using Il2CppInterop.Runtime.Injection;
+using Il2CppInterop.Runtime.InteropTypes.Arrays;
 
-using StageLib;
+using System;
+using CallbackDefs;
 using UnityEngine;
+using StageLib;
 
 namespace OrangeMods;
 
-[BepInPlugin(MyPluginInfo.PLUGIN_GUID, MyPluginInfo.PLUGIN_NAME, MyPluginInfo.PLUGIN_VERSION)]
-public class Plugin : BasePlugin
-{
-    internal static new ManualLogSource Log;
+[HarmonyPatch(typeof(PlayerStatus))]
+class PlayerStatus_ {
 
-    public override void Load()
-    {
-        Plugin.Log = base.Log;
-
-        // Plugin startup logic
-        Log.LogInfo($"Plugin {MyPluginInfo.PLUGIN_GUID} is loaded!");
-
-        Harmony.CreateAndPatchAll(typeof(Plugin));
+    [HarmonyPrefix]
+    [HarmonyPatch("op_Addition", typeof(PlayerStatus), typeof(WeaponStatus))]
+    static bool op_Addition(PlayerStatus a, WeaponStatus b, ref PlayerStatus __result) {
+        __result = new PlayerStatus {
+			nHP = a.nHP + b.nHP,
+			nATK = a.nATK + b.nATK,
+			nDEF = a.nDEF + b.nDEF,
+			nCRI = a.nCRI + b.nCRI,
+			nHIT = a.nHIT + b.nHIT,
+			nLuck = a.nLuck + b.nLuck,
+			nDOD = a.nDOD,
+			nLV = a.nLV,
+			nCriDmgPercent = a.nCriDmgPercent + b.nCriDmgPercent,
+			nReduceCriPercent = a.nReduceCriPercent + b.nReduceCriPercent,
+			nBlockDmgPercent = a.nBlockDmgPercent + b.nBlockDmgPercent,
+			nBlockPercent = a.nBlockPercent + b.nBlockPercent,
+			nReduceBlockPercent = a.nReduceBlockPercent + b.nReduceBlockPercent
+		};
+        return false;
     }
 
-    static void BulletBase_CalclDmgOnly_notify(int id) {
+    [HarmonyPrefix]
+    [HarmonyPatch("op_Addition", typeof(PlayerStatus), typeof(PlayerStatus))]
+    static bool op_Addition(PlayerStatus a, PlayerStatus b, ref PlayerStatus __result) {
+		__result = new PlayerStatus {
+			nHP = a.nHP + b.nHP,
+			nATK = a.nATK + b.nATK,
+			nDEF = a.nDEF + b.nDEF,
+			nCRI = a.nCRI + b.nCRI,
+			nHIT = a.nHIT + b.nHIT,
+			nLuck = a.nLuck + b.nLuck,
+			nDOD = a.nDOD + b.nDOD,
+			nLV = a.nLV,
+			nCriDmgPercent = a.nCriDmgPercent + b.nCriDmgPercent,
+			nReduceCriPercent = a.nReduceCriPercent + b.nReduceCriPercent,
+			nBlockDmgPercent = a.nBlockDmgPercent + b.nBlockDmgPercent,
+			nBlockPercent = a.nBlockPercent + b.nBlockPercent,
+			nReduceBlockPercent = a.nReduceBlockPercent + b.nReduceBlockPercent
+		};
+        return false;
+	}
+}
+
+[HarmonyPatch(typeof(BulletBase))]
+class BulletBase_ {
+
+    static void _notify(int id) {
         EventManager.StageEventCall stageEventCall2 = new EventManager.StageEventCall();
         stageEventCall2.nID = id;
         Singleton<GenericEventManager>.Instance.NotifyEvent<EventManager.StageEventCall>(EventManager.ID.STAGE_EVENT_CALL, stageEventCall2);
     }
 
-    [HarmonyPatch(typeof(BulletBase), nameof(BulletBase.CalclDmgOnly))]
     [HarmonyPrefix]
-    static bool BulletBase_CalclDmgOnly(SKILL_TABLE pData, StageObjBase tSOB, ref int __result, ref BulletBase __instance)
+    [HarmonyPatch(nameof(BulletBase.CalclDmgOnly))]
+    static bool CalclDmgOnly(SKILL_TABLE pData, StageObjBase tSOB, ref int __result, ref BulletBase __instance)
     {
         float fDmg = 0, fBaseAtk = 0, fBaseDmg = 0;
 		
@@ -107,8 +146,7 @@ __label_4:
 				goto __label_4;
 			}
 
-			if (tSOBType == 1 && StageUpdate.bIsHost)
-			{
+			if (tSOBType == 1 && StageUpdate.bIsHost) {
 				OrangeCharacter orangeCharacter = tSOB as OrangeCharacter;
 				if ((orangeCharacter.bNeedUpdateAlways || MonoBehaviourSingleton<OrangeBattleServerManager>.Instance.CheckPlayerPause(orangeCharacter.sNetSerialID)) && orangeCharacter != null && !orangeCharacter.IsDead() && !orangeCharacter.IsInvincible) {
 					if (pData.f_EFFECT_X != 0f || orangeCharacter.selfBuffManager.CheckHasEffectByCONDITIONID((int)pData.f_EFFECT_X, 0)) {
@@ -170,7 +208,7 @@ __label_dmg_12:
                 fDmg *= f_EFFECT_X * 0.01f;
                 fBaseDmg = (fBaseAtk = fDmg);
 
-                if (f_EFFECT_Z != 0f) { BulletBase_CalclDmgOnly_notify((int)f_EFFECT_Z); }
+                if (f_EFFECT_Z != 0f) { _notify((int)f_EFFECT_Z); }
                 goto __label_set;
 
             case 30:
@@ -191,7 +229,7 @@ __label_dmg_12:
             fBaseDmg = fBaseAtk * ((f_EFFECT_X + (float)__instance.BulletLevel * f_EFFECT_Y) * 0.01f);
             fDmg = fBaseDmg;
 
-            if (n_EFFECT == 1 && f_EFFECT_Z != 0f && __instance.bCanUseInEventBullet) { BulletBase_CalclDmgOnly_notify((int)f_EFFECT_Z); }
+            if (n_EFFECT == 1 && f_EFFECT_Z != 0f && __instance.bCanUseInEventBullet) { _notify((int)f_EFFECT_Z); }
 
 __label_misc:
             // No below checks for 12 and 13
@@ -267,5 +305,153 @@ __label_ret:
         __instance.nLastHitStatus = nLastHitStatus;
         return false;
     }
+}
 
+[BepInPlugin(MyPluginInfo.PLUGIN_GUID, MyPluginInfo.PLUGIN_NAME, MyPluginInfo.PLUGIN_VERSION)]
+public class Plugin : BasePlugin {
+    public static new ManualLogSource Log;
+
+    public static void FxManagerPlay(string p_fxName, Vector3 p_worldPos, Quaternion p_quaternion, Il2CppReferenceArray<Il2CppSystem.Object> p_params = null) {
+        Log.LogWarning("FxManagerPlay1 Start");
+        if (MonoBehaviourSingleton<PoolManager>.Instance.IsPreload(p_fxName)) {
+            FxBase poolObj = MonoBehaviourSingleton<PoolManager>.Instance.GetPoolObj<FxBase>(p_fxName);
+            poolObj.transform.SetParent(null);
+            poolObj.transform.SetPositionAndRotation(p_worldPos, p_quaternion);
+            FxManager.Instance.RegisterFxBase(poolObj);
+            poolObj.Active(p_params);
+            if (p_params != null && p_params.Length != 0) {
+                StageFXParam stageFXParam = p_params[0] as StageFXParam;
+                if (stageFXParam != null) {
+                    if (stageFXParam.tFOL != null) {
+                        stageFXParam.tFOL.tObj = poolObj.gameObject;
+                    }
+                    FxManager.Instance.ChangeFXColor(poolObj, stageFXParam);
+                    return;
+                }
+            }
+        }
+        else {
+            FxManager.Instance.PreloadFx(p_fxName, 1, (Callback)(new Action(() => FxManagerPlay(p_fxName, p_worldPos, p_quaternion, p_params))));
+        }
+        Log.LogWarning("FxManagerPlay1 End");
+    }
+
+    public static void FxManagerPlay(string pFxName, Transform pTransform, Quaternion pQuaternion, Il2CppReferenceArray<Il2CppSystem.Object> pParams = null) {
+        Log.LogWarning("FxManagerPlay2 Start");
+        if (MonoBehaviourSingleton<PoolManager>.Instance.IsPreload(pFxName)) {
+            FxBase poolObj = MonoBehaviourSingleton<PoolManager>.Instance.GetPoolObj<FxBase>(pFxName);
+            Vector3 localScale = poolObj.transform.localScale;
+            poolObj.transform.SetParent(pTransform);
+            poolObj.transform.localPosition = Vector3.zero;
+            poolObj.transform.localRotation = pQuaternion;
+            poolObj.transform.localScale = localScale;
+            FxManager.Instance.RegisterFxBase(poolObj);
+            poolObj.Active(pParams);
+            if (pParams != null && pParams.Length != 0) {
+                StageFXParam stageFXParam = pParams[0] as StageFXParam;
+                if (stageFXParam != null) {
+                    if (stageFXParam.tFOL != null) {
+                        stageFXParam.tFOL.tObj = poolObj.gameObject;
+                    }
+                    FxManager.Instance.ChangeFXColor(poolObj, stageFXParam);
+                    return;
+                }
+            }
+        }
+        else {
+            FxManager.Instance.PreloadFx(pFxName, 1, (Callback)(new Action(() => FxManagerPlay(pFxName, pTransform, pQuaternion, pParams))));
+        }
+        Log.LogWarning("FxManagerPlay2 End");
+    }
+
+    public static void FxManagerPlay(string pFxName, Transform pTransform, Quaternion pQuaternion, Vector3 pScale, Il2CppReferenceArray<Il2CppSystem.Object> pParams = null) {
+		Log.LogWarning("FxManagerPlay3 Start");
+        if (MonoBehaviourSingleton<PoolManager>.Instance.IsPreload(pFxName)) {
+			FxBase poolObj = MonoBehaviourSingleton<PoolManager>.Instance.GetPoolObj<FxBase>(pFxName);
+			poolObj.transform.SetParent(pTransform);
+			poolObj.transform.localPosition = Vector3.zero;
+			poolObj.transform.localRotation = pQuaternion;
+			poolObj.transform.localScale = pScale;
+			FxManager.Instance.RegisterFxBase(poolObj);
+			poolObj.Active(pParams);
+			if (pParams != null && pParams.Length != 0) {
+				StageFXParam stageFXParam = pParams[0] as StageFXParam;
+				if (stageFXParam != null) {
+					if (stageFXParam.tFOL != null) {
+						stageFXParam.tFOL.tObj = poolObj.gameObject;
+					}
+					FxManager.Instance.ChangeFXColor(poolObj, stageFXParam);
+					return;
+				}
+			}
+		}
+		else {
+			FxManager.Instance.PreloadFx(pFxName, 1, (Callback)(new Action(() => FxManagerPlay(pFxName, pTransform, pQuaternion, pScale, pParams))));
+		}
+        Log.LogWarning("FxManagerPlay3 End");
+	}
+
+    public static T FxManagerPlayReturn<T>(string pFxName, Transform pTransform, Quaternion pQuaternion, Il2CppReferenceArray<Il2CppSystem.Object> pParams = null) where T : FxBase {
+		Log.LogWarning("FxManagerPlayReturn1 Start");
+        if (MonoBehaviourSingleton<PoolManager>.Instance.IsPreload(pFxName)) {
+			T poolObj = MonoBehaviourSingleton<PoolManager>.Instance.GetPoolObj<T>(pFxName);
+			Vector3 localScale = poolObj.transform.localScale;
+			poolObj.transform.SetParent(pTransform);
+			poolObj.transform.localPosition = Vector3.zero;
+			poolObj.transform.localRotation = pQuaternion;
+			poolObj.transform.localScale = localScale;
+			FxManager.Instance.RegisterFxBase(poolObj);
+			poolObj.Active(pParams);
+			return poolObj;
+		}
+        Log.LogWarning("FxManagerPlayReturn1 Start");
+		return default(T);
+	}
+
+	public static T FxManagerPlayReturn<T>(string pFxName, Vector3 p_worldPos, Quaternion pQuaternion, Il2CppReferenceArray<Il2CppSystem.Object> pParams = null) where T : FxBase {
+		Log.LogWarning("FxManagerPlayReturn2 Start");
+        if (MonoBehaviourSingleton<PoolManager>.Instance.IsPreload(pFxName)) {
+			T poolObj = MonoBehaviourSingleton<PoolManager>.Instance.GetPoolObj<T>(pFxName);
+			poolObj.transform.SetParent(null);
+			poolObj.transform.SetPositionAndRotation(p_worldPos, pQuaternion);
+			FxManager.Instance.RegisterFxBase(poolObj);
+			poolObj.Active(pParams);
+			return poolObj;
+		}
+        Log.LogWarning("FxManagerPlayReturn2 Start");
+		return default(T);
+	}
+
+    public void _inject(Type cls, Type[] interfaces) {
+        ClassInjector.RegisterTypeInIl2Cpp(
+            cls, 
+            new RegisterTypeOptions() {
+                Interfaces = new Il2CppInterfaceCollection(interfaces),
+            }
+        );
+    }
+
+    public override void Load() {
+        Plugin.Log = base.Log;
+
+        // Plugin startup logic
+        Log.LogInfo($"Plugin {MyPluginInfo.PLUGIN_GUID} is loaded!");
+
+        Harmony.CreateAndPatchAll(typeof(PlayerStatus_));
+        Harmony.CreateAndPatchAll(typeof(BulletBase_));
+        Harmony.CreateAndPatchAll(typeof(CharacterControlFactory_));
+
+        _inject(typeof(CH091_Controller), new Type[] {typeof(ILogicUpdate)});
+        _inject(typeof(CH092_Controller), new Type[] {typeof(ILogicUpdate)});
+        _inject(typeof(CH093_Controller), new Type[] {typeof(ILogicUpdate)});
+        _inject(typeof(CH098_Controller), new Type[] {typeof(ILogicUpdate)});
+        _inject(typeof(CH099_Controller), new Type[] {typeof(ILogicUpdate)});
+        _inject(typeof(CH100_Controller), new Type[] {typeof(ILogicUpdate)});
+        _inject(typeof(CH106_Controller), new Type[] {typeof(ILogicUpdate)});
+        _inject(typeof(CH107_Controller), new Type[] {typeof(ILogicUpdate)});
+        _inject(typeof(CH129_Controller), new Type[] {typeof(ILogicUpdate)});
+        _inject(typeof(CH130_Controller), new Type[] {typeof(ILogicUpdate)});
+        _inject(typeof(CH140_Controller), new Type[] {typeof(ILogicUpdate)});
+        _inject(typeof(CH141_Controller), new Type[] {typeof(ILogicUpdate)});
+    }
 }

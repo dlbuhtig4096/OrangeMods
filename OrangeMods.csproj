@@ -21,7 +21,8 @@
   </ItemGroup>
   
   <ItemGroup>
-    <Reference Include="Assembly-CSharp">
+    <!-- Game assemblies -->
+    <Reference Include="Assembly-CSharp" Publicize="true">
       <HintPath>$(Orange)\BepInEx\interop\Assembly-CSharp.dll</HintPath>
       <Private>false</Private>
       <CopyLocal>false</CopyLocal>
@@ -106,6 +107,8 @@
       <Private>false</Private>
       <CopyLocal>false</CopyLocal>
     </Reference>
+    
+    <!-- Il2Cpp generated assemblies -->
     <Reference Include="Il2Cppmscorlib">
       <HintPath>$(Orange)\BepInEx\interop\Il2Cppmscorlib.dll</HintPath>
       <Private>false</Private>
@@ -126,8 +129,120 @@
       <Private>false</Private>
       <CopyLocal>false</CopyLocal>
     </Reference>
+    
+    <!-- Unity assemblies -->
+    <Reference Include="Unity.Burst">
+      <HintPath>$(Orange)\BepInEx\interop\Unity.Burst.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+    <Reference Include="Unity.Burst.Unsafe">
+      <HintPath>$(Orange)\BepInEx\interop\Unity.Burst.Unsafe.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+    <Reference Include="Unity.Collections">
+      <HintPath>$(Orange)\BepInEx\interop\Unity.Collections.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+    <Reference Include="Unity.Entities">
+      <HintPath>$(Orange)\BepInEx\interop\Unity.Entities.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+    <Reference Include="Unity.Entities.Hybrid">
+      <HintPath>$(Orange)\BepInEx\interop\Unity.Entities.Hybrid.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+    <Reference Include="Unity.Mathematics">
+      <HintPath>$(Orange)\BepInEx\interop\Unity.Mathematics.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+    <Reference Include="Unity.Mathematics.Extensions">
+      <HintPath>$(Orange)\BepInEx\interop\Unity.Mathematics.Extensions.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+    <Reference Include="Unity.Properties">
+      <HintPath>$(Orange)\BepInEx\interop\Unity.Properties.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+    <Reference Include="Unity.Scenes.Hybrid">
+      <HintPath>$(Orange)\BepInEx\interop\Unity.Scenes.Hybrid.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+    <Reference Include="Unity.Serialization">
+      <HintPath>$(Orange)\BepInEx\interop\Unity.Serialization.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+    <Reference Include="Unity.Timeline">
+      <HintPath>$(Orange)\BepInEx\interop\Unity.Timeline.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+    <Reference Include="Unity.Transforms">
+      <HintPath>$(Orange)\BepInEx\interop\Unity.Transforms.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+    <Reference Include="Unity.Transforms.Hybrid">
+      <HintPath>$(Orange)\BepInEx\interop\Unity.Transforms.Hybrid.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
     <Reference Include="UnityEngine">
       <HintPath>$(Orange)\BepInEx\interop\UnityEngine.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+    <Reference Include="UnityEngine.AccessibilityModule">
+      <HintPath>$(Orange)\BepInEx\interop\UnityEngine.AccessibilityModule.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+    <Reference Include="UnityEngine.AIModule">
+      <HintPath>$(Orange)\BepInEx\interop\UnityEngine.AIModule.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+    <Reference Include="UnityEngine.AndroidJNIModule">
+      <HintPath>$(Orange)\BepInEx\interop\UnityEngine.AndroidJNIModule.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+    <Reference Include="UnityEngine.AnimationModule">
+      <HintPath>$(Orange)\BepInEx\interop\UnityEngine.AnimationModule.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+    <Reference Include="UnityEngine.AssetBundleModule">
+      <HintPath>$(Orange)\BepInEx\interop\UnityEngine.AssetBundleModule.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+    <Reference Include="UnityEngine.AudioModule">
+      <HintPath>$(Orange)\BepInEx\interop\UnityEngine.AudioModule.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+    <Reference Include="UnityEngine.ClothModule">
+      <HintPath>$(Orange)\BepInEx\interop\UnityEngine.ClothModule.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+    <Reference Include="UnityEngine.ClusterInputModule">
+      <HintPath>$(Orange)\BepInEx\interop\UnityEngine.ClusterInputModule.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+    <Reference Include="UnityEngine.ClusterRendererModule">
+      <HintPath>$(Orange)\BepInEx\interop\UnityEngine.ClusterRendererModule.dll</HintPath>
       <Private>false</Private>
       <CopyLocal>false</CopyLocal>
     </Reference>
@@ -136,8 +251,148 @@
       <Private>false</Private>
       <CopyLocal>false</CopyLocal>
     </Reference>
+    <Reference Include="UnityEngine.CrashReportingModule">
+      <HintPath>$(Orange)\BepInEx\interop\UnityEngine.CrashReportingModule.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+    <Reference Include="UnityEngine.DirectorModule">
+      <HintPath>$(Orange)\BepInEx\interop\UnityEngine.DirectorModule.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+    <Reference Include="UnityEngine.DSPGraphModule">
+      <HintPath>$(Orange)\BepInEx\interop\UnityEngine.DSPGraphModule.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+    <Reference Include="UnityEngine.GameCenterModule">
+      <HintPath>$(Orange)\BepInEx\interop\UnityEngine.GameCenterModule.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+    <Reference Include="UnityEngine.GIModule">
+      <HintPath>$(Orange)\BepInEx\interop\UnityEngine.GIModule.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+    <Reference Include="UnityEngine.GridModule">
+      <HintPath>$(Orange)\BepInEx\interop\UnityEngine.GridModule.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+    <Reference Include="UnityEngine.HotReloadModule">
+      <HintPath>$(Orange)\BepInEx\interop\UnityEngine.HotReloadModule.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+    <Reference Include="UnityEngine.ImageConversionModule">
+      <HintPath>$(Orange)\BepInEx\interop\UnityEngine.ImageConversionModule.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
     <Reference Include="UnityEngine.IMGUIModule">
       <HintPath>$(Orange)\BepInEx\interop\UnityEngine.IMGUIModule.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+    <Reference Include="UnityEngine.InputLegacyModule">
+      <HintPath>$(Orange)\BepInEx\interop\UnityEngine.InputLegacyModule.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+    <Reference Include="UnityEngine.InputModule">
+      <HintPath>$(Orange)\BepInEx\interop\UnityEngine.InputModule.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+    <Reference Include="UnityEngine.JSONSerializeModule">
+      <HintPath>$(Orange)\BepInEx\interop\UnityEngine.JSONSerializeModule.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+    <Reference Include="UnityEngine.LocalizationModule">
+      <HintPath>$(Orange)\BepInEx\interop\UnityEngine.LocalizationModule.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+    <Reference Include="UnityEngine.ParticleSystemModule">
+      <HintPath>$(Orange)\BepInEx\interop\UnityEngine.ParticleSystemModule.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+    <Reference Include="UnityEngine.PerformanceReportingModule">
+      <HintPath>$(Orange)\BepInEx\interop\UnityEngine.PerformanceReportingModule.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+    <Reference Include="UnityEngine.Physics2DModule">
+      <HintPath>$(Orange)\BepInEx\interop\UnityEngine.Physics2DModule.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+    <Reference Include="UnityEngine.PhysicsModule">
+      <HintPath>$(Orange)\BepInEx\interop\UnityEngine.PhysicsModule.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+    <Reference Include="UnityEngine.ProfilerModule">
+      <HintPath>$(Orange)\BepInEx\interop\UnityEngine.ProfilerModule.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+    <Reference Include="UnityEngine.RuntimeInitializeOnLoadManagerInitializerModule">
+      <HintPath>$(Orange)\BepInEx\interop\UnityEngine.RuntimeInitializeOnLoadManagerInitializerModule.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+    <Reference Include="UnityEngine.ScreenCaptureModule">
+      <HintPath>$(Orange)\BepInEx\interop\UnityEngine.ScreenCaptureModule.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+    <Reference Include="UnityEngine.SharedInternalsModule">
+      <HintPath>$(Orange)\BepInEx\interop\UnityEngine.SharedInternalsModule.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+    <Reference Include="UnityEngine.SpriteMaskModule">
+      <HintPath>$(Orange)\BepInEx\interop\UnityEngine.SpriteMaskModule.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+    <Reference Include="UnityEngine.SpriteShapeModule">
+      <HintPath>$(Orange)\BepInEx\interop\UnityEngine.SpriteShapeModule.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+    <Reference Include="UnityEngine.StreamingModule">
+      <HintPath>$(Orange)\BepInEx\interop\UnityEngine.StreamingModule.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+    <Reference Include="UnityEngine.SubstanceModule">
+      <HintPath>$(Orange)\BepInEx\interop\UnityEngine.SubstanceModule.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+    <Reference Include="UnityEngine.SubsystemsModule">
+      <HintPath>$(Orange)\BepInEx\interop\UnityEngine.SubsystemsModule.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+    <Reference Include="UnityEngine.TerrainModule">
+      <HintPath>$(Orange)\BepInEx\interop\UnityEngine.TerrainModule.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+    <Reference Include="UnityEngine.TerrainPhysicsModule">
+      <HintPath>$(Orange)\BepInEx\interop\UnityEngine.TerrainPhysicsModule.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+    <Reference Include="UnityEngine.TextCoreModule">
+      <HintPath>$(Orange)\BepInEx\interop\UnityEngine.TextCoreModule.dll</HintPath>
       <Private>false</Private>
       <CopyLocal>false</CopyLocal>
     </Reference>
@@ -146,13 +401,190 @@
       <Private>false</Private>
       <CopyLocal>false</CopyLocal>
     </Reference>
+    <Reference Include="UnityEngine.TilemapModule">
+      <HintPath>$(Orange)\BepInEx\interop\UnityEngine.TilemapModule.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+    <Reference Include="UnityEngine.TLSModule">
+      <HintPath>$(Orange)\BepInEx\interop\UnityEngine.TLSModule.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
     <Reference Include="UnityEngine.UI">
       <HintPath>$(Orange)\BepInEx\interop\UnityEngine.UI.dll</HintPath>
       <Private>false</Private>
       <CopyLocal>false</CopyLocal>
     </Reference>
+    <Reference Include="UnityEngine.UIElementsModule">
+      <HintPath>$(Orange)\BepInEx\interop\UnityEngine.UIElementsModule.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+    <Reference Include="UnityEngine.UIElementsNativeModule">
+      <HintPath>$(Orange)\BepInEx\interop\UnityEngine.UIElementsNativeModule.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
     <Reference Include="UnityEngine.UIModule">
       <HintPath>$(Orange)\BepInEx\interop\UnityEngine.UIModule.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+    <Reference Include="UnityEngine.UmbraModule">
+      <HintPath>$(Orange)\BepInEx\interop\UnityEngine.UmbraModule.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+    <Reference Include="UnityEngine.UNETModule">
+      <HintPath>$(Orange)\BepInEx\interop\UnityEngine.UNETModule.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+    <Reference Include="UnityEngine.UnityAnalyticsCommonModule">
+      <HintPath>$(Orange)\BepInEx\interop\UnityEngine.UnityAnalyticsCommonModule.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+    <Reference Include="UnityEngine.UnityAnalyticsModule">
+      <HintPath>$(Orange)\BepInEx\interop\UnityEngine.UnityAnalyticsModule.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+    <Reference Include="UnityEngine.UnityConnectModule">
+      <HintPath>$(Orange)\BepInEx\interop\UnityEngine.UnityConnectModule.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+    <Reference Include="UnityEngine.UnityCurlModule">
+      <HintPath>$(Orange)\BepInEx\interop\UnityEngine.UnityCurlModule.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+    <Reference Include="UnityEngine.UnityTestProtocolModule">
+      <HintPath>$(Orange)\BepInEx\interop\UnityEngine.UnityTestProtocolModule.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+    <Reference Include="UnityEngine.UnityWebRequestAssetBundleModule">
+      <HintPath>$(Orange)\BepInEx\interop\UnityEngine.UnityWebRequestAssetBundleModule.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+    <Reference Include="UnityEngine.UnityWebRequestAudioModule">
+      <HintPath>$(Orange)\BepInEx\interop\UnityEngine.UnityWebRequestAudioModule.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+    <Reference Include="UnityEngine.UnityWebRequestModule">
+      <HintPath>$(Orange)\BepInEx\interop\UnityEngine.UnityWebRequestModule.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+    <Reference Include="UnityEngine.UnityWebRequestTextureModule">
+      <HintPath>$(Orange)\BepInEx\interop\UnityEngine.UnityWebRequestTextureModule.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+    <Reference Include="UnityEngine.UnityWebRequestWWWModule">
+      <HintPath>$(Orange)\BepInEx\interop\UnityEngine.UnityWebRequestWWWModule.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+    <Reference Include="UnityEngine.VehiclesModule">
+      <HintPath>$(Orange)\BepInEx\interop\UnityEngine.VehiclesModule.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+    <Reference Include="UnityEngine.VFXModule">
+      <HintPath>$(Orange)\BepInEx\interop\UnityEngine.VFXModule.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+    <Reference Include="UnityEngine.VideoModule">
+      <HintPath>$(Orange)\BepInEx\interop\UnityEngine.VideoModule.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+    <Reference Include="UnityEngine.VirtualTexturingModule">
+      <HintPath>$(Orange)\BepInEx\interop\UnityEngine.VirtualTexturingModule.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+    <Reference Include="UnityEngine.VRModule">
+      <HintPath>$(Orange)\BepInEx\interop\UnityEngine.VRModule.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+    <Reference Include="UnityEngine.WindModule">
+      <HintPath>$(Orange)\BepInEx\interop\UnityEngine.WindModule.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+    <Reference Include="UnityEngine.XRModule">
+      <HintPath>$(Orange)\BepInEx\interop\UnityEngine.XRModule.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+
+    <!-- BepInEx assemblies -->
+    <Reference Include="0Harmony">
+      <HintPath>$(Orange)\BepInEx\core\0Harmony.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+    <Reference Include="BepInEx.Core">
+      <HintPath>$(Orange)\BepInEx\core\BepInEx.Core.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+    <Reference Include="BepInEx.Preloader.Core">
+      <HintPath>$(Orange)\BepInEx\core\BepInEx.Preloader.Core.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+    <Reference Include="BepInEx.Unity.Common">
+      <HintPath>$(Orange)\BepInEx\core\BepInEx.Unity.Common.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+    <Reference Include="BepInEx.Unity.IL2CPP">
+      <HintPath>$(Orange)\BepInEx\core\BepInEx.Unity.IL2CPP.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+    <Reference Include="Il2CppInterop.Common">
+      <HintPath>$(Orange)\BepInEx\core\Il2CppInterop.Common.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+    <Reference Include="Il2CppInterop.Generator">
+      <HintPath>$(Orange)\BepInEx\core\Il2CppInterop.Generator.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+    <Reference Include="Il2CppInterop.HarmonySupport">
+      <HintPath>$(Orange)\BepInEx\core\Il2CppInterop.HarmonySupport.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+    <Reference Include="Il2CppInterop.Runtime">
+      <HintPath>$(Orange)\BepInEx\core\Il2CppInterop.Runtime.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+    <Reference Include="Mono.Cecil">
+      <HintPath>$(Orange)\BepInEx\core\Mono.Cecil.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+    <Reference Include="Cpp2IL.Core">
+      <HintPath>$(Orange)\BepInEx\core\Cpp2IL.Core.dll</HintPath>
+      <Private>false</Private>
+      <CopyLocal>false</CopyLocal>
+    </Reference>
+    <Reference Include="LibCpp2IL">
+      <HintPath>$(Orange)\BepInEx\core\LibCpp2IL.dll</HintPath>
       <Private>false</Private>
       <CopyLocal>false</CopyLocal>
     </Reference>
