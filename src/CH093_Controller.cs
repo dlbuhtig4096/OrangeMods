@@ -130,7 +130,7 @@ public class CH093_Controller : CharacterControllerProxyBaseGen3 {
 	}
 
 	public override void Awake() {
-		base.Awake();
+		this.CallBase<CharacterControllerProxyBaseGen3>("Awake"); // base.Awake();
 		if (this._refEntity is OrangeConsoleCharacter) {
 			this._refConsolePlayer = (this._refEntity as OrangeConsoleCharacter);
 		}
@@ -144,7 +144,7 @@ public class CH093_Controller : CharacterControllerProxyBaseGen3 {
 	}
 
 	public override void Start() {
-		this.CallBase<CharacterControlBase>("Start"); // base.Start();
+		this.CallBase<CharacterControllerProxyBaseGen3>("Start"); // base.Start();
 		foreach (string fxName in Enum.GetNames(typeof(CH093_Controller.FxName))) {
 			MonoBehaviourSingleton<FxManager>.Instance.PreloadFx(fxName, 2, null);
 		}
