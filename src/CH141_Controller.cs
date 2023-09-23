@@ -32,15 +32,15 @@ public class CH141_Controller : CharacterControlBase {
 		this._refEntity.PlayerSkills[0].ShootTransform[0] = this._refEntity.ExtraTransforms[0];
 		this._refEntity.PlayerSkills[1].ShootTransform[0] = this._refEntity.ExtraTransforms[0];
 		this._FrenzyEffect = new ParticleSystem[1];
-		this._FrenzyEffect[0] = OrangeBattleUtility.FindChildRecursive(ref componentsInChildren, "fxduring_DMCZDevilTrigger_000_(work)", false).GetComponent<ParticleSystem>();
+		this._FrenzyEffect[0] = OrangeBattleUtility.FindChildRecursive(componentsInChildren, "fxduring_DMCZDevilTrigger_000_(work)", false).GetComponent<ParticleSystem>();
 		this._FrenzyEffect[0].gameObject.SetActive(false);
-		this._teleportEffect = OrangeBattleUtility.FindChildRecursive(ref componentsInChildren, "fxdemo_DMCZ_003_(work)", false).GetComponent<ParticleSystem>();
-		this._saberEffect = OrangeBattleUtility.FindChildRecursive(ref componentsInChildren, "fxdemo_DMCZ_004_(work)", false).GetComponent<ParticleSystem>();
-		GameObject gameObject = OrangeBattleUtility.FindChildRecursive(ref componentsInChildren, "Hand_KatanaBladeMesh_A_m", true).gameObject;
+		this._teleportEffect = OrangeBattleUtility.FindChildRecursive(componentsInChildren, "fxdemo_DMCZ_003_(work)", false).GetComponent<ParticleSystem>();
+		this._saberEffect = OrangeBattleUtility.FindChildRecursive(componentsInChildren, "fxdemo_DMCZ_004_(work)", false).GetComponent<ParticleSystem>();
+		GameObject gameObject = OrangeBattleUtility.FindChildRecursive(componentsInChildren, "Hand_KatanaBladeMesh_A_m", true).gameObject;
 		if (gameObject) {
 			this.cmSaber = gameObject.GetComponent<CharacterMaterial>();
 		}
-		GameObject gameObject2 = OrangeBattleUtility.FindChildRecursive(ref componentsInChildren, "Waist_KatanaHandleMesh_m", true).gameObject;
+		GameObject gameObject2 = OrangeBattleUtility.FindChildRecursive(componentsInChildren, "Waist_KatanaHandleMesh_m", true).gameObject;
 		if (gameObject2) {
 			this.cmSaberSide = gameObject2.GetComponent<CharacterMaterial>();
 		}
@@ -71,7 +71,7 @@ public class CH141_Controller : CharacterControlBase {
 		if (this._refEntity != null) {
 			p_worldPos = this._refEntity.AimPosition;
 		}
-		Plugin.FxManagerPlay("FX_TELEPORT_OUT", p_worldPos, Quaternion.identity);
+		FxManager_.Play("FX_TELEPORT_OUT", p_worldPos, Quaternion.identity);
 	}
 
 	protected void StageTeleportInCharacterDepend() {
@@ -110,7 +110,7 @@ public class CH141_Controller : CharacterControlBase {
 		this.isFrenzyStatus = true;
 		this._FrenzyEffect[0].gameObject.SetActive(true);
 		this._FrenzyEffect[0].Play(true);
-		Plugin.FxManagerPlay(this.FX_2_00, this._refEntity.ModelTransform.position, OrangeCharacter.NormalQuaternion);
+		FxManager_.Play(this.FX_2_00, this._refEntity.ModelTransform.position, OrangeCharacter.NormalQuaternion);
 		base.PlaySkillSE("zc_majin01");
 	}
 
@@ -154,7 +154,7 @@ public class CH141_Controller : CharacterControlBase {
 			WeaponStruct weaponStruct2 = this._refEntity.PlayerSkills[0];
 			OrangeBattleUtility.UpdateSkillCD(weaponStruct2);
 			this._refEntity.CheckUsePassiveSkill(0, weaponStruct2.weaponStatus, weaponStruct2.ShootTransform[0]);
-			Plugin.FxManagerPlay(this.FX_0_00, this._refEntity.ModelTransform.position, OrangeCharacter.NormalQuaternion);
+			FxManager_.Play(this.FX_0_00, this._refEntity.ModelTransform.position, OrangeCharacter.NormalQuaternion);
 			base.PlayVoiceSE("v_zc_skill01");
 			base.PlaySkillSE("zc_earth01");
 			return;
@@ -212,7 +212,7 @@ public class CH141_Controller : CharacterControlBase {
 						return;
 					}
 					if (this.nowFrame == this.fxEventFrame) {
-						Plugin.FxManagerPlay(this.FX_1_01, this._refEntity.ModelTransform.position, OrangeCharacter.NormalQuaternion);
+						FxManager_.Play(this.FX_1_01, this._refEntity.ModelTransform.position, OrangeCharacter.NormalQuaternion);
 						if (this._saberEffect) {
 							this._saberEffect.Play(true);
 						}
@@ -290,7 +290,7 @@ public class CH141_Controller : CharacterControlBase {
 			int num = Math.Sign((this._targetPos.Value - this._refEntity.AimPosition).normalized.x);
 			this._refEntity.direction = ((num != 0) ? num : this._refEntity.direction);
 		}
-		Plugin.FxManagerPlay(this.FX_1_00, this._refEntity.ModelTransform.position, OrangeCharacter.NormalQuaternion);
+		FxManager_.Play(this.FX_1_00, this._refEntity.ModelTransform.position, OrangeCharacter.NormalQuaternion);
 		base.PlayVoiceSE("v_zc_skill02");
 		base.PlaySkillSE("zc_jigen01");
 	}

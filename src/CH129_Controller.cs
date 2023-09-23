@@ -29,7 +29,7 @@ public class CH129_Controller : CharacterControlBase {
 		Il2CppReferenceArray<Transform> componentsInChildren = this._refEntity._transform.GetComponentsInChildren<Transform>(true).Cast<Il2CppReferenceArray<Transform>>();
 		this._refEntity.ExtraTransforms = new Transform[2];
 		this._refEntity.ExtraTransforms[0] = transform;
-		this._refEntity.ExtraTransforms[1] = OrangeBattleUtility.FindChildRecursive(ref componentsInChildren, "R WeaponPoint", true);
+		this._refEntity.ExtraTransforms[1] = OrangeBattleUtility.FindChildRecursive(componentsInChildren, "R WeaponPoint", true);
 		this._refEntity.PlayerSkills[0].ShootTransform[0] = this._refEntity.ExtraTransforms[0];
 		this._refEntity.PlayerSkills[1].ShootTransform[0] = this._refEntity.ExtraTransforms[1];
 		if (ManagedSingleton<OrangeDataManager>.Instance.SKILL_TABLE_DICT.TryGetNewValue(this.sklFrenzyId, out this.sklFrenzy)) {
@@ -37,11 +37,11 @@ public class CH129_Controller : CharacterControlBase {
 			MonoBehaviourSingleton<PoolManager>.Instance.CreatePoolBase<VirustrapBullet>("prefab/bullet/" + this.sklFrenzy.s_MODEL, this.sklFrenzy.s_MODEL, 3, null);
 			this.frenzyBulletStatus.CopyWeaponStatus(this._refEntity.PlayerWeapons[1].weaponStatus, 0, 0);
 		}
-		this._regularEffect = OrangeBattleUtility.FindChildRecursive(ref componentsInChildren, "fxduring_ShagaruX_000", false).GetComponent<ParticleSystem>();
+		this._regularEffect = OrangeBattleUtility.FindChildRecursive(componentsInChildren, "fxduring_ShagaruX_000", false).GetComponent<ParticleSystem>();
 		this._regularEffect.Play(true);
 		this._FrenzyEffect = new ParticleSystem[2];
-		this._FrenzyEffect[0] = OrangeBattleUtility.FindChildRecursive(ref componentsInChildren, "fxduring_crazydragon_000_L", false).GetComponent<ParticleSystem>();
-		this._FrenzyEffect[1] = OrangeBattleUtility.FindChildRecursive(ref componentsInChildren, "fxduring_crazydragon_000_R", false).GetComponent<ParticleSystem>();
+		this._FrenzyEffect[0] = OrangeBattleUtility.FindChildRecursive(componentsInChildren, "fxduring_crazydragon_000_L", false).GetComponent<ParticleSystem>();
+		this._FrenzyEffect[1] = OrangeBattleUtility.FindChildRecursive(componentsInChildren, "fxduring_crazydragon_000_R", false).GetComponent<ParticleSystem>();
 		this._FrenzyEffect[0].Stop(true);
 		this._FrenzyEffect[1].Stop(true);
 		SKILL_TABLE skill_TABLE;
@@ -112,7 +112,7 @@ public class CH129_Controller : CharacterControlBase {
 		this.isFrenzyStatus = true;
 		this._FrenzyEffect[0].Play(true);
 		this._FrenzyEffect[1].Play(true);
-		Plugin.FxManagerPlay(this.FX_2_00, this._refEntity.ModelTransform, OrangeCharacter.NormalQuaternion);
+		FxManager_.Play(this.FX_2_00, this._refEntity.ModelTransform, OrangeCharacter.NormalQuaternion);
 		base.PlaySkillSE("xa_ark02_lp");
 	}
 
@@ -205,7 +205,7 @@ public class CH129_Controller : CharacterControlBase {
 					ManagedSingleton<CharacterControlHelper>.Instance.ChangeToNextStatus(this._refEntity, this.SKL0_STEP_3_LOOP, this.SKL0_STEP_3_LOOP, OrangeCharacter.SubStatus.SKILL0_4, out this.skillEventFrame, out this.endFrame);
 					this._refEntity.SetAnimateId((HumanBase.AnimateId)69U);
 					ManagedSingleton<CharacterControlHelper>.Instance.PushBulletSkl(this._refEntity, this._refEntity.ModelTransform, MagazineType.NORMAL, this._refEntity.GetCurrentSkillObj().Reload_index, 0, false);
-					Plugin.FxManagerPlay(this.FX_0_00, this._refEntity.AimTransform.position, OrangeCharacter.NormalQuaternion);
+					FxManager_.Play(this.FX_0_00, this._refEntity.AimTransform.position, OrangeCharacter.NormalQuaternion);
 					return;
 				}
 				break;
@@ -239,7 +239,7 @@ public class CH129_Controller : CharacterControlBase {
 					this.isSkillEventEnd = true;
 					ManagedSingleton<CharacterControlHelper>.Instance.UpdateShootDirByAimDir(this._refEntity);
 					ManagedSingleton<CharacterControlHelper>.Instance.PushBulletSkl(this._refEntity, this._refEntity.PlayerSkills[1].ShootTransform[0], MagazineType.NORMAL, this._refEntity.GetCurrentSkillObj().Reload_index, 1, false);
-					Plugin.FxManagerPlay(this.FX_1_00, this._refEntity.PlayerSkills[1].ShootTransform[0].position, (this._refEntity.direction == 1) ? OrangeCharacter.NormalQuaternion : OrangeCharacter.ReversedQuaternion);
+					FxManager_.Play(this.FX_1_00, this._refEntity.PlayerSkills[1].ShootTransform[0].position, (this._refEntity.direction == 1) ? OrangeCharacter.NormalQuaternion : OrangeCharacter.ReversedQuaternion);
 					return;
 				}
 				if (this.isSkillEventEnd && this.nowFrame >= this.endBreakFrame) {

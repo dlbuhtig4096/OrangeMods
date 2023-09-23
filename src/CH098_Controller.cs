@@ -52,7 +52,7 @@ public class CH098_Controller : CharacterControlBase {
 			this.endBreakFrame = GameLogicUpdateManager.GameFrame + this.SKL1_END_BREAK;
 			ManagedSingleton<CharacterControlHelper>.Instance.ChangeToSklStatus(this._refEntity, id, this.SKL1_TRIGGER, this.SKL1_END, OrangeCharacter.SubStatus.SKILL1, out this.skillEventFrame, out this.endFrame);
 			ManagedSingleton<CharacterControlHelper>.Instance.SetAnimate(this._refEntity, HumanBase.AnimateId.ANI_SKILL_START, HumanBase.AnimateId.ANI_SKILL_START, HumanBase.AnimateId.ANI_SKILL_START, true);
-			Plugin.FxManagerPlay(this.sFxuse001_000, this._refEntity.ExtraTransforms[1].position, OrangeBattleUtility.QuaternionNormal);
+			FxManager_.Play(this.sFxuse001_000, this._refEntity.ExtraTransforms[1].position, OrangeBattleUtility.QuaternionNormal);
 		}
 	}
 
@@ -84,7 +84,7 @@ public class CH098_Controller : CharacterControlBase {
 			this.endBreakFrame = GameLogicUpdateManager.GameFrame + this.SKL0_END_BREAK;
 			ManagedSingleton<CharacterControlHelper>.Instance.ChangeToSklStatus(this._refEntity, id, this.SKL0_TRIGGER, this.SKL0_END, p_nextStatus, out this.skillEventFrame, out this.endFrame);
 			ManagedSingleton<CharacterControlHelper>.Instance.SetAnimate(this._refEntity, HumanBase.AnimateId.ANI_BTSKILL_START, HumanBase.AnimateId.ANI_BTSKILL_START, HumanBase.AnimateId.ANI_BTSKILL_START, true);
-			Plugin.FxManagerPlay(empty, this._refEntity.ExtraTransforms[0], Quaternion.identity);
+			FxManager_.Play(empty, this._refEntity.ExtraTransforms[0], Quaternion.identity);
 		}
 	}
 

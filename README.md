@@ -8,4 +8,5 @@
 # Credits #
  - **CAPCOM TAIWAN** for creating this game.
  - The **BepInEx team** who created the modding framework.
- - **[SutandoTsukai181]** for his works on making the modding framework works on the game.
+ - **[SutandoTsukai181](https://github.com/SutandoTsukai181)** for his works on making the modding framework and workarounding il2cpp for the game.
+ - **[Jrprogrammer](https://github.com/Jrprogrammer)** for his [corelib](https://github.com/Jrprogrammer/CoreLib/), we are taking some code from the repository.

@@ -24,7 +24,7 @@ public class CH091_Controller : CharacterControlBase {
 		this.shootPointTransform.localPosition = new Vector3(0f, 0.85f, 0f);
 		this._refEntity.PlayerSkills[0].ShootTransform[0] = this.shootPointTransform;
 		this.shootPointTransform2 = new GameObject(this.sCustomShootPoint + "2").transform;
-		this.shootPointTransform2.SetParent(OrangeBattleUtility.FindChildRecursive(ref componentsInChildren, this.sBipProp1, true));
+		this.shootPointTransform2.SetParent(OrangeBattleUtility.FindChildRecursive(componentsInChildren, this.sBipProp1, true));
 		this.shootPointTransform2.localPosition = new Vector3(0f, 0f, 1.6f);
 		this.shootPointTransform2.transform.localRotation = Quaternion.Euler(new Vector3(-90f, 0f, -90f));
 		this.shootPointTransform2.transform.localScale = new Vector3(1f, 1f, 1f);
@@ -34,8 +34,8 @@ public class CH091_Controller : CharacterControlBase {
 		this.shootPointTransform4 = new GameObject(this.sCustomShootPoint + "4").transform;
 		this.shootPointTransform4.SetParent(this.shootPointTransform3);
 		this.shootPointTransform4.localPosition = new Vector3(0f, 0f, 0f);
-		this.WeaponMesh_c = OrangeBattleUtility.FindChildRecursive(ref componentsInChildren, this.sWeaponMesh_c, true).gameObject;
-		this.WhipMesh_Sub_e = OrangeBattleUtility.FindChildRecursive(ref componentsInChildren, this.sWhipMesh_Sub_e, true).gameObject;
+		this.WeaponMesh_c = OrangeBattleUtility.FindChildRecursive(componentsInChildren, this.sWeaponMesh_c, true).gameObject;
+		this.WhipMesh_Sub_e = OrangeBattleUtility.FindChildRecursive(componentsInChildren, this.sWhipMesh_Sub_e, true).gameObject;
 		this.SKL1_LOOP_FRAME = (int)(this.GetSklTime(1) / GameLogicUpdateManager.m_fFrameLen) - (this.SKL1_0_START_END - this.SKL1_0_START_TRIGGER);
 		this.GuardActive = false;
 		this.WhipMesh_Sub_e.SetActive(false);
@@ -195,10 +195,10 @@ public class CH091_Controller : CharacterControlBase {
 				return;
 			case OrangeCharacter.SubStatus.SKILL0_4:
 				ManagedSingleton<CharacterControlHelper>.Instance.SetAnimate(this._refEntity, (HumanBase.AnimateId)130U, (HumanBase.AnimateId)130U, (HumanBase.AnimateId)130U, true);
-				this.chargeFx = Plugin.FxManagerPlayReturn<FxBase>(this.sFxuse000_EX3_0, this.shootPointTransform2, (this._refEntity.direction == 1) ? OrangeBattleUtility.QuaternionNormal : OrangeBattleUtility.QuaternionReverse);
+				this.chargeFx = FxManager_.PlayReturn<FxBase>(this.sFxuse000_EX3_0, this.shootPointTransform2, (this._refEntity.direction == 1) ? OrangeBattleUtility.QuaternionNormal : OrangeBattleUtility.QuaternionReverse);
 				return;
 			case OrangeCharacter.SubStatus.SKILL0_5:
-				Plugin.FxManagerPlay(this.sFxuse000_EX3_1, this.shootPointTransform2.position, this.shootPointTransform2.rotation);
+				FxManager_.Play(this.sFxuse000_EX3_1, this.shootPointTransform2.position, this.shootPointTransform2.rotation);
 				ManagedSingleton<CharacterControlHelper>.Instance.SetAnimate(this._refEntity, (HumanBase.AnimateId)131U, (HumanBase.AnimateId)131U, (HumanBase.AnimateId)131U, true);
 				return;
 			default:
@@ -206,7 +206,7 @@ public class CH091_Controller : CharacterControlBase {
 				case OrangeCharacter.SubStatus.SKILL1:
 					ManagedSingleton<CharacterControlHelper>.Instance.SetAnimate(this._refEntity, HumanBase.AnimateId.ANI_SKILL_START, HumanBase.AnimateId.ANI_SKILL_START, HumanBase.AnimateId.ANI_SKILL_START, true);
 					this.UpdateCustomWeaponRenderer(true, true);
-					this.counterFx = Plugin.FxManagerPlayReturn<FxBase>(this.sFxuse001_0, this._refEntity.ModelTransform.position, (this._refEntity.direction == 1) ? OrangeBattleUtility.QuaternionNormal : OrangeBattleUtility.QuaternionReverse);
+					this.counterFx = FxManager_.PlayReturn<FxBase>(this.sFxuse001_0, this._refEntity.ModelTransform.position, (this._refEntity.direction == 1) ? OrangeBattleUtility.QuaternionNormal : OrangeBattleUtility.QuaternionReverse);
 					return;
 				case OrangeCharacter.SubStatus.SKILL1_1:
 					ManagedSingleton<CharacterControlHelper>.Instance.SetAnimate(this._refEntity, (HumanBase.AnimateId)66U, (HumanBase.AnimateId)66U, (HumanBase.AnimateId)66U, true);
@@ -218,7 +218,7 @@ public class CH091_Controller : CharacterControlBase {
 					this._refEntity.FreshBullet = true;
 					ManagedSingleton<CharacterControlHelper>.Instance.SetAnimate(this._refEntity, (HumanBase.AnimateId)128U, (HumanBase.AnimateId)128U, (HumanBase.AnimateId)128U, true);
 					this.UpdateCustomWeaponRenderer(true, true);
-					Plugin.FxManagerPlay(this.sFxuse001_1, this.shootPointTransform2, OrangeBattleUtility.QuaternionNormal);
+					FxManager_.Play(this.sFxuse001_1, this.shootPointTransform2, OrangeBattleUtility.QuaternionNormal);
 					break;
 				default:
 					return;

@@ -311,117 +311,6 @@ __label_ret:
 public class Plugin : BasePlugin {
     public static new ManualLogSource Log;
 
-    public static void FxManagerPlay(string p_fxName, Vector3 p_worldPos, Quaternion p_quaternion, Il2CppReferenceArray<Il2CppSystem.Object> p_params = null) {
-        Log.LogWarning("FxManagerPlay1 Start");
-        if (MonoBehaviourSingleton<PoolManager>.Instance.IsPreload(p_fxName)) {
-            FxBase poolObj = MonoBehaviourSingleton<PoolManager>.Instance.GetPoolObj<FxBase>(p_fxName);
-            poolObj.transform.SetParent(null);
-            poolObj.transform.SetPositionAndRotation(p_worldPos, p_quaternion);
-            FxManager.Instance.RegisterFxBase(poolObj);
-            poolObj.Active(p_params);
-            if (p_params != null && p_params.Length != 0) {
-                StageFXParam stageFXParam = p_params[0] as StageFXParam;
-                if (stageFXParam != null) {
-                    if (stageFXParam.tFOL != null) {
-                        stageFXParam.tFOL.tObj = poolObj.gameObject;
-                    }
-                    FxManager.Instance.ChangeFXColor(poolObj, stageFXParam);
-                    return;
-                }
-            }
-        }
-        else {
-            FxManager.Instance.PreloadFx(p_fxName, 1, (Callback)(new Action(() => FxManagerPlay(p_fxName, p_worldPos, p_quaternion, p_params))));
-        }
-        Log.LogWarning("FxManagerPlay1 End");
-    }
-
-    public static void FxManagerPlay(string pFxName, Transform pTransform, Quaternion pQuaternion, Il2CppReferenceArray<Il2CppSystem.Object> pParams = null) {
-        Log.LogWarning("FxManagerPlay2 Start");
-        if (MonoBehaviourSingleton<PoolManager>.Instance.IsPreload(pFxName)) {
-            FxBase poolObj = MonoBehaviourSingleton<PoolManager>.Instance.GetPoolObj<FxBase>(pFxName);
-            Vector3 localScale = poolObj.transform.localScale;
-            poolObj.transform.SetParent(pTransform);
-            poolObj.transform.localPosition = Vector3.zero;
-            poolObj.transform.localRotation = pQuaternion;
-            poolObj.transform.localScale = localScale;
-            FxManager.Instance.RegisterFxBase(poolObj);
-            poolObj.Active(pParams);
-            if (pParams != null && pParams.Length != 0) {
-                StageFXParam stageFXParam = pParams[0] as StageFXParam;
-                if (stageFXParam != null) {
-                    if (stageFXParam.tFOL != null) {
-                        stageFXParam.tFOL.tObj = poolObj.gameObject;
-                    }
-                    FxManager.Instance.ChangeFXColor(poolObj, stageFXParam);
-                    return;
-                }
-            }
-        }
-        else {
-            FxManager.Instance.PreloadFx(pFxName, 1, (Callback)(new Action(() => FxManagerPlay(pFxName, pTransform, pQuaternion, pParams))));
-        }
-        Log.LogWarning("FxManagerPlay2 End");
-    }
-
-    public static void FxManagerPlay(string pFxName, Transform pTransform, Quaternion pQuaternion, Vector3 pScale, Il2CppReferenceArray<Il2CppSystem.Object> pParams = null) {
-		Log.LogWarning("FxManagerPlay3 Start");
-        if (MonoBehaviourSingleton<PoolManager>.Instance.IsPreload(pFxName)) {
-			FxBase poolObj = MonoBehaviourSingleton<PoolManager>.Instance.GetPoolObj<FxBase>(pFxName);
-			poolObj.transform.SetParent(pTransform);
-			poolObj.transform.localPosition = Vector3.zero;
-			poolObj.transform.localRotation = pQuaternion;
-			poolObj.transform.localScale = pScale;
-			FxManager.Instance.RegisterFxBase(poolObj);
-			poolObj.Active(pParams);
-			if (pParams != null && pParams.Length != 0) {
-				StageFXParam stageFXParam = pParams[0] as StageFXParam;
-				if (stageFXParam != null) {
-					if (stageFXParam.tFOL != null) {
-						stageFXParam.tFOL.tObj = poolObj.gameObject;
-					}
-					FxManager.Instance.ChangeFXColor(poolObj, stageFXParam);
-					return;
-				}
-			}
-		}
-		else {
-			FxManager.Instance.PreloadFx(pFxName, 1, (Callback)(new Action(() => FxManagerPlay(pFxName, pTransform, pQuaternion, pScale, pParams))));
-		}
-        Log.LogWarning("FxManagerPlay3 End");
-	}
-
-    public static T FxManagerPlayReturn<T>(string pFxName, Transform pTransform, Quaternion pQuaternion, Il2CppReferenceArray<Il2CppSystem.Object> pParams = null) where T : FxBase {
-		Log.LogWarning("FxManagerPlayReturn1 Start");
-        if (MonoBehaviourSingleton<PoolManager>.Instance.IsPreload(pFxName)) {
-			T poolObj = MonoBehaviourSingleton<PoolManager>.Instance.GetPoolObj<T>(pFxName);
-			Vector3 localScale = poolObj.transform.localScale;
-			poolObj.transform.SetParent(pTransform);
-			poolObj.transform.localPosition = Vector3.zero;
-			poolObj.transform.localRotation = pQuaternion;
-			poolObj.transform.localScale = localScale;
-			FxManager.Instance.RegisterFxBase(poolObj);
-			poolObj.Active(pParams);
-			return poolObj;
-		}
-        Log.LogWarning("FxManagerPlayReturn1 Start");
-		return default(T);
-	}
-
-	public static T FxManagerPlayReturn<T>(string pFxName, Vector3 p_worldPos, Quaternion pQuaternion, Il2CppReferenceArray<Il2CppSystem.Object> pParams = null) where T : FxBase {
-		Log.LogWarning("FxManagerPlayReturn2 Start");
-        if (MonoBehaviourSingleton<PoolManager>.Instance.IsPreload(pFxName)) {
-			T poolObj = MonoBehaviourSingleton<PoolManager>.Instance.GetPoolObj<T>(pFxName);
-			poolObj.transform.SetParent(null);
-			poolObj.transform.SetPositionAndRotation(p_worldPos, pQuaternion);
-			FxManager.Instance.RegisterFxBase(poolObj);
-			poolObj.Active(pParams);
-			return poolObj;
-		}
-        Log.LogWarning("FxManagerPlayReturn2 Start");
-		return default(T);
-	}
-
     public void _inject(Type cls, Type[] interfaces) {
         ClassInjector.RegisterTypeInIl2Cpp(
             cls, 
@@ -446,6 +335,9 @@ public class Plugin : BasePlugin {
         _inject(typeof(CH093_Controller), new Type[] {typeof(ILogicUpdate)});
         _inject(typeof(CH098_Controller), new Type[] {typeof(ILogicUpdate)});
         _inject(typeof(CH099_Controller), new Type[] {typeof(ILogicUpdate)});
+        _inject(typeof(CH100_ShungokusatsuBullet), new Type[] {} );
+        _inject(typeof(CH100_ShungokusatsuDummy), new Type[] {} );
+        _inject(typeof(CH100_ShungokusatsuHitFx), new Type[] {} );
         _inject(typeof(CH100_Controller), new Type[] {typeof(ILogicUpdate)});
         _inject(typeof(CH106_Controller), new Type[] {typeof(ILogicUpdate)});
         _inject(typeof(CH107_Controller), new Type[] {typeof(ILogicUpdate)});

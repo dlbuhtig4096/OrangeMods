@@ -6,6 +6,222 @@ using Il2CppInterop.Runtime.InteropTypes.Arrays;
 
 namespace OrangeMods;
 
+public class CH100_ShungokusatsuBullet : BasicBullet {
+
+	public override void Awake() {
+		this.CallBase<BasicBullet>("Awake"); // base.Awake();
+		this._otHurtTimer = OrangeTimerManager.GetTimer(TimerMode.FRAME);
+	}
+
+	public override void UpdateBulletData(SKILL_TABLE pData, string owner = "", int nInRecordID = 0, int nInNetID = 0, int nDirection = 1) {
+		this.BulletID = pData.n_ID;
+		this.BulletData = pData;
+		this.nNetID = nInNetID;
+		this.nRecordID = nInRecordID;
+		this.Owner = owner;
+		if (pData.s_FIELD != "null") {
+			string[] array = pData.s_FIELD.Split(new char[] {
+				','
+			});
+			this._duration = long.Parse(array[5]);
+			this._hurtCycle = long.Parse(array[6]);
+			this.MaxHit = Math.Truncate((double)this._duration / (double)this._hurtCycle);
+		}
+		this.FxMuzzleFlare = this.BulletData.s_USE_FX;
+		this.FxImpact = this.BulletData.s_HIT_FX;
+		this.FxEnd = this.BulletData.s_VANISH_FX;
+		if (this.FxMuzzleFlare == "null") {
+			this.FxMuzzleFlare = string.Empty;
+		}
+		else {
+			MonoBehaviourSingleton<FxManager>.Instance.PreloadFx(this.FxMuzzleFlare, 5, null);
+		}
+		if (this.FxImpact == "null") {
+			this.FxImpact = string.Empty;
+		}
+		else {
+			MonoBehaviourSingleton<FxManager>.Instance.PreloadFx(this.FxImpact, 5, null);
+		}
+		if (this.FxEnd == "null") {
+			this.FxEnd = string.Empty;
+		}
+		else {
+			MonoBehaviourSingleton<FxManager>.Instance.PreloadFx(this.FxEnd, 5, null);
+		}
+		this.BlockMask = this.BulletScriptableObjectInstance.BulletLayerMaskObstacle;
+		if ((this.BulletData.n_FLAG & 2) != 0) {
+			this.BulletMask = this.BulletScriptableObjectInstance.BulletLayerMaskBullet;
+		}
+		this._UseSE = ManagedSingleton<OrangeTableHelper>.Instance.ParseSE(this.BulletData.s_USE_SE);
+		this._HitSE = ManagedSingleton<OrangeTableHelper>.Instance.ParseSE(this.BulletData.s_HIT_SE);
+		if (this._UseSE[0] != "" && (this._UseSE[1].EndsWith("_lp") || this._UseSE[1].EndsWith("_lg"))) {
+			this.checkLoopSE = true;
+		}
+		base.GetHistGuardSE();
+	}
+
+	public void SetHitTarget(Transform pTarget) {
+		this._tfHitTarget = pTarget;
+		if (this._tfHitTarget) {
+			StageObjParam stageObjParam = this._tfHitTarget.GetComponent<StageObjParam>();
+			if (stageObjParam == null) {
+				PlayerCollider component = this._tfHitTarget.GetComponent<PlayerCollider>();
+				if (component != null && component.IsDmgReduceShield()) {
+					stageObjParam = component.GetDmgReduceOwner();
+				}
+			}
+			if (stageObjParam != null) {
+				this._sobHitTarget = stageObjParam.tLinkSOB;
+			}
+		}
+	}
+
+	public override void Active(Vector3 pPos, Vector3 pDirection, LayerMask pTargetMask, IAimTarget pTarget = null) {
+		this.CallBase<BasicBullet, Action<Vector3, Vector3, LayerMask, IAimTarget>>("Active", new object[] {pPos, pDirection, pTargetMask, pTarget}); // base.Active(pPos, pDirection, pTargetMask, pTarget);
+		this._otHurtTimer.TimerStart();
+		if (this._tfHitTarget) {
+			base.CaluDmg(this.BulletData, this._tfHitTarget, 0f, 0f);
+		}
+	}
+
+	public override void LateUpdateFunc() {
+		if (!ManagedSingleton<StageHelper>.Instance.bEnemyActive) {
+			return;
+		}
+		if (this._otHurtTimer.GetMillisecond() >= this._hurtCycle && (double)this._hitCnt < this.MaxHit) {
+			this._otHurtTimer.TimerStart();
+			if (this._tfHitTarget != null) {
+				if (this._sobHitTarget != null && this._sobHitTarget.Hp > 0) {
+					base.CaluDmg(this.BulletData, this._tfHitTarget, 0f, 0f);
+				}
+				this.PlayCycleSE();
+			}
+			this._hitCnt += 1L;
+		}
+		if (this._duration != -1L && this.ActivateTimer.GetMillisecond() >= this._duration) {
+			this.BackToPool();
+		}
+	}
+
+	public override void BackToPool() {
+		this._hitCnt = 1L;
+		this._tfHitTarget = null;
+		this._otHurtTimer.TimerStop();
+		MonoBehaviourSingleton<UpdateManager>.Instance.RemoveLateUpdate<CH100_ShungokusatsuBullet>(this);
+		this.ActivateTimer.TimerStop();
+		this._capsuleCollider.enabled = false;
+		if (this.BackCallback != null) {
+			((Action<Il2CppSystem.Object>)(object)(this.BackCallback))(this); // this.BackCallback(this);
+			this.BackCallback = null;
+		}
+		this.HitCallback = null;
+		if (this._UseSE != null && this._UseSE[0] != "" && this._UseSE[2] != "") {
+			base.SoundSource.PlaySE(this._UseSE[0], this._UseSE[2], 0f);
+		}
+		this.StopFx();
+		this.isPetBullet = (this.isBossBullet = (this.isBuffTrigger = false));
+		Singleton<GenericEventManager>.Instance.NotifyEvent<CH100_ShungokusatsuBullet>(EventManager.ID.STAGE_BULLET_UNREGISTER, this);
+		this.bIsEnd = true;
+		if (this.bNeedBackPoolColliderBullet) {
+			MonoBehaviourSingleton<PoolManager>.Instance.BackToPool<CH100_ShungokusatsuBullet>(this, "PoolColliderBullet");
+			return;
+		}
+		if (this.bNeedBackPoolModelName) {
+			MonoBehaviourSingleton<PoolManager>.Instance.BackToPool<CH100_ShungokusatsuBullet>(this, this.itemName);
+		}
+	}
+
+	protected void PlayCycleSE() {
+		if (this.sCycleACB != "" && this.sCycleCUE != "") {
+			base.SoundSource.PlaySE(this.sCycleACB, this.sCycleCUE, 0f);
+		}
+	}
+
+	protected Transform _tfHitTarget;
+
+	protected StageObjBase _sobHitTarget;
+
+	protected long _duration = -1L;
+
+	protected long _hurtCycle;
+
+	protected long _hitCnt = 1L;
+
+	public double MaxHit = 5.0;
+
+	public bool bNeedBackPoolColliderBullet;
+
+	public bool bNeedBackPoolModelName;
+
+	protected OrangeTimer _otHurtTimer;
+
+	public string sCycleACB = "";
+
+	public string sCycleCUE = "";
+}
+
+public class CH100_ShungokusatsuDummy : CollideBullet {
+
+	public override void Active(Vector3 pPos, Vector3 pDirection, LayerMask pTargetMask, IAimTarget pTarget = null) {
+		Plugin.Log.LogWarning("射發這個子彈請用Transform");
+		this.CallBase<CollideBullet, Action<Vector3, Vector3, LayerMask, IAimTarget>>("Active", new object[] {pPos, pDirection, pTargetMask, pTarget}); // base.Active(pPos, pDirection, pTargetMask, pTarget);
+		this.SyncInfoToOwner(pDirection, pTarget);
+	}
+
+	public override void Active(Transform pTransform, Vector3 pDirection, LayerMask pTargetMask, IAimTarget pTarget = null) {
+		this.CallBase<CollideBullet, Action<Transform, Vector3, LayerMask, IAimTarget>>("Active", new object[] {pTransform, pDirection, pTargetMask, pTarget}); // base.Active(pTransform, pDirection, pTargetMask, pTarget);
+		this._transform.SetParent(pTransform);
+		this._transform.localPosition = Vector3.zero;
+		this._transform.localRotation = Quaternion.identity;
+		this.SyncInfoToOwner(pDirection, pTarget);
+	}
+
+	protected void SyncInfoToOwner(Vector3 direction, IAimTarget target) {
+		if (this.refPBMShoter == null || this.refPBMShoter.SOB == null) {
+			return;
+		}
+		this._player = (this.refPBMShoter.SOB as OrangeCharacter);
+		this._owner = this.refPBMShoter.SOB.GetComponent<CH100_Controller>();
+		if (this._player == null || this._owner == null) {
+			return;
+		}
+		if (!this._player.IsLocalPlayer) {
+			this._owner.SyncSkillDirection(direction, target);
+		}
+	}
+
+	// protected override void OnTriggerStay2D(Collider2D col) {
+	protected void OnTriggerStay2D(Collider2D col) {
+		if (this._player == null) {
+			return;
+		}
+		if (this._player.CurMainStatus == OrangeCharacter.MainStatus.SKILL && this._player.CurSubStatus == OrangeCharacter.SubStatus.SKILL1_1) {
+			this.CallBase<CollideBullet, Action<Collider2D>>("OnTriggerStay2D", new object[] {col}); // base.OnTriggerStay2D(col);
+		}
+	}
+
+	public override void BackToPool() {
+		this.CallBase<CollideBullet>("BackToPool"); // base.BackToPool();
+		this._player = null;
+		this._owner = null;
+		MonoBehaviourSingleton<PoolManager>.Instance.BackToPool<PoolBaseObject>(this, this.itemName);
+	}
+
+	private OrangeCharacter _player;
+
+	private CH100_Controller _owner;
+}
+
+public class CH100_ShungokusatsuHitFx : FxBase {
+	public void ActivePlayBlackBG(bool visible) {
+		this._tfBlackBG.gameObject.SetActive(visible);
+	}
+
+	// [SerializeField]
+	protected Transform _tfBlackBG;
+}
+
+
 public class CH100_Controller : CharacterControlBase {
 	public override Il2CppStringArray GetCharacterDependAnimations() {
 		return new Il2CppStringArray(
@@ -29,16 +245,16 @@ public class CH100_Controller : CharacterControlBase {
 	private void InitExtraMeshData() {
 		Il2CppReferenceArray<Transform> componentsInChildren = this._refEntity._transform.GetComponentsInChildren<Transform>(true).Cast<Il2CppReferenceArray<Transform>>();
 		this._refEntity.ExtraTransforms = new Transform[5];
-		this._refEntity.ExtraTransforms[0] = OrangeBattleUtility.FindChildRecursive(ref componentsInChildren, "L WeaponPoint", true);
-		this._refEntity.ExtraTransforms[1] = OrangeBattleUtility.FindChildRecursive(ref componentsInChildren, "R WeaponPoint", true);
-		this._refEntity.ExtraTransforms[2] = OrangeBattleUtility.FindChildRecursive(ref componentsInChildren, "Skill0FxPoint", true);
-		this._refEntity.ExtraTransforms[3] = OrangeBattleUtility.FindChildRecursive(ref componentsInChildren, "Skill1Point", true);
-		this._refEntity.ExtraTransforms[4] = OrangeBattleUtility.FindChildRecursive(ref componentsInChildren, "Skill1Point02", true);
-		Transform transform = OrangeBattleUtility.FindChildRecursive(ref componentsInChildren, "fxuse_skill", true);
+		this._refEntity.ExtraTransforms[0] = OrangeBattleUtility.FindChildRecursive(componentsInChildren, "L WeaponPoint", true);
+		this._refEntity.ExtraTransforms[1] = OrangeBattleUtility.FindChildRecursive(componentsInChildren, "R WeaponPoint", true);
+		this._refEntity.ExtraTransforms[2] = OrangeBattleUtility.FindChildRecursive(componentsInChildren, "Skill0FxPoint", true);
+		this._refEntity.ExtraTransforms[3] = OrangeBattleUtility.FindChildRecursive(componentsInChildren, "Skill1Point", true);
+		this._refEntity.ExtraTransforms[4] = OrangeBattleUtility.FindChildRecursive(componentsInChildren, "Skill1Point02", true);
+		Transform transform = OrangeBattleUtility.FindChildRecursive(componentsInChildren, "fxuse_skill", true);
 		if (transform != null) {
 			this.m_fxuse_skill = transform.GetComponent<ParticleSystem>();
 		}
-		Transform transform2 = OrangeBattleUtility.FindChildRecursive(ref componentsInChildren, "p_shungokusatsu_000", true);
+		Transform transform2 = OrangeBattleUtility.FindChildRecursive(componentsInChildren, "p_shungokusatsu_000", true);
 		this._pShungokusatsuBullet = transform2.GetComponent<CH100_ShungokusatsuBullet>();
 		this._otSkill1Timer = OrangeTimerManager.GetTimer(TimerMode.FRAME);
 		MonoBehaviourSingleton<FxManager>.Instance.PreloadFx("fxuse_sekia_000", 3, null);
@@ -156,7 +372,7 @@ public class CH100_Controller : CharacterControlBase {
 			}
 			if (subStatus == OrangeCharacter.SubStatus.WIN_POSE) {
 				Vector3 p_worldPos = this._refEntity.ModelTransform.position + new Vector3(1.09f, 0f, 0f) * (float)this._refEntity.direction;
-				Plugin.FxManagerPlay("fxdemo_gouki_000B", p_worldPos, (this._refEntity.direction == 1) ? OrangeBattleUtility.QuaternionNormal : OrangeBattleUtility.QuaternionReverse);
+				FxManager_.Play("fxdemo_gouki_000B", p_worldPos, (this._refEntity.direction == 1) ? OrangeBattleUtility.QuaternionNormal : OrangeBattleUtility.QuaternionReverse);
 				this.ToggleWeapon(-2);
 				return;
 			}
@@ -295,7 +511,7 @@ public class CH100_Controller : CharacterControlBase {
 
 	public void TeleportInExtraEffect() {
 		Vector3 p_worldPos = this._refEntity.ModelTransform.position + new Vector3(1.09f, 0f, 0f) * (float)this._refEntity.direction;
-		Plugin.FxManagerPlay(this.GetTeleportInExtraEffect(), p_worldPos, (this._refEntity.direction == 1) ? OrangeBattleUtility.QuaternionNormal : OrangeBattleUtility.QuaternionReverse);
+		FxManager_.Play(this.GetTeleportInExtraEffect(), p_worldPos, (this._refEntity.direction == 1) ? OrangeBattleUtility.QuaternionNormal : OrangeBattleUtility.QuaternionReverse);
 	}
 
 	public override string GetTeleportInExtraEffect() {
@@ -338,7 +554,7 @@ public class CH100_Controller : CharacterControlBase {
 						this._refEntity.BulletCollider.HitCallback = null;
 						this._refEntity.SetStatus(OrangeCharacter.MainStatus.SKILL, OrangeCharacter.SubStatus.SKILL1_2);
 						Vector3 p_worldPos = this._refEntity.AimPosition + new Vector3(1.5f, 0f, 0f) * (float)this._refEntity.direction;
-						this._pShungokusatsuFx = Plugin.FxManagerPlayReturn<CH100_ShungokusatsuHitFx>("fxhit_shungokusatsu_000", p_worldPos, Quaternion.identity);
+						this._pShungokusatsuFx = FxManager_.PlayReturn<CH100_ShungokusatsuHitFx>("fxhit_shungokusatsu_000", p_worldPos, Quaternion.identity);
 						bool visible = this.IsHitPlayer(-1);
 						this._pShungokusatsuFx.ActivePlayBlackBG(visible);
 						if (this.m_fxuse_skill != null && this.m_fxuse_skill.isPlaying) {
@@ -368,9 +584,9 @@ public class CH100_Controller : CharacterControlBase {
 					}
 					if (this._otSkill1Timer.GetMillisecond() > 800L) {
 						base.PlaySkillSE("go_shungokusatsu03");
-						this._fxSkill1Shinzin = Plugin.FxManagerPlayReturn<FxBase>("fxuse_shungokusatsu_003", this._refEntity.ExtraTransforms[4], Quaternion.identity);
+						this._fxSkill1Shinzin = FxManager_.PlayReturn<FxBase>("fxuse_shungokusatsu_003", this._refEntity.ExtraTransforms[4], Quaternion.identity);
 						this._refEntity.SetStatus(OrangeCharacter.MainStatus.SKILL, OrangeCharacter.SubStatus.SKILL1_3);
-						Plugin.FxManagerPlay("fxuse_shungokusatsu_004", this._refEntity.ModelTransform.position, Quaternion.identity);
+						FxManager_.Play("fxuse_shungokusatsu_004", this._refEntity.ModelTransform.position, Quaternion.identity);
 						return;
 					}
 					break;
@@ -407,7 +623,7 @@ public class CH100_Controller : CharacterControlBase {
 				}
 				if (this.bInSkillFx && this._refEntity.CurrentFrame > 0.08f) {
 					this.bInSkillFx = false;
-					Plugin.FxManagerPlay("fxuse_sekia_000", this._refEntity.ExtraTransforms[2], Quaternion.identity);
+					FxManager_.Play("fxuse_sekia_000", this._refEntity.ExtraTransforms[2], Quaternion.identity);
 					return;
 				}
 				if (this.bInSkill && this._refEntity.CurrentFrame > 0.55f) {
@@ -498,8 +714,8 @@ public class CH100_Controller : CharacterControlBase {
 				this.UpdateSkill1Direction(this._vSkillVelocity.x);
 			}
 		}
-		Plugin.FxManagerPlay("fxuse_shungokusatsu_000", this._refEntity.AimPosition, Quaternion.identity);
-		Plugin.FxManagerPlay("fxuse_shungokusatsu_001", this._refEntity.AimPosition, Quaternion.identity);
+		FxManager_.Play("fxuse_shungokusatsu_000", this._refEntity.AimPosition, Quaternion.identity);
+		FxManager_.Play("fxuse_shungokusatsu_001", this._refEntity.AimPosition, Quaternion.identity);
 		this._vSkillStartPosition = this._refEntity.AimPosition;
 		this._refEntity.PlayerSkills[1].LastUseTimer.TimerStart();
 		this._refEntity.SetStatus(OrangeCharacter.MainStatus.SKILL, OrangeCharacter.SubStatus.SKILL1);
@@ -574,7 +790,7 @@ public class CH100_Controller : CharacterControlBase {
 			}
 			Vector3 p_worldPos = this._refEntity.AimPosition + new Vector3(1.5f, 0f, 0f) * (float)this._refEntity.direction;
 			base.PlaySkillSE("go_shungokusatsu02");
-			this._pShungokusatsuFx = Plugin.FxManagerPlayReturn<CH100_ShungokusatsuHitFx>("fxhit_shungokusatsu_000", p_worldPos, Quaternion.identity);
+			this._pShungokusatsuFx = FxManager_.PlayReturn<CH100_ShungokusatsuHitFx>("fxhit_shungokusatsu_000", p_worldPos, Quaternion.identity);
 			if (this._refEntity.IsLocalPlayer || orangeCharacter) {
 				this._pShungokusatsuFx.ActivePlayBlackBG(true);
 				return;

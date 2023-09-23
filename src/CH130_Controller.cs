@@ -30,7 +30,7 @@ public class CH130_Controller : CharacterControlBase {
 		Il2CppReferenceArray<Transform> componentsInChildren = this._refEntity._transform.GetComponentsInChildren<Transform>(true).Cast<Il2CppReferenceArray<Transform>>();
 		this._refEntity.ExtraTransforms = new Transform[2];
 		this._refEntity.ExtraTransforms[0] = transform;
-		this._refEntity.ExtraTransforms[1] = OrangeBattleUtility.FindChildRecursive(ref componentsInChildren, "R WeaponPoint", true);
+		this._refEntity.ExtraTransforms[1] = OrangeBattleUtility.FindChildRecursive(componentsInChildren, "R WeaponPoint", true);
 		this._refEntity.PlayerSkills[0].ShootTransform[0] = this._refEntity.ExtraTransforms[0];
 		this._refEntity.PlayerSkills[1].ShootTransform[0] = this._refEntity.ExtraTransforms[1];
 		SKILL_TABLE skill_TABLE;
@@ -42,11 +42,11 @@ public class CH130_Controller : CharacterControlBase {
 			}
 		}
 		ManagedSingleton<CharacterControlHelper>.Instance.PreloadLinkSkl<CollideBullet>(this._refEntity, 1, out this.linkSkl1);
-		this._regularEffect = OrangeBattleUtility.FindChildRecursive(ref componentsInChildren, "fxduring_GoreICO_000", false).GetComponent<ParticleSystem>();
+		this._regularEffect = OrangeBattleUtility.FindChildRecursive(componentsInChildren, "fxduring_GoreICO_000", false).GetComponent<ParticleSystem>();
 		this._regularEffect.Play(true);
 		this._FrenzyEffect = new ParticleSystem[2];
-		this._FrenzyEffect[0] = OrangeBattleUtility.FindChildRecursive(ref componentsInChildren, "fxduring_barrage_000_L", false).GetComponent<ParticleSystem>();
-		this._FrenzyEffect[1] = OrangeBattleUtility.FindChildRecursive(ref componentsInChildren, "fxduring_barrage_000_R", false).GetComponent<ParticleSystem>();
+		this._FrenzyEffect[0] = OrangeBattleUtility.FindChildRecursive(componentsInChildren, "fxduring_barrage_000_L", false).GetComponent<ParticleSystem>();
+		this._FrenzyEffect[1] = OrangeBattleUtility.FindChildRecursive(componentsInChildren, "fxduring_barrage_000_R", false).GetComponent<ParticleSystem>();
 		this._FrenzyEffect[0].Stop(true);
 		this._FrenzyEffect[1].Stop(true);
 		this._refPlayer = (this._refEntity as OrangeConsoleCharacter);
@@ -72,7 +72,7 @@ public class CH130_Controller : CharacterControlBase {
 		if (this._refEntity != null) {
 			p_worldPos = this._refEntity.AimPosition;
 		}
-		Plugin.FxManagerPlay("FX_TELEPORT_OUT", p_worldPos, Quaternion.identity);
+		FxManager_.Play("FX_TELEPORT_OUT", p_worldPos, Quaternion.identity);
 	}
 
 	public void LogicUpdate() {
@@ -123,7 +123,7 @@ public class CH130_Controller : CharacterControlBase {
 	private void PlayFrenzyFx() {
 		this._FrenzyEffect[0].Play(true);
 		this._FrenzyEffect[1].Play(true);
-		Plugin.FxManagerPlay(this.FX_2_00, this._refEntity.AimTransform.position, OrangeCharacter.NormalQuaternion);
+		FxManager_.Play(this.FX_2_00, this._refEntity.AimTransform.position, OrangeCharacter.NormalQuaternion);
 		base.PlaySkillSE("ic2_black01_lp");
 	}
 
@@ -227,7 +227,7 @@ public class CH130_Controller : CharacterControlBase {
 							this._refEntity.IgnoreGravity = true;
 							this._refEntity.SetSpeed((int)this._vSkillVelocity.x, (int)this._vSkillVelocity.y);
 							this.endFrame = GameLogicUpdateManager.GameFrame + this.SKL1_START;
-							Plugin.FxManagerPlay(this.FX_1_00, this._refEntity.ModelTransform, Quaternion.identity);
+							FxManager_.Play(this.FX_1_00, this._refEntity.ModelTransform, Quaternion.identity);
 							return;
 						}
 					}

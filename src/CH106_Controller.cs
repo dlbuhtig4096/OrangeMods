@@ -9,7 +9,7 @@ using Il2CppInterop.Runtime.InteropTypes.Arrays;
 
 namespace OrangeMods;
 
-public class CH106_BeamBullet : BeamBullet_ {
+public class CH106_BeamBullet : BeamBullet {
 
 	protected void OnApplicationPause(bool pause) {
 		this.bGamePause = pause;
@@ -315,9 +315,9 @@ public class CH106_Controller : CharacterControlBase {
 	private void InitExtraMeshData() {
 		Il2CppReferenceArray<Transform> componentsInChildren = this._refEntity._transform.GetComponentsInChildren<Transform>(true).Cast<Il2CppReferenceArray<Transform>>();
 		this._refEntity.ExtraTransforms = new Transform[3];
-		this._refEntity.ExtraTransforms[0] = OrangeBattleUtility.FindChildRecursive(ref componentsInChildren, "L WeaponPoint", true);
-		this._refEntity.ExtraTransforms[1] = OrangeBattleUtility.FindChildRecursive(ref componentsInChildren, "R WeaponPoint", true);
-		this._refEntity.ExtraTransforms[2] = OrangeBattleUtility.FindChildRecursive(ref componentsInChildren, "Bip R UpperArm", true);
+		this._refEntity.ExtraTransforms[0] = OrangeBattleUtility.FindChildRecursive(componentsInChildren, "L WeaponPoint", true);
+		this._refEntity.ExtraTransforms[1] = OrangeBattleUtility.FindChildRecursive(componentsInChildren, "R WeaponPoint", true);
+		this._refEntity.ExtraTransforms[2] = OrangeBattleUtility.FindChildRecursive(componentsInChildren, "Bip R UpperArm", true);
 		Transform[] array = OrangeBattleUtility.FindMultiChildRecursive(componentsInChildren, "fxdemo_valstrax_burst", true);
 		this._liFxWindBursts.Clear();
 		Transform[] array2 = array;
@@ -795,7 +795,7 @@ public class CH106_Controller : CharacterControlBase {
 		this._vSkill0ShootDirection = this._refEntity.ShootDirection;
 		this._nLockSkill1Direction = (int)this._refEntity._characterDirection;
 		this.UpdateSkill1Direction(this._vSkill0ShootDirection.x);
-		this._fxUseSkill0 = Plugin.FxManagerPlayReturn<FxBase>("fxuse_valstraxlaser_000", this._refEntity.AimTransform.position + Vector3.right * 0.2f * (float)this._refEntity.direction, Quaternion.identity);
+		this._fxUseSkill0 = FxManager_.PlayReturn<FxBase>("fxuse_valstraxlaser_000", this._refEntity.AimTransform.position + Vector3.right * 0.2f * (float)this._refEntity.direction, Quaternion.identity);
 		if (this._refEntity.CurMainStatus == OrangeCharacter.MainStatus.CROUCH) {
 			this._refEntity.SetStatus(OrangeCharacter.MainStatus.SKILL, OrangeCharacter.SubStatus.SKILL0_2);
 			return;

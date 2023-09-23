@@ -106,7 +106,7 @@ public class CH107_Controller : CharacterControlBase {
 			else {
 				p_nextStatus2 = OrangeCharacter.SubStatus.SKILL0_1;
 			}
-			this.fxUseSkl2 = Plugin.FxManagerPlayReturn<FxBase>(this.fxuse_skl1, this._refEntity.ModelTransform, Quaternion.identity);
+			this.fxUseSkl2 = FxManager_.PlayReturn<FxBase>(this.fxuse_skl1, this._refEntity.ModelTransform, Quaternion.identity);
 			this.endBreakFrame = GameLogicUpdateManager.GameFrame + this.SKL0_END_BREAK;
 			ManagedSingleton<CharacterControlHelper>.Instance.ChangeToSklStatus(this._refEntity, id, this.SKL0_TRIGGER, this.SKL0_END, p_nextStatus2, out this.skillEventFrame, out this.endFrame);
 			ManagedSingleton<CharacterControlHelper>.Instance.SetAnimate(this._refEntity, HumanBase.AnimateId.ANI_SKILL_START, (HumanBase.AnimateId)66U, (HumanBase.AnimateId)67U, true);
@@ -270,11 +270,11 @@ public class CH107_Controller : CharacterControlBase {
 			this.fxLightning.BackToPool();
 			this.fxLightning = null;
 			if (!play) {
-				Plugin.FxManagerPlay(this.fx_lightning_stop, this._refEntity.ModelTransform, Quaternion.identity);
+				FxManager_.Play(this.fx_lightning_stop, this._refEntity.ModelTransform, Quaternion.identity);
 			}
 		}
 		if (play) {
-			this.fxLightning = Plugin.FxManagerPlayReturn<FxBase>(this.fx_lightning, this._refEntity.ModelTransform, Quaternion.identity);
+			this.fxLightning = FxManager_.PlayReturn<FxBase>(this.fx_lightning, this._refEntity.ModelTransform, Quaternion.identity);
 		}
 	}
 

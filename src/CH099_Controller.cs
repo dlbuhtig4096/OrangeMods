@@ -106,7 +106,7 @@ public class CH099_Controller : CharacterControlBase {
 					// this._refEntity.SetSpeed((int)(this.skl1Direction * (CharacterDirection)((float)OrangeCharacter.DashSpeed * 2.5f)), 0);
 					this._refEntity.SetSpeed((int)((float)this.skl1Direction * (float)OrangeCharacter.DashSpeed * 2.5f), 0);
 					OrangeBattleUtility.UpdateSkillCD(currentSkillObj);
-					Plugin.FxManagerPlay(this.sFxuse000_000, this._refEntity.ModelTransform, Quaternion.identity);
+					FxManager_.Play(this.sFxuse000_000, this._refEntity.ModelTransform, Quaternion.identity);
 					this._refEntity.IgnoreGravity = true;
 					return;
 				}
@@ -150,7 +150,7 @@ public class CH099_Controller : CharacterControlBase {
 					if (!this.isSkillEventEnd && this.nowFrame >= this.skillEventFrame) {
 						this.isSkillEventEnd = true;
 						this.SetKickMovement(0f);
-						Plugin.FxManagerPlay(this.sFxuse001_002, this._refEntity.ModelTransform.position, (this._refEntity.direction == 1) ? OrangeBattleUtility.QuaternionNormal : OrangeBattleUtility.QuaternionReverse);
+						FxManager_.Play(this.sFxuse001_002, this._refEntity.ModelTransform.position, (this._refEntity.direction == 1) ? OrangeBattleUtility.QuaternionNormal : OrangeBattleUtility.QuaternionReverse);
 						return;
 					}
 					if (this.isSkillEventEnd && this.nowFrame >= this.endBreakFrame && (ManagedSingleton<InputStorage>.Instance.IsHeld(this._refEntity.UserID, ButtonId.LEFT) || ManagedSingleton<InputStorage>.Instance.IsHeld(this._refEntity.UserID, ButtonId.RIGHT))) {
@@ -170,7 +170,7 @@ public class CH099_Controller : CharacterControlBase {
 						this.SetKickMovement(0f);
 						this.isSkillEventEnd = true;
 						ManagedSingleton<CharacterControlHelper>.Instance.PushBulletSkl(this._refEntity, this.shootPointTransform0, MagazineType.ENERGY, -1, 0, true);
-						Plugin.FxManagerPlay(this.sFxuse001_001, this._refEntity.ModelTransform.position, (this._refEntity.direction == 1) ? OrangeBattleUtility.QuaternionNormal : OrangeBattleUtility.QuaternionReverse);
+						FxManager_.Play(this.sFxuse001_001, this._refEntity.ModelTransform.position, (this._refEntity.direction == 1) ? OrangeBattleUtility.QuaternionNormal : OrangeBattleUtility.QuaternionReverse);
 						return;
 					}
 				}

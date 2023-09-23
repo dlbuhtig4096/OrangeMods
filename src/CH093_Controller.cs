@@ -97,7 +97,7 @@ public class CH093_Controller : CharacterControllerProxyBaseGen3 {
 		base.SetIgnoreGravity(true);
 		this._refEntity.SetAnimateId((HumanBase.AnimateId)66U);
 		base.SetSkillFrame(this.Time_Skill_1_Raise / this.SkillSpeed);
-		Plugin.FxManagerPlay(CH093_Controller.FxName.fxuse_dragonslash_000.ToString(), this._refEntity._transform, OrangeCharacter.NormalQuaternion, new Vector3((float)base.SkillFXDirection, 1f, 1f));
+		FxManager_.Play(CH093_Controller.FxName.fxuse_dragonslash_000.ToString(), this._refEntity._transform, OrangeCharacter.NormalQuaternion, new Vector3((float)base.SkillFXDirection, 1f, 1f));
 	}
 
 	private void ActionStatusChanged_1_1() {
@@ -124,7 +124,7 @@ public class CH093_Controller : CharacterControllerProxyBaseGen3 {
 		}
 		this.ToggleMeleeBullet(true, base.CurSubStatus == OrangeCharacter.SubStatus.SKILL0_3);
 		if (base.CheckSkillFrameEnd()) {
-			Plugin.FxManagerPlay((base.CurSubStatus == OrangeCharacter.SubStatus.SKILL0_3) ? CH093_Controller.FxName.fxuse_chargecut_002.ToString() : CH093_Controller.FxName.fxuse_chargecut_001.ToString(), this._refEntity._transform.position + Vector3.right * this.Shift_Skill_0_FX * (float)this._refEntity.direction, (this._refEntity.ShootDirection.x > 0f) ? OrangeCharacter.NormalQuaternion : OrangeCharacter.ReversedQuaternion);
+			FxManager_.Play((base.CurSubStatus == OrangeCharacter.SubStatus.SKILL0_3) ? CH093_Controller.FxName.fxuse_chargecut_002.ToString() : CH093_Controller.FxName.fxuse_chargecut_001.ToString(), this._refEntity._transform.position + Vector3.right * this.Shift_Skill_0_FX * (float)this._refEntity.direction, (this._refEntity.ShootDirection.x > 0f) ? OrangeCharacter.NormalQuaternion : OrangeCharacter.ReversedQuaternion);
 			base.ShiftSkillStatus();
 		}
 	}
@@ -379,7 +379,7 @@ public class CH093_Controller : CharacterControllerProxyBaseGen3 {
 		base.OnPlayerPressSkill0(skillID);
 		base.PlayVoiceSE("v_xm_skill01");
 		base.PlaySkillSE("xm_tame01");
-		Plugin.FxManagerPlay(CH093_Controller.FxName.fxuse_chargecut_000.ToString(), this._refEntity._transform.position, (this._refEntity.ShootDirection.x > 0f) ? OrangeCharacter.NormalQuaternion : OrangeCharacter.ReversedQuaternion);
+		FxManager_.Play(CH093_Controller.FxName.fxuse_chargecut_000.ToString(), this._refEntity._transform.position, (this._refEntity.ShootDirection.x > 0f) ? OrangeCharacter.NormalQuaternion : OrangeCharacter.ReversedQuaternion);
 	}
 
 	protected void OnPlayerPressSkill1_1(CharacterControllerProxyBaseGen1.SkillID skillID) {

@@ -30,15 +30,15 @@ public class CH092_Controller : CharacterControlBase {
 	private void InitExtraMeshData() {
 		Il2CppReferenceArray<Transform> componentsInChildren = this._refEntity._transform.GetComponentsInChildren<Transform>(true).Cast<Il2CppReferenceArray<Transform>>();
 		this._refEntity.ExtraTransforms = new Transform[2];
-		this._refEntity.ExtraTransforms[0] = OrangeBattleUtility.FindChildRecursive(ref componentsInChildren, "L WeaponPoint", true);
-		this._refEntity.ExtraTransforms[1] = OrangeBattleUtility.FindChildRecursive(ref componentsInChildren, "R WeaponPoint", true);
-		Transform transform = OrangeBattleUtility.FindChildRecursive(ref componentsInChildren, "SaberMesh_m", true);
+		this._refEntity.ExtraTransforms[0] = OrangeBattleUtility.FindChildRecursive(componentsInChildren, "L WeaponPoint", true);
+		this._refEntity.ExtraTransforms[1] = OrangeBattleUtility.FindChildRecursive(componentsInChildren, "R WeaponPoint", true);
+		Transform transform = OrangeBattleUtility.FindChildRecursive(componentsInChildren, "SaberMesh_m", true);
 		this._tfWeaponMesh = transform.GetComponent<SkinnedMeshRenderer>();
 		this._tfWeaponMesh.enabled = true;
-		Transform transform2 = OrangeBattleUtility.FindChildRecursive(ref componentsInChildren, "RopeMesh_e", true);
+		Transform transform2 = OrangeBattleUtility.FindChildRecursive(componentsInChildren, "RopeMesh_e", true);
 		this._tfRopeMesh = transform2.GetComponent<SkinnedMeshRenderer>();
 		this._tfRopeMesh.enabled = false;
-		Transform transform3 = OrangeBattleUtility.FindChildRecursive(ref componentsInChildren, "fxuse_skill", true);
+		Transform transform3 = OrangeBattleUtility.FindChildRecursive(componentsInChildren, "fxuse_skill", true);
 		if (transform3 != null) {
 			this.m_fxuse_skill = transform3.GetComponent<ParticleSystem>();
 		}
@@ -319,18 +319,18 @@ public class CH092_Controller : CharacterControlBase {
 				if (this.bPlaySkillFx && this._refEntity.CurrentFrame > 0.28f) {
 					this.bPlaySkillFx = false;
 					Vector3 p_worldPos = this._refEntity.ModelTransform.position + new Vector3(0f, 0.67f, 0f);
-					Plugin.FxManagerPlay("fxuse_spiritslash_000", p_worldPos, OrangeCharacter.NormalQuaternion);
+					FxManager_.Play("fxuse_spiritslash_000", p_worldPos, OrangeCharacter.NormalQuaternion);
 				}
 				if (this.bPlaySkillFx2 && this._refEntity.CurrentFrame > 0.5f) {
 					this.bPlaySkillFx2 = false;
 					Vector3 p_worldPos2 = this._refEntity.ModelTransform.position + new Vector3(0f, 0.67f, 0f);
-					Plugin.FxManagerPlay("fxuse_spiritslash_001", p_worldPos2, OrangeCharacter.NormalQuaternion);
+					FxManager_.Play("fxuse_spiritslash_001", p_worldPos2, OrangeCharacter.NormalQuaternion);
 					return;
 				}
 				if (this._refEntity.CurrentFrame > 0.55f) {
 					this._vSkillVelocity = Vector3.right * (float)OrangeCharacter.DashSpeed * 4f * (float)this._refEntity.direction;
 					this._vSkillStartPosition = this._refEntity.AimPosition;
-					Plugin.FxManagerPlay("fxuse_spiritslash_002", this._refEntity.ModelTransform, OrangeCharacter.NormalQuaternion);
+					FxManager_.Play("fxuse_spiritslash_002", this._refEntity.ModelTransform, OrangeCharacter.NormalQuaternion);
 					this._refEntity.Animator._animator.speed = 1f;
 					this._refEntity.SetSpeed((int)this._vSkillVelocity.x, (int)this._vSkillVelocity.y);
 					this._refEntity.SetStatus(OrangeCharacter.MainStatus.SKILL, OrangeCharacter.SubStatus.SKILL0_1);
@@ -423,9 +423,9 @@ public class CH092_Controller : CharacterControlBase {
 					if (this.bInSkill && this._refEntity.CurrentFrame > 0.2f) {
 						this.bInSkill = false;
 						Vector3 p_worldPos3 = this._refEntity.ModelTransform.position + new Vector3((float)this._refEntity.direction, -1f, 0f);
-						Plugin.FxManagerPlay("fxuse_soaringkick_000", p_worldPos3, OrangeCharacter.NormalQuaternion);
+						FxManager_.Play("fxuse_soaringkick_000", p_worldPos3, OrangeCharacter.NormalQuaternion);
 						p_worldPos3 = this._refEntity.ModelTransform.position + new Vector3((float)this._refEntity.direction, 0f, 0f);
-						Plugin.FxManagerPlay("fxuse_soaringkick_001", p_worldPos3, OrangeCharacter.NormalQuaternion);
+						FxManager_.Play("fxuse_soaringkick_001", p_worldPos3, OrangeCharacter.NormalQuaternion);
 						this.CreateSkillBullet(this._refEntity.PlayerSkills[1]);
 						return;
 					}
@@ -541,7 +541,7 @@ public class CH092_Controller : CharacterControlBase {
 			this._refEntity.BulletCollider.HitCallback = null;
 			this._refEntity.SetStatus(OrangeCharacter.MainStatus.SKILL, OrangeCharacter.SubStatus.SKILL1_1);
 			Vector3 p_worldPos = this._refEntity.ModelTransform.position + new Vector3((float)this._refEntity.direction * 1.5f, 1f, 0f);
-			Plugin.FxManagerPlay("fxuse_soaringkick_002", p_worldPos, OrangeCharacter.NormalQuaternion);
+			FxManager_.Play("fxuse_soaringkick_002", p_worldPos, OrangeCharacter.NormalQuaternion);
 		}
 	}
 
