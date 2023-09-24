@@ -6,6 +6,56 @@ using Il2CppInterop.Runtime.InteropTypes.Arrays;
 
 namespace OrangeMods;
 
+using System;
+using UnityEngine;
+
+public class CH107_CharacterMaterial : CharacterMaterial {
+	
+	public override void UpdatePropertyBlock() {
+		this.UpdateColor();
+		this.UpdateDissolve();
+		this.CallBase<CharacterMaterial>("UpdatePropertyBlock");
+	}
+
+	private void Start() {
+		this.UpdatePropertyBlock();
+	}
+
+	private void UpdateColor() {
+		if (this.canChangeColor) {
+			OrangeMaterialProperty instance = MonoBehaviourSingleton<OrangeMaterialProperty>.Instance;
+			if (base.gameObject.layer == ManagedSingleton<OrangeLayerManager>.Instance.DefaultLayer) {
+				this.mpb.SetColor(instance.i_TintColor, this.colors[0]);
+				return;
+			}
+			this.mpb.SetColor(instance.i_TintColor, this.colors[1]);
+		}
+	}
+
+	private void UpdateDissolve() {
+		if (this.canChangeDissolve) {
+			OrangeMaterialProperty instance = MonoBehaviourSingleton<OrangeMaterialProperty>.Instance;
+			float a = 1f - this.mpb.GetFloat(instance.i_DissolveValue);
+			float @float = this.mpb.GetFloat(instance.i_Intensity);
+			this.mpb.SetFloat(instance.i_AlphaValue, Mathf.Min(a, @float));
+		}
+	}
+
+	// [SerializeField]
+	private bool canChangeColor;
+
+	// [SerializeField]
+	private bool canChangeDissolve;
+
+	private const float factor = 3f;
+
+	private Color[] colors = new Color[] {
+		new Color(2.035294f, 2.2470589f, 2.2470589f, 1f),
+		new Color(1.5411766f, 2.2470589f, 2.2117648f, 1f)
+	};
+}
+
+
 public class CH107_Controller : CharacterControlBase {
     
 	private void OnEnable() {

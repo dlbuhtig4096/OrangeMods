@@ -340,6 +340,7 @@ public class Plugin : BasePlugin {
         _inject(typeof(CH100_ShungokusatsuHitFx), new Type[] {} );
         _inject(typeof(CH100_Controller), new Type[] {typeof(ILogicUpdate)});
         _inject(typeof(CH106_Controller), new Type[] {typeof(ILogicUpdate)});
+        _inject(typeof(CH107_CharacterMaterial), new Type[] {} );
         _inject(typeof(CH107_Controller), new Type[] {typeof(ILogicUpdate)});
         _inject(typeof(CH129_Controller), new Type[] {typeof(ILogicUpdate)});
         _inject(typeof(CH130_Controller), new Type[] {typeof(ILogicUpdate)});
