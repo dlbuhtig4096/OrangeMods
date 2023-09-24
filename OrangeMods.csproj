@@ -548,11 +548,13 @@
       <Private>false</Private>
       <CopyLocal>false</CopyLocal>
     </Reference>
+    <!--
     <Reference Include="BepInEx.Unity.IL2CPP">
       <HintPath>$(Orange)\BepInEx\core\BepInEx.Unity.IL2CPP.dll</HintPath>
       <Private>false</Private>
       <CopyLocal>false</CopyLocal>
     </Reference>
+    -->
     <Reference Include="Il2CppInterop.Common">
       <HintPath>$(Orange)\BepInEx\core\Il2CppInterop.Common.dll</HintPath>
       <Private>false</Private>

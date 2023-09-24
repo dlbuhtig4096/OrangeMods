@@ -4,161 +4,6 @@ using UnityEngine;
 
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
 
-/*
-public class CH100_ShungokusatsuBullet : BasicBullet {
-
-	public override void Awake() {
-		this.CallBase<BasicBullet>("Awake"); // base.Awake();
-		this._otHurtTimer = OrangeTimerManager.GetTimer(TimerMode.FRAME);
-	}
-
-	public override void UpdateBulletData(SKILL_TABLE pData, string owner = "", int nInRecordID = 0, int nInNetID = 0, int nDirection = 1) {
-		this.BulletID = pData.n_ID;
-		this.BulletData = pData;
-		this.nNetID = nInNetID;
-		this.nRecordID = nInRecordID;
-		this.Owner = owner;
-		if (pData.s_FIELD != "null") {
-			string[] array = pData.s_FIELD.Split(new char[] {
-				','
-			});
-			this._duration = long.Parse(array[5]);
-			this._hurtCycle = long.Parse(array[6]);
-			this.MaxHit = Math.Truncate((double)this._duration / (double)this._hurtCycle);
-		}
-		this.FxMuzzleFlare = this.BulletData.s_USE_FX;
-		this.FxImpact = this.BulletData.s_HIT_FX;
-		this.FxEnd = this.BulletData.s_VANISH_FX;
-		if (this.FxMuzzleFlare == "null") {
-			this.FxMuzzleFlare = string.Empty;
-		}
-		else {
-			MonoBehaviourSingleton<FxManager>.Instance.PreloadFx(this.FxMuzzleFlare, 5, null);
-		}
-		if (this.FxImpact == "null") {
-			this.FxImpact = string.Empty;
-		}
-		else {
-			MonoBehaviourSingleton<FxManager>.Instance.PreloadFx(this.FxImpact, 5, null);
-		}
-		if (this.FxEnd == "null") {
-			this.FxEnd = string.Empty;
-		}
-		else {
-			MonoBehaviourSingleton<FxManager>.Instance.PreloadFx(this.FxEnd, 5, null);
-		}
-		this.BlockMask = this.BulletScriptableObjectInstance.BulletLayerMaskObstacle;
-		if ((this.BulletData.n_FLAG & 2) != 0) {
-			this.BulletMask = this.BulletScriptableObjectInstance.BulletLayerMaskBullet;
-		}
-		this._UseSE = ManagedSingleton<OrangeTableHelper>.Instance.ParseSE(this.BulletData.s_USE_SE);
-		this._HitSE = ManagedSingleton<OrangeTableHelper>.Instance.ParseSE(this.BulletData.s_HIT_SE);
-		if (this._UseSE[0] != "" && (this._UseSE[1].EndsWith("_lp") || this._UseSE[1].EndsWith("_lg"))) {
-			this.checkLoopSE = true;
-		}
-		base.GetHistGuardSE();
-	}
-
-	public void SetHitTarget(Transform pTarget) {
-		this._tfHitTarget = pTarget;
-		if (this._tfHitTarget) {
-			StageObjParam stageObjParam = this._tfHitTarget.GetComponent<StageObjParam>();
-			if (stageObjParam == null) {
-				PlayerCollider component = this._tfHitTarget.GetComponent<PlayerCollider>();
-				if (component != null && component.IsDmgReduceShield()) {
-					stageObjParam = component.GetDmgReduceOwner();
-				}
-			}
-			if (stageObjParam != null) {
-				this._sobHitTarget = stageObjParam.tLinkSOB;
-			}
-		}
-	}
-
-	public override void Active(Vector3 pPos, Vector3 pDirection, LayerMask pTargetMask, IAimTarget pTarget = null) {
-		this.CallBase<BasicBullet, Action<Vector3, Vector3, LayerMask, IAimTarget>>("Active", new object[] {pPos, pDirection, pTargetMask, pTarget}); // base.Active(pPos, pDirection, pTargetMask, pTarget);
-		this._otHurtTimer.TimerStart();
-		if (this._tfHitTarget) {
-			base.CaluDmg(this.BulletData, this._tfHitTarget, 0f, 0f);
-		}
-	}
-
-	public override void LateUpdateFunc() {
-		if (!ManagedSingleton<StageHelper>.Instance.bEnemyActive) {
-			return;
-		}
-		if (this._otHurtTimer.GetMillisecond() >= this._hurtCycle && (double)this._hitCnt < this.MaxHit) {
-			this._otHurtTimer.TimerStart();
-			if (this._tfHitTarget != null) {
-				if (this._sobHitTarget != null && this._sobHitTarget.Hp > 0) {
-					base.CaluDmg(this.BulletData, this._tfHitTarget, 0f, 0f);
-				}
-				this.PlayCycleSE();
-			}
-			this._hitCnt += 1L;
-		}
-		if (this._duration != -1L && this.ActivateTimer.GetMillisecond() >= this._duration) {
-			this.BackToPool();
-		}
-	}
-
-	public override void BackToPool() {
-		this._hitCnt = 1L;
-		this._tfHitTarget = null;
-		this._otHurtTimer.TimerStop();
-		MonoBehaviourSingleton<UpdateManager>.Instance.RemoveLateUpdate<CH100_ShungokusatsuBullet>(this);
-		this.ActivateTimer.TimerStop();
-		this._capsuleCollider.enabled = false;
-		if (this.BackCallback != null) {
-			((Action<Il2CppSystem.Object>)(object)(this.BackCallback))(this); // this.BackCallback(this);
-			this.BackCallback = null;
-		}
-		this.HitCallback = null;
-		if (this._UseSE != null && this._UseSE[0] != "" && this._UseSE[2] != "") {
-			base.SoundSource.PlaySE(this._UseSE[0], this._UseSE[2], 0f);
-		}
-		this.StopFx();
-		this.isPetBullet = (this.isBossBullet = (this.isBuffTrigger = false));
-		Singleton<GenericEventManager>.Instance.NotifyEvent<CH100_ShungokusatsuBullet>(EventManager.ID.STAGE_BULLET_UNREGISTER, this);
-		this.bIsEnd = true;
-		if (this.bNeedBackPoolColliderBullet) {
-			MonoBehaviourSingleton<PoolManager>.Instance.BackToPool<CH100_ShungokusatsuBullet>(this, "PoolColliderBullet");
-			return;
-		}
-		if (this.bNeedBackPoolModelName) {
-			MonoBehaviourSingleton<PoolManager>.Instance.BackToPool<CH100_ShungokusatsuBullet>(this, this.itemName);
-		}
-	}
-
-	protected void PlayCycleSE() {
-		if (this.sCycleACB != "" && this.sCycleCUE != "") {
-			base.SoundSource.PlaySE(this.sCycleACB, this.sCycleCUE, 0f);
-		}
-	}
-
-	protected Transform _tfHitTarget;
-
-	protected StageObjBase _sobHitTarget;
-
-	protected long _duration = -1L;
-
-	protected long _hurtCycle;
-
-	protected long _hitCnt = 1L;
-
-	public double MaxHit = 5.0;
-
-	public bool bNeedBackPoolColliderBullet;
-
-	public bool bNeedBackPoolModelName;
-
-	protected OrangeTimer _otHurtTimer;
-
-	public string sCycleACB = "";
-
-	public string sCycleCUE = "";
-}
-*/
 public class CH100_ShungokusatsuDummy : CollideBullet {
 
 	public override void Active(Vector3 pPos, Vector3 pDirection, LayerMask pTargetMask, IAimTarget pTarget = null) {
@@ -210,16 +55,6 @@ public class CH100_ShungokusatsuDummy : CollideBullet {
 
 	private CH100_Controller _owner;
 }
-/*
-public class CH100_ShungokusatsuHitFx : FxBase {
-	public void ActivePlayBlackBG(bool visible) {
-		this._tfBlackBG.gameObject.SetActive(visible);
-	}
-
-	// [SerializeField]
-	protected Transform _tfBlackBG;
-}
-*/
 
 public class CH100_Controller : CharacterControlBase {
 	public override Il2CppStringArray GetCharacterDependAnimations() {
@@ -648,9 +483,9 @@ public class CH100_Controller : CharacterControlBase {
 	}
 
 	private void TurnToAimTarget() {
-		Il2CppSystem.Nullable_Unboxed<Vector3>? vector = this._refEntity.CalibrateAimDirection(this._refEntity.AimPosition);
-		if (vector != null) {
-			Vector3 v = vector.Value.Value;
+		Il2CppSystem.Nullable_Unboxed<Vector3> vector = this._refEntity.CalibrateAimDirection(this._refEntity.AimPosition);
+		if (vector.has_value) {
+			Vector3 v = vector.Value;
 			float x = v.x;
 			int num = Math.Sign(x);
 			if ((int)this._refEntity._characterDirection != num && Mathf.Abs(x) > 0.05f) {

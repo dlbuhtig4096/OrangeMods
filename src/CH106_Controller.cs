@@ -755,9 +755,9 @@ public class CH106_Controller : CharacterControlBase {
 	}
 
 	private void TurnToAimTarget() {
-		Il2CppSystem.Nullable_Unboxed<Vector3>? vector = this._refEntity.CalibrateAimDirection(this._refEntity.AimPosition);
-		if (vector != null) {
-			Vector3 v = vector.Value.Value;
+		Il2CppSystem.Nullable_Unboxed<Vector3> vector = this._refEntity.CalibrateAimDirection(this._refEntity.AimPosition);
+		if (vector.has_value) {
+			Vector3 v = vector.Value;
 			float x = v.x;
 			int num = Math.Sign(x);
 			if ((int)this._refEntity._characterDirection != num && Mathf.Abs(x) > 0.05f) {

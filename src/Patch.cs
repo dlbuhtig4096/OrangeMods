@@ -305,7 +305,7 @@ __label_ret:
     }
 }
 
-[BepInPlugin(MyPluginInfo.PLUGIN_GUID, MyPluginInfo.PLUGIN_NAME, MyPluginInfo.PLUGIN_VERSION)]
+[BepInPlugin(OrangeMods.MyPluginInfo.PLUGIN_GUID, OrangeMods.MyPluginInfo.PLUGIN_NAME, OrangeMods.MyPluginInfo.PLUGIN_VERSION)]
 public class Plugin : BasePlugin {
     public static new ManualLogSource Log;
 
@@ -322,7 +322,7 @@ public class Plugin : BasePlugin {
         Plugin.Log = base.Log;
 
         // Plugin startup logic
-        Log.LogInfo($"Plugin {MyPluginInfo.PLUGIN_GUID} is loaded!");
+        Log.LogInfo($"Plugin {OrangeMods.MyPluginInfo.PLUGIN_GUID} is loaded!");
 
         Harmony.CreateAndPatchAll(typeof(PlayerStatus_));
         Harmony.CreateAndPatchAll(typeof(BulletBase_));
