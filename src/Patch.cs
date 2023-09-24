@@ -11,8 +11,6 @@ using CallbackDefs;
 using UnityEngine;
 using StageLib;
 
-namespace OrangeMods;
-
 [HarmonyPatch(typeof(PlayerStatus))]
 class PlayerStatus_ {
 
@@ -335,9 +333,9 @@ public class Plugin : BasePlugin {
         _inject(typeof(CH093_Controller), new Type[] {typeof(ILogicUpdate)});
         _inject(typeof(CH098_Controller), new Type[] {typeof(ILogicUpdate)});
         _inject(typeof(CH099_Controller), new Type[] {typeof(ILogicUpdate)});
-        _inject(typeof(CH100_ShungokusatsuBullet), new Type[] {} );
+        // _inject(typeof(CH100_ShungokusatsuBullet), new Type[] {} );
         _inject(typeof(CH100_ShungokusatsuDummy), new Type[] {} );
-        _inject(typeof(CH100_ShungokusatsuHitFx), new Type[] {} );
+        // _inject(typeof(CH100_ShungokusatsuHitFx), new Type[] {} );
         _inject(typeof(CH100_Controller), new Type[] {typeof(ILogicUpdate)});
         _inject(typeof(CH106_Controller), new Type[] {typeof(ILogicUpdate)});
         _inject(typeof(CH107_CharacterMaterial), new Type[] {} );

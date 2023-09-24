@@ -5,8 +5,6 @@ using UnityEngine;
 
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
 
-namespace OrangeMods;
-
 public class CH093_Controller : CharacterControllerProxyBaseGen3 {
 	private void InitializeLinkSkillData() {
 		int n_LINK_SKILL = this._refEntity.PlayerSkills[0].BulletData.n_LINK_SKILL;

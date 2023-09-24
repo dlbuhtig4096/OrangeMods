@@ -4,8 +4,6 @@ using UnityEngine;
 
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
 
-namespace OrangeMods;
-
 public class CH091_Controller : CharacterControlBase {
 	public override void Start() {
 		this.CallBase<CharacterControlBase>("Start"); // base.Start();

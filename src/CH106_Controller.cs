@@ -7,8 +7,6 @@ using UnityEngine;
 
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
 
-namespace OrangeMods;
-
 public class CH106_BeamBullet : BeamBullet {
 
 	protected void OnApplicationPause(bool pause) {

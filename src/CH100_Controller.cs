@@ -4,8 +4,7 @@ using UnityEngine;
 
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
 
-namespace OrangeMods;
-
+/*
 public class CH100_ShungokusatsuBullet : BasicBullet {
 
 	public override void Awake() {
@@ -159,7 +158,7 @@ public class CH100_ShungokusatsuBullet : BasicBullet {
 
 	public string sCycleCUE = "";
 }
-
+*/
 public class CH100_ShungokusatsuDummy : CollideBullet {
 
 	public override void Active(Vector3 pPos, Vector3 pDirection, LayerMask pTargetMask, IAimTarget pTarget = null) {
@@ -211,7 +210,7 @@ public class CH100_ShungokusatsuDummy : CollideBullet {
 
 	private CH100_Controller _owner;
 }
-
+/*
 public class CH100_ShungokusatsuHitFx : FxBase {
 	public void ActivePlayBlackBG(bool visible) {
 		this._tfBlackBG.gameObject.SetActive(visible);
@@ -220,7 +219,7 @@ public class CH100_ShungokusatsuHitFx : FxBase {
 	// [SerializeField]
 	protected Transform _tfBlackBG;
 }
-
+*/
 
 public class CH100_Controller : CharacterControlBase {
 	public override Il2CppStringArray GetCharacterDependAnimations() {

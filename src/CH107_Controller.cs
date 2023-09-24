@@ -4,13 +4,8 @@ using UnityEngine;
 
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
 
-namespace OrangeMods;
-
-using System;
-using UnityEngine;
-
 public class CH107_CharacterMaterial : CharacterMaterial {
-	
+
 	public override void UpdatePropertyBlock() {
 		this.UpdateColor();
 		this.UpdateDissolve();

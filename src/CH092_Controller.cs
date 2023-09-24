@@ -4,8 +4,6 @@ using UnityEngine;
 
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
 
-namespace OrangeMods;
-
 public class CH092_Controller : CharacterControlBase {
 
 	public override Il2CppStringArray GetCharacterDependAnimations() {

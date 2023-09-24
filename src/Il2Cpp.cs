@@ -22,8 +22,6 @@ using Object = Il2CppSystem.Object;
 #pragma warning disable 8620
 #pragma warning disable 8605
 
-namespace OrangeMods;
-
 public static class Reflection {
 
     internal const Il2CppSystem.Reflection.BindingFlags all = Il2CppSystem.Reflection.BindingFlags.Instance | Il2CppSystem.Reflection.BindingFlags.Static |

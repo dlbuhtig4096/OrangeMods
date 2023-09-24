@@ -5,8 +5,6 @@ using UnityEngine;
 
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
 
-namespace OrangeMods;
-
 public class CH130_Controller : CharacterControlBase {
     
 	private void OnEnable() {

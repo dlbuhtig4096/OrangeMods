@@ -8,8 +8,6 @@ using Il2CppInterop.Runtime.Injection;
 
 using HarmonyLib;
 
-namespace OrangeMods;
-
 [HarmonyPatch(typeof(CharacterControlFactory))]
 class CharacterControlFactory_ {
     

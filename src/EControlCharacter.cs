@@ -1,7 +1,5 @@
 using System;
 
-namespace OrangeMods;
-
 public enum EControlCharacter_ {
 	X = 1,
 	ZERO,
