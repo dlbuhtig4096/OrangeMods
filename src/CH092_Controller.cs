@@ -440,6 +440,7 @@ public class CH092_Controller : CharacterControlBase {
 	}
 
 	private void TurnToAimTarget() {
+		/*
 		Il2CppSystem.Nullable_Unboxed<Vector3> vector = this._refEntity.CalibrateAimDirection(this._refEntity.AimPosition);
 		if (vector.has_value) {
 			Vector3 v = vector.Value;
@@ -455,6 +456,20 @@ public class CH092_Controller : CharacterControlBase {
 				this._refEntity._characterDirection = (CharacterDirection)(-(int)this._refEntity._characterDirection);
 				this._refEntity.ShootDirection = v;
 			}
+		}
+		*/
+		IAimTarget target;
+		OrangeCharacter _ref = this._refEntity;
+
+		if (_ref._playerAutoAimSystem == null || _ref._playerAutoAimSystem.AutoAimTarget == null) { return; }
+		target = _ref._playerAutoAimSystem.AutoAimTarget;
+
+		Vector3 v = (target.AimPosition - _ref.AimPosition).normalized;
+		float x = v.x;
+		int num = Math.Sign(x);
+		if ((int)_ref._characterDirection != num && Mathf.Abs(x) > 0.05f) {
+			_ref._characterDirection = (CharacterDirection)(-(int)_ref._characterDirection);
+			_ref.ShootDirection = v;
 		}
 	}
 
