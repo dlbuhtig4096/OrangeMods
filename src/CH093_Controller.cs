@@ -6,6 +6,23 @@ using UnityEngine;
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
 
 public class CH093_Controller : CharacterControllerProxyBaseGen3 {
+
+	public CH093_Controller() : base() {
+		// Hack: for some reason dictionaries cannot not be properly initialized in .ctor, so we do it here.
+		this.OnPlayerPressSkill0Events = new Il2CppSystem.Collections.Generic.Dictionary<int, Il2CppSystem.Action<CharacterControllerProxyBaseGen1.SkillID>>();
+		this.OnPlayerPressSkill1Events = new Il2CppSystem.Collections.Generic.Dictionary<int, Il2CppSystem.Action<CharacterControllerProxyBaseGen1.SkillID>>();
+		this.OnPlayerReleaseSkill0Events = new Il2CppSystem.Collections.Generic.Dictionary<int, Il2CppSystem.Action<CharacterControllerProxyBaseGen1.SkillID>>();
+		this.OnPlayerReleaseSkill1Events = new Il2CppSystem.Collections.Generic.Dictionary<int, Il2CppSystem.Action<CharacterControllerProxyBaseGen1.SkillID>>();
+	}
+	
+	public CH093_Controller(IntPtr p) : base(p) {
+		// Hack: for some reason dictionaries cannot not be properly initialized in .ctor, so we do it here.
+		this.OnPlayerPressSkill0Events = new Il2CppSystem.Collections.Generic.Dictionary<int, Il2CppSystem.Action<CharacterControllerProxyBaseGen1.SkillID>>();
+		this.OnPlayerPressSkill1Events = new Il2CppSystem.Collections.Generic.Dictionary<int, Il2CppSystem.Action<CharacterControllerProxyBaseGen1.SkillID>>();
+		this.OnPlayerReleaseSkill0Events = new Il2CppSystem.Collections.Generic.Dictionary<int, Il2CppSystem.Action<CharacterControllerProxyBaseGen1.SkillID>>();
+		this.OnPlayerReleaseSkill1Events = new Il2CppSystem.Collections.Generic.Dictionary<int, Il2CppSystem.Action<CharacterControllerProxyBaseGen1.SkillID>>();
+	}
+
 	private void InitializeLinkSkillData() {
 		int n_LINK_SKILL = this._refEntity.PlayerSkills[0].BulletData.n_LINK_SKILL;
 		if (n_LINK_SKILL == 0) {
@@ -147,74 +164,138 @@ public class CH093_Controller : CharacterControllerProxyBaseGen3 {
 			MonoBehaviourSingleton<FxManager>.Instance.PreloadFx(fxName, 2, null);
 		}
 		CollideBullet bulletCollider = this._refEntity.BulletCollider;
-		bulletCollider.HitCallback = (CallbackObj)Il2CppSystem.Delegate.Combine(bulletCollider.HitCallback, (CallbackObj)new Action<Il2CppSystem.Object>(this.OnBulletColliderHit));
+		bulletCollider.HitCallback = Il2CppSystem.Delegate.Combine(bulletCollider.HitCallback, (CallbackObj)new Action<Il2CppSystem.Object>(this.OnBulletColliderHit)).Cast<CallbackObj>();
 		this.InitializeLinkSkillData();
 
-		// TODO
 		/*
 		base.InitializeSkillDependDelegators(
-			new Il2CppSystem.Collections.Generic.Dictionary<OrangeCharacter.SubStatus, CharacterControllerProxyBaseGen3.SkillStateDelegateData> ((
-				new Dictionary<OrangeCharacter.SubStatus, CharacterControllerProxyBaseGen3.SkillStateDelegateData> { {
-						OrangeCharacter.SubStatus.SKILL0,
-						new CharacterControllerProxyBaseGen3.SkillStateDelegateData {
-							OnStatusChanged = new Action(this.ActionStatusChanged_0_0),
-							OnLogicUpdate = new Action(base.ActionCheckNextSkillStatus)
-						}
-					}, {
-						OrangeCharacter.SubStatus.SKILL0_1,
-						new CharacterControllerProxyBaseGen3.SkillStateDelegateData {
-							OnStatusChanged = new Action(this.ActionStatusChanged_0_1),
-							OnLogicUpdate = new Action(this.ActionLogicUpdate_0)
-						}
-					}, {
-						OrangeCharacter.SubStatus.SKILL0_2,
-						new CharacterControllerProxyBaseGen3.SkillStateDelegateData {
-							OnStatusChanged = new Action(this.ActionStatusChanged_0_2),
-							OnLogicUpdate = new Action(base.ActionCheckNextSkillStatus)
-						}
-					}, {
-						OrangeCharacter.SubStatus.SKILL0_3,
-						new CharacterControllerProxyBaseGen3.SkillStateDelegateData {
-							OnStatusChanged = new Action(this.ActionStatusChanged_0_3),
-							OnLogicUpdate = new Action(this.ActionLogicUpdate_0)
-						}
-					}, {
-						OrangeCharacter.SubStatus.SKILL0_4,
-						new CharacterControllerProxyBaseGen3.SkillStateDelegateData {
-							OnStatusChanged = new Action(this.ActionStatusChanged_0_4),
-							OnAnimationEnd = new Action(base.ActionSetSkillEnd),
-							OnLogicUpdate = new Action(base.ActionCheckSkillCancel)
-						}
-					}, {
-						OrangeCharacter.SubStatus.SKILL1,
-						new CharacterControllerProxyBaseGen3.SkillStateDelegateData {
-							OnStatusChanged = new Action(this.ActionStatusChanged_1_0),
-							OnLogicUpdate = new Action(base.ActionCheckNextSkillStatus)
-						}
-					}, {
-						OrangeCharacter.SubStatus.SKILL1_1,
-						new CharacterControllerProxyBaseGen3.SkillStateDelegateData {
-							OnStatusChanged = new Action(this.ActionStatusChanged_1_1),
-							OnLogicUpdate = new Action(base.ActionCheckNextSkillStatus)
-						}
-					}, {
-						OrangeCharacter.SubStatus.SKILL1_2,
-						new CharacterControllerProxyBaseGen3.SkillStateDelegateData {
-							OnAnimationEnd = new Action(base.ActionSetSkillEnd),
-							OnStatusChanged = new Action(this.ActionStatusChanged_1_2),
-							OnLogicUpdate = new Action(base.ActionCheckSkillCancel)
-						}
+			new Dictionary<OrangeCharacter.SubStatus, CharacterControllerProxyBaseGen3.SkillStateDelegateData> { {
+					OrangeCharacter.SubStatus.SKILL0,
+					new CharacterControllerProxyBaseGen3.SkillStateDelegateData {
+						OnStatusChanged = new Action(this.ActionStatusChanged_0_0),
+						OnLogicUpdate = new Action(base.ActionCheckNextSkillStatus)
+					}
+				}, {
+					OrangeCharacter.SubStatus.SKILL0_1,
+					new CharacterControllerProxyBaseGen3.SkillStateDelegateData {
+						OnStatusChanged = new Action(this.ActionStatusChanged_0_1),
+						OnLogicUpdate = new Action(this.ActionLogicUpdate_0)
+					}
+				}, {
+					OrangeCharacter.SubStatus.SKILL0_2,
+					new CharacterControllerProxyBaseGen3.SkillStateDelegateData {
+						OnStatusChanged = new Action(this.ActionStatusChanged_0_2),
+						OnLogicUpdate = new Action(base.ActionCheckNextSkillStatus)
+					}
+				}, {
+					OrangeCharacter.SubStatus.SKILL0_3,
+					new CharacterControllerProxyBaseGen3.SkillStateDelegateData {
+						OnStatusChanged = new Action(this.ActionStatusChanged_0_3),
+						OnLogicUpdate = new Action(this.ActionLogicUpdate_0)
+					}
+				}, {
+					OrangeCharacter.SubStatus.SKILL0_4,
+					new CharacterControllerProxyBaseGen3.SkillStateDelegateData {
+						OnStatusChanged = new Action(this.ActionStatusChanged_0_4),
+						OnAnimationEnd = new Action(base.ActionSetSkillEnd),
+						OnLogicUpdate = new Action(base.ActionCheckSkillCancel)
+					}
+				}, {
+					OrangeCharacter.SubStatus.SKILL1,
+					new CharacterControllerProxyBaseGen3.SkillStateDelegateData {
+						OnStatusChanged = new Action(this.ActionStatusChanged_1_0),
+						OnLogicUpdate = new Action(base.ActionCheckNextSkillStatus)
+					}
+				}, {
+					OrangeCharacter.SubStatus.SKILL1_1,
+					new CharacterControllerProxyBaseGen3.SkillStateDelegateData {
+						OnStatusChanged = new Action(this.ActionStatusChanged_1_1),
+						OnLogicUpdate = new Action(base.ActionCheckNextSkillStatus)
+					}
+				}, {
+					OrangeCharacter.SubStatus.SKILL1_2,
+					new CharacterControllerProxyBaseGen3.SkillStateDelegateData {
+						OnAnimationEnd = new Action(base.ActionSetSkillEnd),
+						OnStatusChanged = new Action(this.ActionStatusChanged_1_2),
+						OnLogicUpdate = new Action(base.ActionCheckSkillCancel)
 					}
 				}
-			))
+			}
 		);
 		*/
+		{
+			Il2CppSystem.Collections.Generic.Dictionary<OrangeCharacter.SubStatus, CharacterControllerProxyBaseGen3.SkillStateDelegateData> d = 
+				new Il2CppSystem.Collections.Generic.Dictionary<OrangeCharacter.SubStatus, CharacterControllerProxyBaseGen3.SkillStateDelegateData>();
+			
+			d.Add(
+				OrangeCharacter.SubStatus.SKILL0,
+				new CharacterControllerProxyBaseGen3.SkillStateDelegateData {
+					OnStatusChanged = new Action(this.ActionStatusChanged_0_0),
+					OnLogicUpdate = new Action(base.ActionCheckNextSkillStatus)
+				}
+			);
+			d.Add(
+				OrangeCharacter.SubStatus.SKILL0_1,
+				new CharacterControllerProxyBaseGen3.SkillStateDelegateData {
+					OnStatusChanged = new Action(this.ActionStatusChanged_0_1),
+					OnLogicUpdate = new Action(this.ActionLogicUpdate_0)
+				}
+			);
+			d.Add(
+				OrangeCharacter.SubStatus.SKILL0_2,
+				new CharacterControllerProxyBaseGen3.SkillStateDelegateData {
+					OnStatusChanged = new Action(this.ActionStatusChanged_0_2),
+					OnLogicUpdate = new Action(base.ActionCheckNextSkillStatus)
+				}
+			);
+			d.Add(
+				OrangeCharacter.SubStatus.SKILL0_3,
+				new CharacterControllerProxyBaseGen3.SkillStateDelegateData {
+					OnStatusChanged = new Action(this.ActionStatusChanged_0_3),
+					OnLogicUpdate = new Action(this.ActionLogicUpdate_0)
+				}		
+			);
+			d.Add(
+				OrangeCharacter.SubStatus.SKILL0_4,
+				new CharacterControllerProxyBaseGen3.SkillStateDelegateData {
+					OnStatusChanged = new Action(this.ActionStatusChanged_0_4),
+					OnAnimationEnd = new Action(base.ActionSetSkillEnd),
+					OnLogicUpdate = new Action(base.ActionCheckSkillCancel)
+				}
+			);
+			d.Add(
+				OrangeCharacter.SubStatus.SKILL1,
+				new CharacterControllerProxyBaseGen3.SkillStateDelegateData {
+					OnStatusChanged = new Action(this.ActionStatusChanged_1_0),
+					OnLogicUpdate = new Action(base.ActionCheckNextSkillStatus)
+				}
+			);
+			d.Add(
+				OrangeCharacter.SubStatus.SKILL1_1,
+				new CharacterControllerProxyBaseGen3.SkillStateDelegateData {
+					OnStatusChanged = new Action(this.ActionStatusChanged_1_1),
+					OnLogicUpdate = new Action(base.ActionCheckNextSkillStatus)
+				}
+			);
+			d.Add(
+				OrangeCharacter.SubStatus.SKILL1_2,
+				new CharacterControllerProxyBaseGen3.SkillStateDelegateData {
+					OnAnimationEnd = new Action(base.ActionSetSkillEnd),
+					OnStatusChanged = new Action(this.ActionStatusChanged_1_2),
+					OnLogicUpdate = new Action(base.ActionCheckSkillCancel)
+				}
+			);
+			
+			// base.InitializeSkillDependDelegators(d);
+			this._skillDependDelegators = d;
+			this._isSkillDependDelegatorsInitialized = true;
+		}
 	}
 
 	public override void OnDestroy() {
-		base.OnDestroy();
+		this.CallBase<CharacterControllerProxyBaseGen3>("OnDestroy"); // base.OnDestroy();
 		CollideBullet bulletCollider = this._refEntity.BulletCollider;
-		bulletCollider.HitCallback = (CallbackObj)Il2CppSystem.Delegate.Remove(bulletCollider.HitCallback, (CallbackObj)new Action<Il2CppSystem.Object>(this.OnBulletColliderHit));
+		bulletCollider.HitCallback = Il2CppSystem.Delegate.Remove(bulletCollider.HitCallback, (CallbackObj)new Action<Il2CppSystem.Object>(this.OnBulletColliderHit)).Cast<CallbackObj>();
 	}
 
 	public override Il2CppStringArray GetCharacterDependAnimations() {
@@ -337,7 +418,8 @@ public class CH093_Controller : CharacterControllerProxyBaseGen3 {
 
 	public override void SetSkillEnd() {
 		this._isSkillShooting = false;
-		base.SetSkillEnd();
+		// There's no SetSkillEnd in CharacterControllerProxyBaseGen3.
+		this.CallBase<CharacterControllerProxyBaseGen1>("SetSkillEnd"); // base.SetSkillEnd();
 	}
 
 	public override void OnChangeComboSkill(CharacterControllerProxyBaseGen1.SkillID skillId, int reloadIndex) {
@@ -368,13 +450,14 @@ public class CH093_Controller : CharacterControllerProxyBaseGen3 {
 	}
 
 	public override void AttachSkillDelegateEvent() {
+		// Plugin.Log.LogWarning($"{this.OnPlayerPressSkill0Events[0]}");
 		this.OnPlayerPressSkill0Events[0] = new Action<CharacterControllerProxyBaseGen1.SkillID>(this.OnPlayerPressSkill0);
 		this.OnPlayerPressSkill1Events[1] = new Action<CharacterControllerProxyBaseGen1.SkillID>(this.OnPlayerPressSkill1_1);
 		this.OnPlayerReleaseSkill1Events[0] = new Action<CharacterControllerProxyBaseGen1.SkillID>(this.OnPlayerReleaseSkill1_0);
 	}
 
 	public override void OnPlayerPressSkill0(CharacterControllerProxyBaseGen1.SkillID skillID) {
-		base.OnPlayerPressSkill0(skillID);
+		this.CallBase<CharacterControllerProxyBaseGen3, Action<int>>("OnPlayerPressSkill0", skillID); // base.OnPlayerPressSkill0(skillID);
 		base.PlayVoiceSE("v_xm_skill01");
 		base.PlaySkillSE("xm_tame01");
 		FxManager_.Play(CH093_Controller.FxName.fxuse_chargecut_000.ToString(), this._refEntity._transform.position, (this._refEntity.ShootDirection.x > 0f) ? OrangeCharacter.NormalQuaternion : OrangeCharacter.ReversedQuaternion);
@@ -382,7 +465,7 @@ public class CH093_Controller : CharacterControllerProxyBaseGen3 {
 
 	protected void OnPlayerPressSkill1_1(CharacterControllerProxyBaseGen1.SkillID skillID) {
 		base.PlayVoiceSE("v_xm_skill02_2");
-		base.OnPlayerPressSkill1(skillID);
+		this.CallBase<CharacterControllerProxyBaseGen3, Action<int>>("OnPlayerPressSkill1", skillID); // base.OnPlayerPressSkill1(skillID);
 	}
 
 	private void OnPlayerReleaseSkill1_0(CharacterControllerProxyBaseGen1.SkillID skillID) {
@@ -403,7 +486,7 @@ public class CH093_Controller : CharacterControllerProxyBaseGen3 {
 			this._isSkillShooting = false;
 			this.ToggleWeapon(CharacterControllerProxyBaseGen1.WeaponState.NORMAL);
 		}
-		base.LogicUpdateCharacterDepend();
+		this.CallBase<CharacterControllerProxyBaseGen3>("LogicUpdateCharacterDepend"); // base.LogicUpdateCharacterDepend();
 	}
 
 	public override int GetUniqueWeaponType() {

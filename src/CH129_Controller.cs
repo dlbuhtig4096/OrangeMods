@@ -6,6 +6,10 @@ using UnityEngine;
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
 
 public class CH129_Controller : CharacterControlBase {
+
+	public CH129_Controller() : base() {}
+	
+	public CH129_Controller(IntPtr p) : base(p) {}
     
 	private void OnEnable() {
 		MonoBehaviourSingleton<GameLogicUpdateManager>.Instance.AddUpdate(new ILogicUpdate(this.Pointer));

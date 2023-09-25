@@ -6,6 +6,10 @@ using Il2CppInterop.Runtime.InteropTypes.Arrays;
 
 public class CH107_CharacterMaterial : CharacterMaterial {
 
+	public CH107_CharacterMaterial() : base() {}
+	
+	public CH107_CharacterMaterial(IntPtr p) : base(p) {}
+
 	public override void UpdatePropertyBlock() {
 		this.UpdateColor();
 		this.UpdateDissolve();
@@ -52,6 +56,10 @@ public class CH107_CharacterMaterial : CharacterMaterial {
 
 
 public class CH107_Controller : CharacterControlBase {
+
+	public CH107_Controller() : base() {}
+	
+	public CH107_Controller(IntPtr p) : base(p) {}
     
 	private void OnEnable() {
 		MonoBehaviourSingleton<GameLogicUpdateManager>.Instance.AddUpdate(new ILogicUpdate(this.Pointer));

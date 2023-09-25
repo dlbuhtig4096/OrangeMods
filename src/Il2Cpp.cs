@@ -13,7 +13,6 @@ using Mono.Cecil;
 using FieldInfo = Il2CppSystem.Reflection.FieldInfo;
 using Object = Il2CppSystem.Object;
 
-
 // ReSharper disable All
 #pragma warning disable 8603
 #pragma warning disable 8625

@@ -5,6 +5,11 @@ using UnityEngine;
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
 
 public class CH091_Controller : CharacterControlBase {
+
+	public CH091_Controller() : base() {}
+	
+	public CH091_Controller(IntPtr p) : base(p) {}
+
 	public override void Start() {
 		this.CallBase<CharacterControlBase>("Start"); // base.Start();
 		this.InitializeSkill();

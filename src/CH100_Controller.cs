@@ -6,14 +6,65 @@ using Il2CppInterop.Runtime.InteropTypes.Arrays;
 
 public class CH100_ShungokusatsuDummy : CollideBullet {
 
+	public CH100_ShungokusatsuDummy() : base() {}
+	
+	public CH100_ShungokusatsuDummy(IntPtr p) : base(p) {}
+
+	/*
+	public override void Active(LayerMask pTargetMask) {
+		this.IsDestroy = false;
+		this.TargetMask = pTargetMask;
+		if (this.BulletData.n_TARGET != 3) {
+			this.TargetMask |= this.BulletMask;
+			this.TargetMask |= this.BulletScriptableObjectInstance.BulletLayerMaskObstacle;
+		}
+		if (this.FxMuzzleFlare != "null") {
+			FxManager_.Play(this.FxMuzzleFlare, base.transform, Quaternion.identity);
+		}
+		if (this.CoroutineMove != null) {
+			base.StopCoroutine(this.CoroutineMove);
+		}
+		this.bIsEnd = false;
+		this.CoroutineMove = base.StartCoroutine(this.OnStartMove());
+		this._rigidbody2D.WakeUp();
+		if ((base.gameObject.layer == ManagedSingleton<OrangeLayerManager>.Instance.PlayerLayer || base.gameObject.layer == ManagedSingleton<OrangeLayerManager>.Instance.RenderPlayer) && base.GetComponentInParent<OrangeCharacter>() != null) {
+			base.gameObject.layer = ManagedSingleton<OrangeLayerManager>.Instance.BulletLayer;
+		}
+		if (base.GetComponentInParent<OrangeCharacter>() != null) {
+			this.isCharacter_root = true;
+		}
+		base.SoundSource.UpdateDistanceCall();
+		this.PlayUseSE(false);
+	}
+	*/
+
 	public override void Active(Vector3 pPos, Vector3 pDirection, LayerMask pTargetMask, IAimTarget pTarget = null) {
 		Plugin.Log.LogWarning("射發這個子彈請用Transform");
+
 		this.CallBase<CollideBullet, Action<Vector3, Vector3, LayerMask, IAimTarget>>("Active", pPos, pDirection, pTargetMask, pTarget); // base.Active(pPos, pDirection, pTargetMask, pTarget);
+		/*
+		this._transform.position = pPos;
+		FxManager_.UpdateFx(this.bulletFxArray, true, ParticleSystemStopBehavior.StopEmitting); // MonoBehaviourSingleton<FxManager>.Instance.UpdateFx(this.bulletFxArray, true, ParticleSystemStopBehavior.StopEmitting);
+		this._rigidbody2D.WakeUp();
+		this.Active(pTargetMask);
+		*/
+		
 		this.SyncInfoToOwner(pDirection, pTarget);
 	}
 
 	public override void Active(Transform pTransform, Vector3 pDirection, LayerMask pTargetMask, IAimTarget pTarget = null) {
+		for (int i = 0; i < this.bulletFxArray.Length; i++) {
+            Plugin.Log.LogWarning($"{i} / {this.bulletFxArray.Length}: {this.bulletFxArray[i]}");
+		}
 		this.CallBase<CollideBullet, Action<Transform, Vector3, LayerMask, IAimTarget>>("Active", pTransform, pDirection, pTargetMask, pTarget); // base.Active(pTransform, pDirection, pTargetMask, pTarget);
+		/*
+		Plugin.Log.LogWarning("NOPE");
+		this._transform.position = pTransform.position;
+		FxManager_.UpdateFx(this.bulletFxArray, true, ParticleSystemStopBehavior.StopEmitting); // MonoBehaviourSingleton<FxManager>.Instance.UpdateFx(this.bulletFxArray, true, ParticleSystemStopBehavior.StopEmitting);
+		this._rigidbody2D.WakeUp();
+		this.Active(pTargetMask);
+		*/
+
 		this._transform.SetParent(pTransform);
 		this._transform.localPosition = Vector3.zero;
 		this._transform.localRotation = Quaternion.identity;
@@ -45,7 +96,36 @@ public class CH100_ShungokusatsuDummy : CollideBullet {
 	}
 
 	public override void BackToPool() {
-		this.CallBase<CollideBullet>("BackToPool"); // base.BackToPool();
+		// this.CallBase<CollideBullet>("BackToPool"); // base.BackToPool();
+		if (this.BackCallback != null) {
+			((Action<Il2CppSystem.Object>)(object)(this.BackCallback))((Il2CppSystem.Object)(object)this);
+			this.BackCallback = null;
+		}
+		this.IsDestroy = false;
+		this.IsActivate = false;
+		this.bIsEnd = true;
+		this.ClearInColliderBuff();
+		this._hitCount.Clear();
+		if (this._hitCollider) {
+			this._hitCollider.enabled = false;
+		}
+		this.targetPos = new Vector3(10000f, 10000f, 0f);
+		// MonoBehaviourSingleton<FxManager>.Instance.UpdateFx(this.bulletFxArray, false, ParticleSystemStopBehavior.StopEmitting);
+		FxManager_.UpdateFx(this.bulletFxArray, false, ParticleSystemStopBehavior.StopEmitting);
+		this._rigidbody2D.Sleep();
+		this.isBuffTrigger = false;
+		if (this._UseSE != null && this._UseSE[2] != "") {
+			base.SoundSource.PlaySE(this._UseSE[0], this._UseSE[2], 0f);
+		}
+		Singleton<GenericEventManager>.Instance.NotifyEvent<CollideBullet>(EventManager.ID.STAGE_BULLET_UNREGISTER, this);
+		if (this.bNeedBackPoolColliderBullet) {
+			MonoBehaviourSingleton<PoolManager>.Instance.BackToPool<CollideBullet>(this, "PoolColliderBullet");
+			return;
+		}
+		if (this.bNeedBackPoolModelName) {
+			MonoBehaviourSingleton<PoolManager>.Instance.BackToPool<CollideBullet>(this, this.itemName);
+		}
+
 		this._player = null;
 		this._owner = null;
 		MonoBehaviourSingleton<PoolManager>.Instance.BackToPool<PoolBaseObject>(this, this.itemName);
@@ -57,6 +137,11 @@ public class CH100_ShungokusatsuDummy : CollideBullet {
 }
 
 public class CH100_Controller : CharacterControlBase {
+
+	public CH100_Controller() : base() {}
+	
+	public CH100_Controller(IntPtr p) : base(p) {}
+
 	public override Il2CppStringArray GetCharacterDependAnimations() {
 		return new Il2CppStringArray(
 			new string[] {

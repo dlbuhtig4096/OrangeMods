@@ -9,6 +9,10 @@ using Il2CppInterop.Runtime.InteropTypes.Arrays;
 
 public class CH106_BeamBullet : BeamBullet {
 
+	public CH106_BeamBullet() : base() {}
+	
+	public CH106_BeamBullet(IntPtr p) : base(p) {}
+
 	protected void OnApplicationPause(bool pause) {
 		this.bGamePause = pause;
 		if (this.bGamePause) {
@@ -283,6 +287,10 @@ public class CH106_BeamBullet : BeamBullet {
 }
 
 public class CH106_Controller : CharacterControlBase {
+
+	public CH106_Controller() : base() {}
+	
+	public CH106_Controller(IntPtr p) : base(p) {}
 
 	public override Il2CppStringArray GetCharacterDependAnimations() {
 		return new Il2CppStringArray(

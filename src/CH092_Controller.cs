@@ -6,6 +6,10 @@ using Il2CppInterop.Runtime.InteropTypes.Arrays;
 
 public class CH092_Controller : CharacterControlBase {
 
+	public CH092_Controller() : base() {}
+	
+	public CH092_Controller(IntPtr p) : base(p) {}
+
 	public override Il2CppStringArray GetCharacterDependAnimations() {
 		return new Il2CppStringArray(
 			new string[] {
