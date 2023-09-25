@@ -6,9 +6,13 @@ using Il2CppInterop.Runtime.InteropTypes.Arrays;
 
 public class CH107_CharacterMaterial : CharacterMaterial {
 
-	public CH107_CharacterMaterial() : base() {}
+	public CH107_CharacterMaterial() : base() {
+		this.OutlineColor = new Color(0.142f, 0.168f, 0.227f);
+	}
 	
-	public CH107_CharacterMaterial(IntPtr p) : base(p) {}
+	public CH107_CharacterMaterial(IntPtr p) : base(p) {
+		this.OutlineColor = new Color(0.142f, 0.168f, 0.227f);
+	}
 
 	public override void UpdatePropertyBlock() {
 		this.UpdateColor();

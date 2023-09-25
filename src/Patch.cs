@@ -305,6 +305,15 @@ __label_ret:
     }
 }
 
+[HarmonyPatch(typeof(StandaloneConsoleStorage_))]
+class StandaloneConsoleStorage_ {
+    [HarmonyPrefix]
+    [HarmonyPatch(nameof(StandaloneConsoleStorage.AutoSave))]
+    public static bool AutoSave() {
+        return false;
+    }
+}
+
 [BepInPlugin(OrangeMods.MyPluginInfo.PLUGIN_GUID, OrangeMods.MyPluginInfo.PLUGIN_NAME, OrangeMods.MyPluginInfo.PLUGIN_VERSION)]
 public class Plugin : BasePlugin {
     public static new ManualLogSource Log;
@@ -326,6 +335,7 @@ public class Plugin : BasePlugin {
 
         Harmony.CreateAndPatchAll(typeof(PlayerStatus_));
         Harmony.CreateAndPatchAll(typeof(BulletBase_));
+        Harmony.CreateAndPatchAll(typeof(StandaloneConsoleStorage_));
         Harmony.CreateAndPatchAll(typeof(CharacterControlFactory_));
 
         _inject(typeof(CH091_Controller), new Type[] {typeof(ILogicUpdate)});
@@ -335,6 +345,7 @@ public class Plugin : BasePlugin {
         _inject(typeof(CH099_Controller), new Type[] {typeof(ILogicUpdate)});
         _inject(typeof(CH100_ShungokusatsuDummy), new Type[] {} );
         _inject(typeof(CH100_Controller), new Type[] {typeof(ILogicUpdate)});
+        _inject(typeof(CH106_BeamBullet), new Type[] {typeof(ILogicUpdate)});
         _inject(typeof(CH106_Controller), new Type[] {typeof(ILogicUpdate)});
         _inject(typeof(CH107_CharacterMaterial), new Type[] {} );
         _inject(typeof(CH107_Controller), new Type[] {typeof(ILogicUpdate)});

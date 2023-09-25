@@ -6,9 +6,15 @@ using Il2CppInterop.Runtime.InteropTypes.Arrays;
 
 public class CH100_ShungokusatsuDummy : CollideBullet {
 
-	public CH100_ShungokusatsuDummy() : base() {}
+	public CH100_ShungokusatsuDummy() : base() {
+		this._hitCount = new Il2CppSystem.Collections.Generic.Dictionary<Transform, int>();
+		this.bulletFxArray = new ParticleSystem[0];
+	}
 	
-	public CH100_ShungokusatsuDummy(IntPtr p) : base(p) {}
+	public CH100_ShungokusatsuDummy(IntPtr p) : base(p) {
+		this._hitCount = new Il2CppSystem.Collections.Generic.Dictionary<Transform, int>();
+		this.bulletFxArray = new ParticleSystem[0];
+	}
 
 	/*
 	public override void Active(LayerMask pTargetMask) {
@@ -110,8 +116,7 @@ public class CH100_ShungokusatsuDummy : CollideBullet {
 			this._hitCollider.enabled = false;
 		}
 		this.targetPos = new Vector3(10000f, 10000f, 0f);
-		// MonoBehaviourSingleton<FxManager>.Instance.UpdateFx(this.bulletFxArray, false, ParticleSystemStopBehavior.StopEmitting);
-		FxManager_.UpdateFx(this.bulletFxArray, false, ParticleSystemStopBehavior.StopEmitting);
+		MonoBehaviourSingleton<FxManager>.Instance.UpdateFx(this.bulletFxArray, false, ParticleSystemStopBehavior.StopEmitting);
 		this._rigidbody2D.Sleep();
 		this.isBuffTrigger = false;
 		if (this._UseSE != null && this._UseSE[2] != "") {

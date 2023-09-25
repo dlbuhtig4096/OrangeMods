@@ -109,6 +109,7 @@ public static class FxManager_ {
 		return default(T);
 	}
 
+	/*
     public static void UpdateFx(ParticleSystem[] p_fxArray, bool p_active, ParticleSystemStopBehavior particleSystemStopBehavior = ParticleSystemStopBehavior.StopEmitting) {
 		
         if (p_active) {
@@ -116,7 +117,7 @@ public static class FxManager_ {
                 // Plugin.Log.LogWarning($"{i} / {p_fxArray.Length}: {p_fxArray[i]}");
                 ParticleSystem particleSystem = p_fxArray[i];
 				FxManager.Instance.RegisterFxBase(particleSystem);
-				// particleSystem.Simulate(0f, false, true); // Access Violation
+				particleSystem.Simulate(0f, false, true); // Access Violation
 				particleSystem.Play(false);
 			}
 			return;
@@ -131,4 +132,5 @@ public static class FxManager_ {
 			particleSystem.Stop(false, particleSystemStopBehavior);
 		}
 	}
+	*/
 }

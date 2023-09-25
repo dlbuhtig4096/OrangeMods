@@ -9,9 +9,13 @@ using Il2CppInterop.Runtime.InteropTypes.Arrays;
 
 public class CH106_BeamBullet : BeamBullet {
 
-	public CH106_BeamBullet() : base() {}
+	public CH106_BeamBullet() : base() {
+		this.bulletFxArray = new ParticleSystem[0];
+	}
 	
-	public CH106_BeamBullet(IntPtr p) : base(p) {}
+	public CH106_BeamBullet(IntPtr p) : base(p) {
+		this.bulletFxArray = new ParticleSystem[0];
+	}
 
 	protected void OnApplicationPause(bool pause) {
 		this.bGamePause = pause;
