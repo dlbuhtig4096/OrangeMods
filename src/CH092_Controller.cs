@@ -446,12 +446,10 @@ public class CH092_Controller : CharacterControlBase {
 			Vector3 v = vector.Value;
 			float x = v.x;
 			int num = Math.Sign(x);
-			/*
-			if (this._refEntity._characterDirection != (CharacterDirection)num && Mathf.Abs(vector.Value.x) > 0.05f) {
-				this._refEntity._characterDirection = this._refEntity._characterDirection * CharacterDirection.LEFT;
-				this._refEntity.ShootDirection = vector.Value;
-			}
-			*/
+			//if (this._refEntity._characterDirection != (CharacterDirection)num && Mathf.Abs(vector.Value.x) > 0.05f) {
+			//	this._refEntity._characterDirection = this._refEntity._characterDirection * CharacterDirection.LEFT;
+			//	this._refEntity.ShootDirection = vector.Value;
+			//}
 			if ((int)this._refEntity._characterDirection != num && Mathf.Abs(x) > 0.05f) {
 				this._refEntity._characterDirection = (CharacterDirection)(-(int)this._refEntity._characterDirection);
 				this._refEntity.ShootDirection = v;

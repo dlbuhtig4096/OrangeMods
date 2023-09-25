@@ -8,12 +8,12 @@ public class CH100_ShungokusatsuDummy : CollideBullet {
 
 	public override void Active(Vector3 pPos, Vector3 pDirection, LayerMask pTargetMask, IAimTarget pTarget = null) {
 		Plugin.Log.LogWarning("射發這個子彈請用Transform");
-		this.CallBase<CollideBullet, Action<Vector3, Vector3, LayerMask, IAimTarget>>("Active", new object[] {pPos, pDirection, pTargetMask, pTarget}); // base.Active(pPos, pDirection, pTargetMask, pTarget);
+		this.CallBase<CollideBullet, Action<Vector3, Vector3, LayerMask, IAimTarget>>("Active", pPos, pDirection, pTargetMask, pTarget); // base.Active(pPos, pDirection, pTargetMask, pTarget);
 		this.SyncInfoToOwner(pDirection, pTarget);
 	}
 
 	public override void Active(Transform pTransform, Vector3 pDirection, LayerMask pTargetMask, IAimTarget pTarget = null) {
-		this.CallBase<CollideBullet, Action<Transform, Vector3, LayerMask, IAimTarget>>("Active", new object[] {pTransform, pDirection, pTargetMask, pTarget}); // base.Active(pTransform, pDirection, pTargetMask, pTarget);
+		this.CallBase<CollideBullet, Action<Transform, Vector3, LayerMask, IAimTarget>>("Active", pTransform, pDirection, pTargetMask, pTarget); // base.Active(pTransform, pDirection, pTargetMask, pTarget);
 		this._transform.SetParent(pTransform);
 		this._transform.localPosition = Vector3.zero;
 		this._transform.localRotation = Quaternion.identity;
@@ -40,7 +40,7 @@ public class CH100_ShungokusatsuDummy : CollideBullet {
 			return;
 		}
 		if (this._player.CurMainStatus == OrangeCharacter.MainStatus.SKILL && this._player.CurSubStatus == OrangeCharacter.SubStatus.SKILL1_1) {
-			this.CallBase<CollideBullet, Action<Collider2D>>("OnTriggerStay2D", new object[] {col}); // base.OnTriggerStay2D(col);
+			this.CallBase<CollideBullet, Action<Collider2D>>("OnTriggerStay2D", col); // base.OnTriggerStay2D(col);
 		}
 	}
 
