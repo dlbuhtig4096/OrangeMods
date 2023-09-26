@@ -18,43 +18,43 @@ class PlayerStatus_ {
     [HarmonyPatch("op_Addition", typeof(PlayerStatus), typeof(WeaponStatus))]
     static bool op_Addition(PlayerStatus a, WeaponStatus b, ref PlayerStatus __result) {
         __result = new PlayerStatus {
-			nHP = a.nHP + b.nHP,
-			nATK = a.nATK + b.nATK,
-			nDEF = a.nDEF + b.nDEF,
-			nCRI = a.nCRI + b.nCRI,
-			nHIT = a.nHIT + b.nHIT,
-			nLuck = a.nLuck + b.nLuck,
-			nDOD = a.nDOD,
-			nLV = a.nLV,
-			nCriDmgPercent = a.nCriDmgPercent + b.nCriDmgPercent,
-			nReduceCriPercent = a.nReduceCriPercent + b.nReduceCriPercent,
-			nBlockDmgPercent = a.nBlockDmgPercent + b.nBlockDmgPercent,
-			nBlockPercent = a.nBlockPercent + b.nBlockPercent,
-			nReduceBlockPercent = a.nReduceBlockPercent + b.nReduceBlockPercent
-		};
+            nHP = a.nHP + b.nHP,
+            nATK = a.nATK + b.nATK,
+            nDEF = a.nDEF + b.nDEF,
+            nCRI = a.nCRI + b.nCRI,
+            nHIT = a.nHIT + b.nHIT,
+            nLuck = a.nLuck + b.nLuck,
+            nDOD = a.nDOD,
+            nLV = a.nLV,
+            nCriDmgPercent = a.nCriDmgPercent + b.nCriDmgPercent,
+            nReduceCriPercent = a.nReduceCriPercent + b.nReduceCriPercent,
+            nBlockDmgPercent = a.nBlockDmgPercent + b.nBlockDmgPercent,
+            nBlockPercent = a.nBlockPercent + b.nBlockPercent,
+            nReduceBlockPercent = a.nReduceBlockPercent + b.nReduceBlockPercent
+        };
         return false;
     }
 
     [HarmonyPrefix]
     [HarmonyPatch("op_Addition", typeof(PlayerStatus), typeof(PlayerStatus))]
     static bool op_Addition(PlayerStatus a, PlayerStatus b, ref PlayerStatus __result) {
-		__result = new PlayerStatus {
-			nHP = a.nHP + b.nHP,
-			nATK = a.nATK + b.nATK,
-			nDEF = a.nDEF + b.nDEF,
-			nCRI = a.nCRI + b.nCRI,
-			nHIT = a.nHIT + b.nHIT,
-			nLuck = a.nLuck + b.nLuck,
-			nDOD = a.nDOD + b.nDOD,
-			nLV = a.nLV,
-			nCriDmgPercent = a.nCriDmgPercent + b.nCriDmgPercent,
-			nReduceCriPercent = a.nReduceCriPercent + b.nReduceCriPercent,
-			nBlockDmgPercent = a.nBlockDmgPercent + b.nBlockDmgPercent,
-			nBlockPercent = a.nBlockPercent + b.nBlockPercent,
-			nReduceBlockPercent = a.nReduceBlockPercent + b.nReduceBlockPercent
-		};
+        __result = new PlayerStatus {
+            nHP = a.nHP + b.nHP,
+            nATK = a.nATK + b.nATK,
+            nDEF = a.nDEF + b.nDEF,
+            nCRI = a.nCRI + b.nCRI,
+            nHIT = a.nHIT + b.nHIT,
+            nLuck = a.nLuck + b.nLuck,
+            nDOD = a.nDOD + b.nDOD,
+            nLV = a.nLV,
+            nCriDmgPercent = a.nCriDmgPercent + b.nCriDmgPercent,
+            nReduceCriPercent = a.nReduceCriPercent + b.nReduceCriPercent,
+            nBlockDmgPercent = a.nBlockDmgPercent + b.nBlockDmgPercent,
+            nBlockPercent = a.nBlockPercent + b.nBlockPercent,
+            nReduceBlockPercent = a.nReduceBlockPercent + b.nReduceBlockPercent
+        };
         return false;
-	}
+    }
 }
 
 [HarmonyPatch(typeof(BulletBase))]
@@ -71,89 +71,89 @@ class BulletBase_ {
     static bool CalclDmgOnly(SKILL_TABLE pData, StageObjBase tSOB, ref int __result, ref BulletBase __instance)
     {
         float fDmg = 0, fBaseAtk = 0, fBaseDmg = 0;
-		
+        
         int tSOBType, nCurrentWeapon = 0, nLastHitStatus = 1;        
         int n_EFFECT = pData.n_EFFECT;
         
-		__instance.damageType = VisualDamage.DamageType.Normal;
+        __instance.damageType = VisualDamage.DamageType.Normal;
         tSOBType = tSOB.GetSOBType();
 
         if (tSOB.GetCurrentWeapon() == 1) {
-			nCurrentWeapon = 1;
-			nLastHitStatus |= 64;
-		}
+            nCurrentWeapon = 1;
+            nLastHitStatus |= 64;
+        }
 
         switch (n_EFFECT) {
-		case 0:
-			if (tSOB.IsUnBreakX() && pData.n_TARGET != 2 && pData.n_TARGET != 3) {
+        case 0:
+            if (tSOB.IsUnBreakX() && pData.n_TARGET != 2 && pData.n_TARGET != 3) {
                 nLastHitStatus = nLastHitStatus | 128;
                 __result = 5;
                 goto __label_ret;
-			}
+            }
 
 __label_4_ex:
             nLastHitStatus = 0;
 __label_4:
-		    __result = 4;
+            __result = 4;
             goto __label_ret;
 
-		case 26:
-			goto __label_4_ex;
+        case 26:
+            goto __label_4_ex;
             
         // Healing
-		case 2:
+        case 2:
             fDmg = ((float)__instance.nAtk * pData.f_EFFECT_X + pData.f_EFFECT_Y + (float)tSOB.MaxHp * pData.f_EFFECT_Z) * 0.01f;
-			fDmg += fDmg * ((float)__instance.refPBMShoter.sBuffStatus.nHealEnhance * 0.01f);
+            fDmg += fDmg * ((float)__instance.refPBMShoter.sBuffStatus.nHealEnhance * 0.01f);
             nLastHitStatus = 4;
-			__result = 3;
+            __result = 3;
             goto __label_set;
 
         // Status
-		case 3:
-		case 5:
-		case 6:
-		case 14:
-		case 16:
-			nLastHitStatus = 16;
-			__result = 1;
+        case 3:
+        case 5:
+        case 6:
+        case 14:
+        case 16:
+            nLastHitStatus = 16;
+            __result = 1;
             goto __label_set;
 
         // ???
-		case 10:
-			goto __label_4_ex;
+        case 10:
+            goto __label_4_ex;
 
-		case 4:
-		case 7:
-		case 8:
-			goto __label_4;
+        case 4:
+        case 7:
+        case 8:
+            goto __label_4;
 
         // Similar to 0, but no nLastHitStatus = 0 in the else block
-		case 18:
-		case 19:
-		case 20:
-			if (tSOB.IsUnBreakX() && pData.n_TARGET != 2 && pData.n_TARGET != 3) {
+        case 18:
+        case 19:
+        case 20:
+            if (tSOB.IsUnBreakX() && pData.n_TARGET != 2 && pData.n_TARGET != 3) {
                 nLastHitStatus = nLastHitStatus | 128;
                 __result = 5;
                 goto __label_ret;
-			}
-			goto __label_4;
+            }
+            goto __label_4;
 
         // ???
-		case 24:
-			if (tSOB.IsUnBreakX()) {
-				goto __label_4;
-			}
+        case 24:
+            if (tSOB.IsUnBreakX()) {
+                goto __label_4;
+            }
 
-			if (tSOBType == 1 && StageUpdate.bIsHost) {
-				OrangeCharacter orangeCharacter = tSOB as OrangeCharacter;
-				if ((orangeCharacter.bNeedUpdateAlways || MonoBehaviourSingleton<OrangeBattleServerManager>.Instance.CheckPlayerPause(orangeCharacter.sNetSerialID)) && orangeCharacter != null && !orangeCharacter.IsDead() && !orangeCharacter.IsInvincible) {
-					if (pData.f_EFFECT_X != 0f || orangeCharacter.selfBuffManager.CheckHasEffectByCONDITIONID((int)pData.f_EFFECT_X, 0)) {
-						orangeCharacter.Controller.LogicPosition = new VInt3(__instance.refPBMShoter.SOB._transform.position);
-						orangeCharacter._transform.position = orangeCharacter.Controller.LogicPosition.vec3;
-					}
-				}
-			}
-			goto __label_4;
+            if (tSOBType == 1 && StageUpdate.bIsHost) {
+                OrangeCharacter orangeCharacter = tSOB as OrangeCharacter;
+                if ((orangeCharacter.bNeedUpdateAlways || MonoBehaviourSingleton<OrangeBattleServerManager>.Instance.CheckPlayerPause(orangeCharacter.sNetSerialID)) && orangeCharacter != null && !orangeCharacter.IsDead() && !orangeCharacter.IsInvincible) {
+                    if (pData.f_EFFECT_X != 0f || orangeCharacter.selfBuffManager.CheckHasEffectByCONDITIONID((int)pData.f_EFFECT_X, 0)) {
+                        orangeCharacter.Controller.LogicPosition = new VInt3(__instance.refPBMShoter.SOB._transform.position);
+                        orangeCharacter._transform.position = orangeCharacter.Controller.LogicPosition.vec3;
+                    }
+                }
+            }
+            goto __label_4;
 
         // Always hit
         case 12:
@@ -165,7 +165,7 @@ __label_4:
         case 13:
             goto __label_dmg;
 
-		}
+        }
 
         // Hit check
         if (!(tSOB.GetDOD(nCurrentWeapon) - __instance.nHit < OrangeBattleUtility.Random(0, 10000)) || !(__instance.fMissFactor * 100f <= (float)OrangeBattleUtility.Random(0, 10000))) {
@@ -296,8 +296,8 @@ __label_set:
         if (fBaseDmg < 0f) { fBaseDmg = 0; }
         if (fDmg < 0f) { fDmg = 0; }
         __instance.nDmg = (fMax > fDmg) ? (int)fDmg : 0x7fffffff;
-		__instance.nBaseAtk = (fMax > fBaseAtk) ? (int)fBaseAtk : 0x7fffffff;
-		__instance.nBaseDmg = (fMax > fBaseDmg) ? (int)fBaseDmg : 0x7fffffff;
+        __instance.nBaseAtk = (fMax > fBaseAtk) ? (int)fBaseAtk : 0x7fffffff;
+        __instance.nBaseDmg = (fMax > fBaseDmg) ? (int)fBaseDmg : 0x7fffffff;
 
 __label_ret:
         __instance.nLastHitStatus = nLastHitStatus;
@@ -337,6 +337,12 @@ public class Plugin : BasePlugin {
         Harmony.CreateAndPatchAll(typeof(BulletBase_));
         Harmony.CreateAndPatchAll(typeof(StandaloneConsoleStorage_));
         Harmony.CreateAndPatchAll(typeof(CharacterControlFactory_));
+
+        _inject(typeof(BeamBullet_), new Type[] {});
+        _inject(typeof(CollideBullet_), new Type[] {});
+        _inject(typeof(CharacterMaterial_), new Type[] {});
+        _inject(typeof(CharacterControlBase_), new Type[] {});
+        _inject(typeof(CharacterControllerProxyBaseGen3_), new Type[] {});
 
         _inject(typeof(CH091_Controller), new Type[] {typeof(ILogicUpdate)});
         _inject(typeof(CH092_Controller), new Type[] {typeof(ILogicUpdate)});

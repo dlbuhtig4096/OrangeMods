@@ -13,14 +13,20 @@
       https://nuget.samboy.dev/v3/index.json
     </RestoreAdditionalProjectSources>
     <RootNamespace>OrangeMods</RootNamespace>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <EnableDefaultEmbeddedResourceItems>false</EnableDefaultEmbeddedResourceItems>
+    <EnableDefaultNoneItems>false</EnableDefaultNoneItems>
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="..\src\*.cs">
+      <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
+
     <!--<PackageReference Include="BepInEx.Unity.IL2CPP" Version="6.0.0-be.*" IncludeAssets="compile" />-->
     <PackageReference Include="BepInEx.PluginInfoProps" Version="2.*" />
-  </ItemGroup>
-  
-  <ItemGroup>
+
     <!-- Game assemblies -->
     <Reference Include="Assembly-CSharp" Publicize="true">
       <HintPath>$(Orange)\BepInEx\interop\Assembly-CSharp.dll</HintPath>
