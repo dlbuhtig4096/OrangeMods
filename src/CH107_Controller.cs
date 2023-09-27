@@ -5,6 +5,8 @@ using UnityEngine;
 
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
 
+using CallbackDefs;
+
 public class CH107_CharacterMaterial : CharacterMaterial_ {
 
     public CH107_CharacterMaterial() : base() {}
@@ -36,6 +38,85 @@ public class CH107_CharacterMaterial : CharacterMaterial_ {
             this.mpb.SetFloat(instance.i_AlphaValue, Mathf.Min(a, @float));
         }
     }
+
+    // ==============================================================================================================================================
+    /*
+    public int Appear(Callback callback = null, float overrideDissolveTime = -1f) {
+		if (this.EffectOBJ != null) {
+			this.EffectOBJ.gameObject.SetActive(true);
+		}
+		if (this.isCustomRender) {
+			callback.CheckTargetToInvoke();
+			return -1;
+		}
+		if (this.SubCharacterMaterials != null) {
+			this.SubCharacterMaterials.Appear(null, overrideDissolveTime);
+		}
+		OrangeMaterialProperty prop = MonoBehaviourSingleton<OrangeMaterialProperty>.Instance;
+		this.ClearMaterialTween(true);
+		this.mpb.SetFloat(prop.i_RimMin, this.RimMin);
+		this.mpb.SetFloat(prop.i_RimMax, this.RimMax);
+		this.mpb.SetColor(prop.i_RimColor, this.RimColor);
+		float @float = this.mpb.GetFloat(prop.i_DissolveValue);
+		float num = ((overrideDissolveTime == -1f) ? this.DissolveTime : overrideDissolveTime);
+		Callback m_cb = callback;
+		if (num == 0f) {
+			this.mpb.SetFloat(prop.i_DissolveValue, 0f);
+			this.AppearTweenUid = -1;
+			this.UpdatePropertyBlock();
+			m_cb.CheckTargetToInvoke();
+			return -1;
+		}
+
+		return this.AppearTweenUid = LeanTween.value(
+            this.gameObject, @float, 0f, num
+        ).setOnUpdate((Action<float>)delegate(float val) {
+			this.mpb.SetFloat(prop.i_DissolveValue, val);
+			this.UpdatePropertyBlock();
+		}).setOnComplete((Action)delegate {
+			this.AppearTweenUid = -1;
+			this.UpdatePropertyBlock();
+			m_cb.CheckTargetToInvoke();
+		})
+			.uniqueId;
+	}
+
+    public int Disappear(Callback callback = null, float overrideDissolveTime = -1f) {
+		if (this.EffectOBJ != null) {
+			this.EffectOBJ.gameObject.SetActive(false);
+		}
+		if (this.isCustomRender) {
+			callback.CheckTargetToInvoke();
+			return -1;
+		}
+		if (this.SubCharacterMaterials != null) {
+			this.SubCharacterMaterials.Disappear(null, overrideDissolveTime);
+		}
+		OrangeMaterialProperty prop = MonoBehaviourSingleton<OrangeMaterialProperty>.Instance;
+		this.ClearMaterialTween(true);
+		float @float = this.mpb.GetFloat(prop.i_DissolveValue);
+		Callback m_cb = callback;
+		float num = ((overrideDissolveTime == -1f) ? this.DissolveTime : overrideDissolveTime);
+
+		return this.DisappearTweenUid = LeanTween.value(
+            this.gameObject, @float, 1f, num
+        ).setOnUpdate((Action<float>)delegate(float val) {
+			this.mpb.SetFloat(prop.i_DissolveValue, val);
+			this.UpdatePropertyBlock();
+		}).setOnComplete((Action)delegate {
+			this.DisappearTweenUid = -1;
+			m_cb.CheckTargetToInvoke();
+		})
+			.uniqueId;
+	}
+    
+    public void UpdateEmission(float emissionIntensity) {
+		this.EmissionIntensity = emissionIntensity;
+		this.mpb.SetFloat(MonoBehaviourSingleton<OrangeMaterialProperty>.Instance.i_Intensity, emissionIntensity);
+		this.UpdatePropertyBlock();
+	}
+    */
+    // ==============================================================================================================================================
 
     // [SerializeField]
     private bool canChangeColor;
@@ -297,21 +378,27 @@ public class CH107_Controller : CharacterControlBase_ {
 
     private void PlayLightningFx() {
         this.isLightningStatus = true;
-        this._refEntity.CharacterMaterials.ClearSubCharacterMaterial();
-        this._refEntity.CharacterMaterials.SetSubCharacterMaterial(this.hairLightning);
+        // this._refEntity.CharacterMaterials.ClearSubCharacterMaterial();
+        // this._refEntity.CharacterMaterials.SetSubCharacterMaterial(this.hairLightning);
+        this._refEntity.CharacterMaterials.SubCharacterMaterials = this.hairLightning;
+
         this.hairLightning.Appear(null, 0.3f);
         this.hairNormal.Disappear(null, 1f);
         this.body.UpdateEmission(2f);
+
         this.RefreashLightningFx(true);
     }
 
     private void StopLightningFx() {
         this.isLightningStatus = false;
-        this._refEntity.CharacterMaterials.ClearSubCharacterMaterial();
-        this._refEntity.CharacterMaterials.SetSubCharacterMaterial(this.hairNormal);
+        // this._refEntity.CharacterMaterials.ClearSubCharacterMaterial();
+        // this._refEntity.CharacterMaterials.SetSubCharacterMaterial(this.hairNormal);
+        this._refEntity.CharacterMaterials.SubCharacterMaterials = this.hairNormal; 
+
         this.hairNormal.Appear(null, 0.3f);
         this.hairLightning.Disappear(null, 1f);
         this.body.UpdateEmission(0f);
+
         this.RefreashLightningFx(false);
     }
 

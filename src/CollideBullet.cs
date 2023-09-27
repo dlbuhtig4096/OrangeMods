@@ -9,11 +9,6 @@ public abstract class CollideBullet_ : CollideBullet {
     public CollideBullet_() : base(Il2CppInterop.Runtime.Injection.ClassInjector.DerivedConstructorPointer<CollideBullet_>()) {
         Il2CppInterop.Runtime.Injection.ClassInjector.DerivedConstructorBody(this);
         rtld.CollideBullet_ctor(this.Pointer);
-        
-        // New field introduced in offline
-        this.listHit = new Il2CppSystem.Collections.Generic.List<Collider2D>(); // 0x2F0
-        this.listHitID = new Il2CppSystem.Collections.Generic.List<int>(); // 0x2F8
-        this.listRemoveHit = new Il2CppSystem.Collections.Generic.List<Collider2D>(); // 0x300
     }
     
     public CollideBullet_(IntPtr p) : base(p) {
@@ -24,11 +19,11 @@ public abstract class CollideBullet_ : CollideBullet {
         this.bulletFxArray = new ParticleSystem[0];
         this.tHurtPassParam = new HurtPassParam();
 
-        */
         // New field introduced in offline
         this.listHit = new Il2CppSystem.Collections.Generic.List<Collider2D>(); // 0x2F0
         this.listHitID = new Il2CppSystem.Collections.Generic.List<int>(); // 0x2F8
         this.listRemoveHit = new Il2CppSystem.Collections.Generic.List<Collider2D>(); // 0x300
+        */
     }
 
 }
