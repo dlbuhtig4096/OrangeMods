@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.InteropServices;
 using MagicaCloth;
 using UnityEngine;
 
@@ -23,11 +24,7 @@ public class CH107_CharacterMaterial : CharacterMaterial_ {
     private void UpdateColor() {
         if (this.canChangeColor) {
             OrangeMaterialProperty instance = MonoBehaviourSingleton<OrangeMaterialProperty>.Instance;
-            if (base.gameObject.layer == ManagedSingleton<OrangeLayerManager>.Instance.DefaultLayer) {
-                this.mpb.SetColor(instance.i_TintColor, this.colors[0]);
-                return;
-            }
-            this.mpb.SetColor(instance.i_TintColor, this.colors[1]);
+            this.mpb.SetColor(instance.i_TintColor, (base.gameObject.layer == ManagedSingleton<OrangeLayerManager>.Instance.DefaultLayer) ? this.color0 : this.color1);
         }
     }
 
@@ -48,10 +45,8 @@ public class CH107_CharacterMaterial : CharacterMaterial_ {
 
     private const float factor = 3f;
 
-    private Color[] colors = new Color[] {
-        new Color(2.035294f, 2.2470589f, 2.2470589f, 1f),
-        new Color(1.5411766f, 2.2470589f, 2.2117648f, 1f)
-    };
+    private Color color0 = new Color(2.035294f, 2.2470589f, 2.2470589f, 1f);
+    private Color color1 = new Color(1.5411766f, 2.2470589f, 2.2117648f, 1f);
 }
 
 
@@ -79,7 +74,7 @@ public class CH107_Controller : CharacterControlBase_ {
     }
 
     private void InitializeSkill() {
-        // this._refEntity._transform.GetComponentsInChildren<Transform>(true).Cast<Il2CppReferenceArray<Transform>>();
+        this._refEntity._transform.GetComponentsInChildren<Transform>(true).Cast<Il2CppReferenceArray<Transform>>(); // Unused local variable?
         Transform transform = new GameObject(this.sCustomShootPoint + "0").transform;
         transform.SetParent(base.transform);
         transform.localPosition = new Vector3(0f, 2.1f, 0f);
@@ -105,6 +100,7 @@ public class CH107_Controller : CharacterControlBase_ {
                 this.body = components[i];
             }
         }
+
         this.boneCloths = this._refEntity.CharacterMaterials.gameObject.GetComponentsInChildren<MagicaBoneCloth>();
         MonoBehaviourSingleton<FxManager>.Instance.PreloadFx(this.fx_teleportIn, 1, null);
         MonoBehaviourSingleton<FxManager>.Instance.PreloadFx(this.fx_teleportOut, 1, null);
@@ -170,9 +166,6 @@ public class CH107_Controller : CharacterControlBase_ {
     public void LogicUpdate() {
         this.CheckLightninBuff();
         PerBuffManager refPBM = this._refEntity.selfBuffManager.sBuffStatus.refPBM;
-
-        // For some reason refPBM may be null
-        if (refPBM == null) { return; }
         
         if (!this.spIsFull) {
             if (refPBM.nMeasureNow == refPBM.nMeasureMax) {

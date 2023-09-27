@@ -5,16 +5,15 @@ using CallbackDefs;
 using StageLib;
 using UnityEngine;
 
-using Il2CppInterop.Runtime.InteropTypes.Arrays;
-
 public abstract class BeamBullet_ : BeamBullet {
 
     public BeamBullet_() : base(Il2CppInterop.Runtime.Injection.ClassInjector.DerivedConstructorPointer<BeamBullet_>()) {
         Il2CppInterop.Runtime.Injection.ClassInjector.DerivedConstructorBody(this);
+        rtld.BeamBullet_ctor(this.Pointer);
     }
     
     public BeamBullet_(IntPtr p) : base(p) {
-        this.bulletFxArray = new ParticleSystem[0];
+        rtld.BeamBullet_ctor(p);
     }
 
 }

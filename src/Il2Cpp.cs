@@ -245,19 +245,3 @@ public static class Reflection {
         return (System.Type)implMethod.Invoke(null, new[] { obj });
     }
 }
-
-/*
-static class rtld {
-
-    [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-    public static extern IntPtr GetModuleHandle(string lpModuleName);
-
-    public delegate void CharacterControllerProxyBaseGen3_ctor_(IntPtr _);
-    public static CharacterControllerProxyBaseGen3_ctor_ CharacterControllerProxyBaseGen3_ctor;
-
-    static rtld() {
-        IntPtr p = GetModuleHandle("GameAssembly.dll");
-        CharacterControllerProxyBaseGen3_ctor = Marshal.GetDelegateForFunctionPointer<CharacterControllerProxyBaseGen3_ctor_>(p + 5871776);
-    }
-}
-*/

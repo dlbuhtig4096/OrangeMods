@@ -438,7 +438,6 @@ public class CH093_Controller : CharacterControllerProxyBaseGen3_ {
     }
 
     public override void AttachSkillDelegateEvent() {
-        // Plugin.Log.LogWarning($"{this.OnPlayerPressSkill0Events[0]}");
         this.OnPlayerPressSkill0Events[0] = new Action<CharacterControllerProxyBaseGen1.SkillID>(this.OnPlayerPressSkill0);
         this.OnPlayerPressSkill1Events[1] = new Action<CharacterControllerProxyBaseGen1.SkillID>(this.OnPlayerPressSkill1_1);
         this.OnPlayerReleaseSkill1Events[0] = new Action<CharacterControllerProxyBaseGen1.SkillID>(this.OnPlayerReleaseSkill1_0);
