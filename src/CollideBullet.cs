@@ -4,7 +4,7 @@ using UnityEngine;
 
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
 
-public abstract class CollideBullet_ : CollideBullet {
+public class CollideBullet_ : CollideBullet {
     
     public CollideBullet_() : base(Il2CppInterop.Runtime.Injection.ClassInjector.DerivedConstructorPointer<CollideBullet_>()) {
         Il2CppInterop.Runtime.Injection.ClassInjector.DerivedConstructorBody(this);

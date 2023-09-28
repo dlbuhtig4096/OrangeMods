@@ -5,7 +5,7 @@ using UnityEngine;
 
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
 
-public abstract class CharacterControllerProxyBaseGen3_ : CharacterControllerProxyBaseGen3 {
+public class CharacterControllerProxyBaseGen3_ : CharacterControllerProxyBaseGen3 {
 
     public CharacterControllerProxyBaseGen3_(): base(Il2CppInterop.Runtime.Injection.ClassInjector.DerivedConstructorPointer<CharacterControllerProxyBaseGen3_>()) {
         Il2CppInterop.Runtime.Injection.ClassInjector.DerivedConstructorBody(this);

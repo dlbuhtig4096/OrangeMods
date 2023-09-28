@@ -6,6 +6,7 @@ using UnityEngine;
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
 
 public class CharacterControlBase_ : CharacterControlBase {
+    
     public CharacterControlBase_() : base(Il2CppInterop.Runtime.Injection.ClassInjector.DerivedConstructorPointer<CharacterControlBase_>()) {
         Il2CppInterop.Runtime.Injection.ClassInjector.DerivedConstructorBody(this);
         rtld.CharacterControlBase_ctor(this.Pointer);

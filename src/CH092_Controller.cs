@@ -549,8 +549,14 @@ public class CH092_Controller : CharacterControlBase_ {
         if (component == null || component.tLinkSOB == null) {
             return;
         }
-        UnityEngine.Object exists = component.tLinkSOB as OrangeCharacter;
-        EnemyControllerBase exists2 = component.tLinkSOB as EnemyControllerBase;
+        
+        // UnityEngine.Object exists = component.tLinkSOB as OrangeCharacter;
+        // EnemyControllerBase exists2 = component.tLinkSOB as EnemyControllerBase;
+        StageObjBase SOB = component.tLinkSOB;
+        OrangeCharacter exists = null;
+        EnemyControllerBase exists2 = null;
+        try { exists = SOB.Cast<OrangeCharacter>(); } catch ( Exception e ) {}
+        try { exists2 = SOB.Cast<EnemyControllerBase>(); } catch ( Exception e ) {}
         if (exists || exists2) {
             this._refEntity.BulletCollider.BackToPool();
             this._refEntity.BulletCollider.HitCallback = null;

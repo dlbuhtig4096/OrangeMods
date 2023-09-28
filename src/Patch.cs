@@ -319,12 +319,18 @@ public class Plugin : BasePlugin {
     public static new ManualLogSource Log;
 
     public void _inject(Type cls, Type[] interfaces) {
-        ClassInjector.RegisterTypeInIl2Cpp(
-            cls, 
-            new RegisterTypeOptions() {
-                Interfaces = new Il2CppInterfaceCollection(interfaces),
-            }
-        );
+        try {
+            ClassInjector.RegisterTypeInIl2Cpp(
+                cls, 
+                new RegisterTypeOptions() {
+                    Interfaces = new Il2CppInterfaceCollection(interfaces),
+                }
+            );
+        }
+        catch (Exception e) {
+            Log.LogError($"{cls} failed to register!");
+        }
+        
     }
 
     public override void Load() {

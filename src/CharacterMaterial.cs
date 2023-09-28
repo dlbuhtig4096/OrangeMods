@@ -4,7 +4,7 @@ using UnityEngine;
 
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
 
-public abstract class CharacterMaterial_ : CharacterMaterial {
+public class CharacterMaterial_ : CharacterMaterial {
     public CharacterMaterial_() : base(Il2CppInterop.Runtime.Injection.ClassInjector.DerivedConstructorPointer<CharacterMaterial_>()) {
         Il2CppInterop.Runtime.Injection.ClassInjector.DerivedConstructorBody(this);
         rtld.CharacterMaterial_ctor(this.Pointer);

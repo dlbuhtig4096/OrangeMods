@@ -430,7 +430,7 @@ public class CH130_Controller : CharacterControlBase_ {
             this.RecoverRushCollideBullet(true);
             return;
         }
-        Collider2D collider2D = new Collider2D(obj.Unbox<IntPtr>());
+        Collider2D collider2D = obj.Cast<Collider2D>();
         if (collider2D == null) {
             return;
         }
@@ -445,8 +445,15 @@ public class CH130_Controller : CharacterControlBase_ {
         if (stageObjParam == null || stageObjParam.tLinkSOB == null) {
             return;
         }
-        OrangeCharacter orangeCharacter = stageObjParam.tLinkSOB as OrangeCharacter;
-        EnemyControllerBase enemyControllerBase = stageObjParam.tLinkSOB as EnemyControllerBase;
+        
+        // OrangeCharacter orangeCharacter = stageObjParam.tLinkSOB as OrangeCharacter;
+        // EnemyControllerBase enemyControllerBase = stageObjParam.tLinkSOB as EnemyControllerBase;
+        OrangeCharacter orangeCharacter = null;
+        EnemyControllerBase enemyControllerBase = null;
+        StageObjBase SOB = stageObjParam.tLinkSOB;
+        try { orangeCharacter = SOB.Cast<OrangeCharacter>(); } catch ( Exception e ) {}
+        try { enemyControllerBase = SOB.Cast<EnemyControllerBase>(); } catch ( Exception e ) {}
+
         if (orangeCharacter || enemyControllerBase) {
             this.RecoverRushCollideBullet(false);
             if (this._refEntity.IsLocalPlayer) {

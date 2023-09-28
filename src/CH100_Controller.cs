@@ -5,11 +5,12 @@ using UnityEngine;
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
 
 public class CH100_ShungokusatsuDummy : CollideBullet_ {
-
+    
     public CH100_ShungokusatsuDummy() : base() {}
     
     public CH100_ShungokusatsuDummy(IntPtr p) : base(p) {}
     
+    /*
     public override void Active(LayerMask pTargetMask) {
         this.IsDestroy = false;
         this.TargetMask = pTargetMask;
@@ -35,6 +36,7 @@ public class CH100_ShungokusatsuDummy : CollideBullet_ {
         base.SoundSource.UpdateDistanceCall();
         this.PlayUseSE(false);
     }
+    */
 
     public override void Active(Vector3 pPos, Vector3 pDirection, LayerMask pTargetMask, IAimTarget pTarget = null) {
         Plugin.Log.LogWarning("射發這個子彈請用Transform");
@@ -51,13 +53,14 @@ public class CH100_ShungokusatsuDummy : CollideBullet_ {
     }
 
     public override void Active(Transform pTransform, Vector3 pDirection, LayerMask pTargetMask, IAimTarget pTarget = null) {
-        //this.CallBase<CollideBullet, Action<Transform, Vector3, LayerMask, IAimTarget>>("Active", pTransform, pDirection, pTargetMask, pTarget); // base.Active(pTransform, pDirection, pTargetMask, pTarget);
+        this.CallBase<CollideBullet, Action<Transform, Vector3, LayerMask, IAimTarget>>("Active", pTransform, pDirection, pTargetMask, pTarget); // base.Active(pTransform, pDirection, pTargetMask, pTarget);
+        /*
         Plugin.Log.LogWarning("NOPE");
         this._transform.position = pTransform.position;
         MonoBehaviourSingleton<FxManager>.Instance.UpdateFx(this.bulletFxArray, true, ParticleSystemStopBehavior.StopEmitting);
         this._rigidbody2D.WakeUp();
         this.Active(pTargetMask);
-            
+        */
 
         this._transform.SetParent(pTransform);
         this._transform.localPosition = Vector3.zero;
@@ -686,7 +689,7 @@ public class CH100_Controller : CharacterControlBase_ {
         if (this._refEntity.UsingVehicle) {
             return;
         }
-        Collider2D collider2D = new Collider2D(obj.Unbox<IntPtr>());
+        Collider2D collider2D = obj.Cast<Collider2D>();
         if (collider2D == null) {
             return;
         }
@@ -701,8 +704,15 @@ public class CH100_Controller : CharacterControlBase_ {
         if (stageObjParam == null || stageObjParam.tLinkSOB == null) {
             return;
         }
-        OrangeCharacter orangeCharacter = stageObjParam.tLinkSOB as OrangeCharacter;
-        EnemyControllerBase exists = stageObjParam.tLinkSOB as EnemyControllerBase;
+        
+        // OrangeCharacter orangeCharacter = stageObjParam.tLinkSOB as OrangeCharacter;
+        // EnemyControllerBase exists = stageObjParam.tLinkSOB as EnemyControllerBase;
+        OrangeCharacter orangeCharacter = null;
+        EnemyControllerBase exists = null;
+        StageObjBase SOB = stageObjParam.tLinkSOB;
+        try { orangeCharacter = SOB.Cast<OrangeCharacter>(); } catch ( Exception e ) {}
+        try { exists = SOB.Cast<EnemyControllerBase>(); } catch ( Exception e ) {}
+
         if (orangeCharacter || exists) {
             this._otSkill1Timer.TimerStart();
             this._tfShungokusatsuTarget = transform;
