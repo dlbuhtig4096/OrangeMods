@@ -1,4 +1,5 @@
 
+/*
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,7 +34,6 @@ static class rtld {
     }
 }
 
-/*
 var fi = typeof(CollideBullet).GetFields();
 Plugin.Log.LogWarning(fi.Length);
 for(int i = 0; i < fi.Length; i++) {

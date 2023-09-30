@@ -8,11 +8,12 @@ public class CollideBullet_ : CollideBullet {
     
     public CollideBullet_() : base(Il2CppInterop.Runtime.Injection.ClassInjector.DerivedConstructorPointer<CollideBullet_>()) {
         Il2CppInterop.Runtime.Injection.ClassInjector.DerivedConstructorBody(this);
-        rtld.CollideBullet_ctor(this.Pointer);
     }
     
     public CollideBullet_(IntPtr p) : base(p) {
-        rtld.CollideBullet_ctor(p);
+        // rtld.CollideBullet_ctor(p);
+        this.CallBase<CollideBullet>(".ctor");
+
         // Hack: initialize objects manually since base(p) is not working for some reasons
         /*
         this._hitCount = new Il2CppSystem.Collections.Generic.Dictionary<Transform, int>();

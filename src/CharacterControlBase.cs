@@ -9,11 +9,11 @@ public class CharacterControlBase_ : CharacterControlBase {
     
     public CharacterControlBase_() : base(Il2CppInterop.Runtime.Injection.ClassInjector.DerivedConstructorPointer<CharacterControlBase_>()) {
         Il2CppInterop.Runtime.Injection.ClassInjector.DerivedConstructorBody(this);
-        rtld.CharacterControlBase_ctor(this.Pointer);
     }
     
     public CharacterControlBase_(IntPtr p) : base(p) {
-        rtld.CharacterControlBase_ctor(p);
+        // rtld.CharacterControlBase_ctor(p);
+        this.CallBase<CharacterControlBase>(".ctor");
     }
 
     public override void Start() {

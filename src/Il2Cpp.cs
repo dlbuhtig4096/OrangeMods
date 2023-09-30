@@ -30,44 +30,36 @@ public static class Reflection {
                                                               Il2CppSystem.Reflection.BindingFlags.SetProperty;
 
 
-    public static void TryInvokeAction(this Object target, string methodName)
-    {
+    public static void TryInvokeAction(this Object target, string methodName) {
         Il2CppSystem.Reflection.MethodInfo method = target?.GetIl2CppType()?.GetMethod(methodName, Reflection.all);
-        if (method != null)
-        {
+        if (method != null) {
             method.Invoke(target, new Il2CppReferenceArray<Il2CppSystem.Object>(0));
         }
     }
     
-    public static void TryInvokeAction(this Object target, string methodName, params Il2CppSystem.Object[] args)
-    {
+    public static void TryInvokeAction(this Object target, string methodName, params Il2CppSystem.Object[] args) {
         Il2CppSystem.Reflection.MethodInfo method = target?.GetIl2CppType()?.GetMethod(methodName, Reflection.all);
-        if (method != null)
-        {
+        if (method != null) {
             method.Invoke(target, new Il2CppReferenceArray<Il2CppSystem.Object>(args));
         }
     }
     
-    public static Object TryInvokeFunc(this Object target, string methodName)
-    {
+    public static Object TryInvokeFunc(this Object target, string methodName) {
         if (target == null) return null;
         
         Il2CppSystem.Reflection.MethodInfo method = target.GetIl2CppType().GetMethod(methodName, Reflection.all);
-        if (method != null)
-        {
+        if (method != null) {
             return method.Invoke(target, new Il2CppReferenceArray<Il2CppSystem.Object>(0));
         }
 
         return null;
     }
     
-    public static Object TryInvokeFunc(this Object target, string methodName, params Il2CppSystem.Object[] args)
-    {
+    public static Object TryInvokeFunc(this Object target, string methodName, params Il2CppSystem.Object[] args) {
         if (target == null) return null;
         
         Il2CppSystem.Reflection.MethodInfo method = target.GetIl2CppType().GetMethod(methodName, Reflection.all);
-        if (method != null)
-        {
+        if (method != null) {
             return method.Invoke(target, new Il2CppReferenceArray<Il2CppSystem.Object>(args));
         }
 
@@ -136,10 +128,8 @@ public static class Reflection {
     }
 
     private static MethodInfo m_getDelegate;
-    private static MethodInfo getDelegate
-    {
-        get
-        {
+    private static MethodInfo getDelegate {
+        get {
             if (m_getDelegate == null)
                 m_getDelegate = typeof(Marshal).GetMethod("GetDelegateForFunctionPointerInternal", AccessTools.all);
             return m_getDelegate;
@@ -148,18 +138,15 @@ public static class Reflection {
         
     public unsafe static object CallBase<T, TDelegate>(this Object obj, string name, params object[] args)
         where T : Object
-        where TDelegate : Delegate
-    {
+        where TDelegate : Delegate {
         Type delegateType = typeof(TDelegate);
         MethodInfo method = delegateType.GetMethod("Invoke");
         Type returnType = method.ReturnType;
         Type[] paramTypes = method.GetParameters().Select(info => info.ParameterType).ToArray();
         string[] parameters = paramTypes.Select(info => info.FullName).ToArray();
         
-        for (int i = 0; i < paramTypes.Length; i++)
-        {
-            if (paramTypes[i].IsAssignableTo(typeof(Il2CppObjectBase)))
-            {
+        for (int i = 0; i < paramTypes.Length; i++) {
+            if (paramTypes[i].IsAssignableTo(typeof(Il2CppObjectBase))) {
                 args[i] = IL2CPP.Il2CppObjectBaseToPtr((Il2CppObjectBase) args[i]);
                 paramTypes[i] = typeof(IntPtr);
             }
@@ -173,8 +160,7 @@ public static class Reflection {
         return funcDelegate.DynamicInvoke(args.InsertIl2CppArgs(obj.Pointer, IntPtr.Zero));
     }
 
-    private static T[] InsertIl2CppDef<T>(this T[] array, T first, T method, T returnType)
-    {
+    private static T[] InsertIl2CppDef<T>(this T[] array, T first, T method, T returnType) {
         T[] newArray = new T[array.Length + 3];
         Array.Copy(array, 0, newArray, 1, array.Length);
         newArray[0] = first;
@@ -183,8 +169,7 @@ public static class Reflection {
         return newArray;
     }
         
-    private static T[] InsertIl2CppArgs<T>(this T[] array, T first, T last)
-    {
+    private static T[] InsertIl2CppArgs<T>(this T[] array, T first, T last) {
         T[] newArray = new T[array.Length + 2];
         Array.Copy(array, 0, newArray, 1, array.Length);
         newArray[0] = first;
@@ -194,23 +179,19 @@ public static class Reflection {
 
     private unsafe delegate void BaseFunc(IntPtr arg1, Il2CppMethodInfo* arg2);
     public unsafe static void CallBase<T>(this Object obj, string name)
-        where T : Object
-    {
+        where T : Object {
         IntPtr klass = Il2CppClassPointerStore<T>.NativeClassPtr;
         IntPtr methodPtr = IL2CPP.GetIl2CppMethod(klass, false, name, "System.Void", Array.Empty<string>());
         BaseFunc baseFunc = Marshal.GetDelegateForFunctionPointer<BaseFunc>(*(IntPtr*)methodPtr);
         baseFunc?.Invoke(obj.Pointer, (Il2CppMethodInfo*)IntPtr.Zero);
     }
 
-    public static FieldInfo[] GetFieldsOfType<T>(this Il2CppSystem.Type type)
-    {
+    public static FieldInfo[] GetFieldsOfType<T>(this Il2CppSystem.Type type) {
         return type
             .GetFields(all)
-            .Where(info =>
-            {
+            .Where(info => {
                 /*Il2CppReferenceArray<Il2CppSystem.Type> args = info.FieldType.GetGenericArguments();
-                if (args != null && args.Count > 0)
-                {
+                if (args != null && args.Count > 0) {
                     Il2CppSystem.Type genericType = args.Single();
                     return genericType.Equals(Il2CppType.Of<T>());
                 }*/
@@ -224,16 +205,14 @@ public static class Reflection {
     /// </summary>
     /// <param name="obj">object to cast</param>
     /// <returns>cast object</returns>
-    public static object CastToActualType(this Object obj)
-    {
+    public static object CastToActualType(this Object obj) {
         Type sysType = Reflection.GetActualType(obj);
         MethodInfo methonGen = typeof(Il2CppObjectBase).GetMethod(nameof(Il2CppObjectBase.Cast), AccessTools.all);
         MethodInfo method = methonGen.MakeGenericMethod(sysType);
         return method.Invoke(obj, Array.Empty<object>());
     }
     
-    internal static System.Type GetActualType(object obj)
-    {
+    internal static System.Type GetActualType(object obj) {
         Assembly assembly = AppDomain.CurrentDomain.GetAssemblies().
             SingleOrDefault(assembly => assembly.GetName().Name == "UniverseLib.IL2CPP.Interop");
 

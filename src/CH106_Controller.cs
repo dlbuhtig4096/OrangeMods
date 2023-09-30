@@ -117,6 +117,7 @@ public class CH106_BeamBullet : BeamBullet_ {
         if (MonoBehaviourSingleton<PoolManager>.Instance.IsPreload("p_valstraxlaser_000_01")) {
             ch106_BeamBullet = MonoBehaviourSingleton<PoolManager>.Instance.GetPoolObj<CH106_BeamBullet>("p_valstraxlaser_000_01");
         }
+        Plugin.Log.LogWarning(ch106_BeamBullet);
         if (ch106_BeamBullet == null) {
             return null;
         }

@@ -68,8 +68,7 @@ class BulletBase_ {
 
     [HarmonyPrefix]
     [HarmonyPatch(nameof(BulletBase.CalclDmgOnly))]
-    static bool CalclDmgOnly(SKILL_TABLE pData, StageObjBase tSOB, ref int __result, ref BulletBase __instance)
-    {
+    static bool CalclDmgOnly(SKILL_TABLE pData, StageObjBase tSOB, ref int __result, ref BulletBase __instance) {
         float fDmg = 0, fBaseAtk = 0, fBaseDmg = 0;
         
         int tSOBType, nCurrentWeapon = 0, nLastHitStatus = 1;        
@@ -328,7 +327,7 @@ public class Plugin : BasePlugin {
             );
         }
         catch (Exception e) {
-            Log.LogError($"{cls} failed to register!");
+            Log.LogError($"{cls} failed to register: {e}");
         }
         
     }
@@ -343,6 +342,8 @@ public class Plugin : BasePlugin {
         Harmony.CreateAndPatchAll(typeof(BulletBase_));
         Harmony.CreateAndPatchAll(typeof(StandaloneConsoleStorage_));
         Harmony.CreateAndPatchAll(typeof(CharacterControlFactory_));
+
+        Log.LogDebug($"{typeof(Il2CppSystem.Collections.Generic.HashSet<Transform>).FullName}");
 
         _inject(typeof(BeamBullet_), new Type[] {});
         _inject(typeof(CollideBullet_), new Type[] {});

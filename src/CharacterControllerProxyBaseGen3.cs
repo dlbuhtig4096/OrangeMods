@@ -9,11 +9,12 @@ public class CharacterControllerProxyBaseGen3_ : CharacterControllerProxyBaseGen
 
     public CharacterControllerProxyBaseGen3_(): base(Il2CppInterop.Runtime.Injection.ClassInjector.DerivedConstructorPointer<CharacterControllerProxyBaseGen3_>()) {
         Il2CppInterop.Runtime.Injection.ClassInjector.DerivedConstructorBody(this);
-        rtld.CharacterControllerProxyBaseGen3_ctor(this.Pointer);
     }
 
     public CharacterControllerProxyBaseGen3_(IntPtr p): base(p) {
-        rtld.CharacterControllerProxyBaseGen3_ctor(p);
+        // rtld.CharacterControllerProxyBaseGen3_ctor(p);
+        this.CallBase<CharacterControllerProxyBaseGen3>(".ctor");
+
         // Hack: for some reason dictionaries cannot not be properly initialized in .ctor, so we do it here.
         /*
         this.OnPlayerPressSkill0Events = new Il2CppSystem.Collections.Generic.Dictionary<int, Il2CppSystem.Action<CharacterControllerProxyBaseGen1.SkillID>>();
