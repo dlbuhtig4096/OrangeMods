@@ -74,7 +74,7 @@ public class CH106_BeamBullet : BeamBullet_ {
         this.bIsEnd = false;
         if (!this.bInit) {
             this.bInit = true;
-            float num = ((BoxCollider2D)this._hitCollider).size.x - this.defLength;
+            float num = (this._hitCollider as BoxCollider2D).size.x - this.defLength;
             this.fxEndpoint.localPosition = this.fxEndpoint.localPosition + new Vector3(0f, 0f, num);
             this.fxLine01.SetPosition(0, new Vector3(this.fxLine01.GetPosition(0).x - num, 0f, this.fxLine01.GetPosition(0).z));
             this.fxLine01A.SetPosition(0, new Vector3(this.fxLine01A.GetPosition(0).x - num, 0f, this.fxLine01A.GetPosition(0).z));
@@ -216,7 +216,7 @@ public class CH106_BeamBullet : BeamBullet_ {
         if (this.secortCollider) {
             this.secortCollider.Disable();
         }
-        base.BackToPool();
+        this.CallBase<CH106_BeamBullet>("BackToPool"); // base.BackToPool();
     }
 
     // [SerializeField]
@@ -546,19 +546,20 @@ public class CH106_Controller : CharacterControlBase_ {
     }
 
     public void AnimationEndCharacterDepend(OrangeCharacter.MainStatus mainStatus, OrangeCharacter.SubStatus subStatus) {
-        if (mainStatus != OrangeCharacter.MainStatus.TELEPORT_IN) {
-            if (mainStatus != OrangeCharacter.MainStatus.SKILL) {
-                return;
-            }
-            if (subStatus - OrangeCharacter.SubStatus.SKILL0_6 <= 1) {
+        if (subStatus == OrangeCharacter.SubStatus.TELEPORT_POSE) {
+            this.EnableWindBrustFx(false, false);
+            this.ToggleWeapon(0);
+            return;
+        }
+        if (mainStatus == OrangeCharacter.MainStatus.SKILL) {
+            switch (subStatus) {
+            case OrangeCharacter.SubStatus.SKILL0_6:
+            case OrangeCharacter.SubStatus.SKILL0_7:
                 this.SkillEndChnageToIdle(false);
                 return;
-            }
-            if (subStatus == OrangeCharacter.SubStatus.SKILL0_8) {
+            case OrangeCharacter.SubStatus.SKILL0_8:
                 this.SkillEndChnageToIdle(true);
                 return;
-            }
-            switch (subStatus) {
             case OrangeCharacter.SubStatus.SKILL1:
                 if (this._refEntity.IsLocalPlayer) {
                     this.CreateSkillBullet(this._refEntity.PlayerSkills[1]);
@@ -578,11 +579,6 @@ public class CH106_Controller : CharacterControlBase_ {
                 return;
             }
         }
-        else if (subStatus == OrangeCharacter.SubStatus.TELEPORT_POSE) {
-            this.EnableWindBrustFx(false, false);
-            this.ToggleWeapon(0);
-            return;
-        }
     }
 
     public override void CreateSkillBullet(WeaponStruct wsSkill) {
@@ -590,7 +586,7 @@ public class CH106_Controller : CharacterControlBase_ {
         OrangeCharacter.MainStatus curMainStatus = this._refEntity.CurMainStatus;
         if (curMainStatus == OrangeCharacter.MainStatus.SKILL) {
             OrangeCharacter.SubStatus curSubStatus = this._refEntity.CurSubStatus;
-            if (curSubStatus - OrangeCharacter.SubStatus.SKILL0 <= 2) {
+            if (curSubStatus == OrangeCharacter.SubStatus.SKILL0 || curSubStatus == OrangeCharacter.SubStatus.SKILL0_1 || curSubStatus == OrangeCharacter.SubStatus.SKILL0_2) {
                 this._refEntity.PushBulletDetail(wsSkill.BulletData, wsSkill.weaponStatus, this._refEntity.ExtraTransforms[1], wsSkill.SkillLV, new Il2CppSystem.Nullable_Unboxed<UnityEngine.Vector3>(this._vSkill0ShootDirection), true);
                 this._refEntity.CheckUsePassiveSkill(0, wsSkill.weaponStatus, wsSkill.ShootTransform[0]);
                 OrangeBattleUtility.UpdateSkillCD(wsSkill);
@@ -608,7 +604,7 @@ public class CH106_Controller : CharacterControlBase_ {
     public bool BeamStartTurn() {
         if (this._refEntity.CurMainStatus == OrangeCharacter.MainStatus.SKILL) {
             OrangeCharacter.SubStatus curSubStatus = this._refEntity.CurSubStatus;
-            if (curSubStatus - OrangeCharacter.SubStatus.SKILL0_3 <= 2) {
+            if (curSubStatus == OrangeCharacter.SubStatus.SKILL0_3 || curSubStatus == OrangeCharacter.SubStatus.SKILL0_4 || curSubStatus == OrangeCharacter.SubStatus.SKILL0_5) {
                 this.EnableRedBalls(false);
                 this._refEntity.SetStatus(OrangeCharacter.MainStatus.SKILL, this._refEntity.CurSubStatus + 3);
                 return true;
@@ -627,7 +623,7 @@ public class CH106_Controller : CharacterControlBase_ {
 
     public void CheckSkillLockDirection() {
         OrangeCharacter.SubStatus curSubStatus = this._refEntity.CurSubStatus;
-        if (curSubStatus - OrangeCharacter.SubStatus.SKILL0 > 8) {
+        if (curSubStatus >= OrangeCharacter.SubStatus.SKILL0 && curSubStatus <= OrangeCharacter.SubStatus.SKILL0_8) {
             // this._refEntity._characterDirection = this._refEntity._characterDirection * CharacterDirection.LEFT;
             this._refEntity._characterDirection = (CharacterDirection)(-(int)this._refEntity._characterDirection);
             return;
@@ -654,6 +650,7 @@ public class CH106_Controller : CharacterControlBase_ {
         OrangeCharacter.MainStatus curMainStatus = this._refEntity.CurMainStatus;
         if (curMainStatus == OrangeCharacter.MainStatus.SKILL) {
             OrangeCharacter.SubStatus curSubStatus = this._refEntity.CurSubStatus;
+            // Plugin.Log.LogWarning($"{curSubStatus} {this._refEntity.CurrentFrame}");
             switch (curSubStatus) {
             case OrangeCharacter.SubStatus.SKILL0:
             case OrangeCharacter.SubStatus.SKILL0_1:
